@@ -1,0 +1,60 @@
+title ""
+screen 0,500,500,,400,100
+buffer 1,500,500
+gsel 0,1
+celload "character.png",2:celdiv 2,50,50,26,26
+x=230:y=410:pani=0.0
+ex=230:ey=100:eani=4.0
+tx=100+ex:ty=ey:tang=0.0
+bang=0.0:bani=8.0:bs=-200
+dim bx,10:dim by,10
+
+*main
+if ginfo(2)<0:await 1:goto *main
+redraw 2:color:boxf
+gosub *player
+gosub *enemy
+gosub *target
+gosub *beam
+gosub *draw
+redraw 1:await 1
+goto *main
+
+*player
+if mousex>x:x+=2:if x>500:x=500
+if mousex<x:x-=2:if x<0:x=0
+if mousey>y:y+=2:if y>500:y=500
+if mousey<y:y-=2:if y<0:y=0
+pani+=0.1:if pani>=4:pani=0.0
+return
+
+*enemy
+eani+=0.1:if eani>=8:eani=4.0
+return
+
+*target
+if bs>=100:tang+=0.6:if tang>=360:tang=0.0
+tx=100.0*cos(deg2rad(tang))+ex
+ty=100.0*sin(deg2rad(tang))+ey
+return
+
+*beam
+bang=atan(ty-ey,tx-ex)
+foreach bx
+if cnt=0{bx(0)=ex+cos(bang)*30
+         by(0)=ey+sin(bang)*30
+         }else{bx(cnt)=bx(cnt-1)+cos(bang)*50
+               by(cnt)=by(cnt-1)+sin(bang)*50
+               }
+loop
+bani+=0.05:if bani>=12:bani=8.0
+bs++:if bs>=300:bs=0
+return
+
+*draw
+color:gmode 4,,,256
+pos x,y:celput 2,int(pani)
+if bs>=100:foreach bx:pos bx(cnt),by(cnt):celput 2,int(bani),,,bang:loop
+pos ex,ey:celput 2,int(eani)
+if bs>=100:i++:if i>=2:i=0:gsel 1:gcopy 0,,,500,500:gsel 0,1:boxf:randomize:pos rnd(2)*2-2,rnd(2)*2-2:gcopy 1,,,500,500
+return

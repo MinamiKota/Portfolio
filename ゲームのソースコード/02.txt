@@ -1,0 +1,1049 @@
+*titlemenu
+title ""
+cls 4:color 255,255,255:pos 185,200:mes "":pos 215,240:mes ""
+
+mmload ".wav",0,0
+mmload ".wav",1,0
+mmload ".wav",2,0
+mmload ".wav",3,0
+mmload ".wav",4,0
+mmload ".wav",5,0
+mmload ".wav",6,0
+mmload ".wav",7,0
+mmload ".wav",8,0
+mmload ".wav",9,0
+mmload ".wav",10,0
+mmload ".wav",11,0
+mmload ".wav",12,0
+mmload ".wav",13,0
+mmload ".wav",14,0
+mmload ".wav",15,0
+mmload ".wav",16,0
+mmload ".mp3",17,1
+mmload ".mp3",18,1
+mmload ".mp3",19,1
+mmload ".mp3",20,1
+mmload ".mp3",21,1
+mmload ".mp3",22,1
+mmload ".mp3",23,1
+mmload ".mp3",24,1
+mmload ".mp3",25,1
+mmload ".mp3",26,1
+
+repeat 16
+mmplay a
+a=a+1:wait 10
+loop
+mmstop
+
+picload ".bmp"
+color 255,255,255
+pos 250,200:mes ""
+pos 265,240:mes ""
+pos 265,280:mes ""
+color 120,120,120
+pos 265,260:mes ""
+;pos 265,280:mes ""
+color 0,0,0:a=240
+repeat 4
+pos 250,a:mes "":a=a+20
+loop
+color 255,255,255
+pos 265,300:mes ""
+pos 10,430:mes ""
+pos 10,450:mes ""
+cy=240:pos 250,cy:mes "":wait 100:color:pos 250,cy:mes ""
+
+*titleloop
+color 255,0,0
+stick b,42
+if (b=32)&(cy=240):mmplay 0:pos 250,cy:mes "":wait 50:goto *gamestart
+if (b=32)&(cy=280):mmplay 0:pos 250,cy:mes "":wait 50:goto *spgamestart
+if (b=32)&(cy=300):end
+if b=2:cy=cy-20:wait 20
+if cy=220:cy=300
+if b=8:cy=cy+20:wait 20
+if cy=320:cy=240
+color 255,255,255
+pos 250,cy:mes ""
+wait 5
+color 0,0,0
+pos 250,cy:mes ""
+goto *titleloop
+
+*gamestart
+cls 4:wait 250:cls
+celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+ikehp=260:ikehpmax=260:ikespat=0:ikesp=0:ikespmax=0:ikeat=70:ikedf=10:ikese=0
+pos 270,350:mes "":wait 50
+*loop1
+wait 1:stick b,42
+if b!32:goto *loop1
+cls:pos 270,350:mes "":wait 50
+*loop2
+wait 1:stick b,42
+if b!32:goto *loop2
+cls:pos 270,350:mes "":wait 50
+*loop3
+wait 1:stick b,42
+if b!32:goto *loop3
+cls:pos 265,220:celput 1:wait 50:pos 230,350:mes "":wait 50
+*loop4
+wait 1:stick b,42
+if b!32:goto *loop4
+cls:pos 265,220:celput 1:pos 270,350:mes "":wait 50
+*loop5
+wait 1:stick b,42
+if b!32:goto *loop5
+cls:pos 265,220:celput 1:pos 220,350:mes "":wait 50
+*loop6
+wait 1:stick b,42
+if b!32:goto *loop6
+cls:pos 265,220:celput 1:pos 140,350:mes "":wait 50
+*loop7
+wait 1:stick b,42
+if b!32:goto *loop7
+cls:pos 265,220:celput 1:pos 130,350:mes "":wait 50
+*loop8
+wait 1:stick b,42
+if b!32:goto *loop8
+cls:pos 265,220:celput 1:pos 70,350:mes "":wait 50
+*loop9
+wait 1:stick b,42
+if b!32:goto *loop9
+
+
+
+*aaa
+celload ".gif",2
+cls:wait 20:pos 0,0:celput 2
+room=1:ikex=420:ikey=120
+if gamestartaaa=0:gamestartaaa=1:color:pos 120,430:mes "":wait 400:color 255,255,255:boxf 0,430:color:wait 50:ikex=300:ikey=300
+pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1
+*menuaaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menuaaa
+wait 30
+goto *baa
+
+
+
+*actionloop
+stick b,63
+
+if b=16:inmenu=1:mmplay 4:wait 30:return
+
+if (room=1)&(b=1)&(ikex>180)&(ikey!60):ikex=ikex-60:wait 20
+if (room=1)&(b=4)&(ikex<480)&(ikey!60):ikex=ikex+60:wait 20
+if (room=1)&(b=2)&(ikex=420)&(ikey=120):ikey=ikey-60:wait 20
+if (room=1)&(b=2)&(ikey>120):ikey=ikey-60:wait 20
+if (room=1)&(b=8)&(ikey<300):ikey=ikey+60:wait 20
+if (room=1)&(b=32)&(ikex=420)&(ikey=60):mmplay 1:way=0:return
+
+if (room=2)&(b=1)&(ikex>60):ikex=ikex-60:wait 20
+if (room=2)&(b=4)&(ikex<540)&(ikey!180)&(ikey!360):ikex=ikex+60:wait 20
+if (room=2)&(b=2)&(ikex=60)&(ikey=240):ikey=ikey-60:wait 20
+if (room=2)&(b=2)&(ikey>240):ikey=ikey-60:wait 20
+if (room=2)&(b=8)&(ikex=60)&(ikey=300):ikey=ikey+60:wait 20
+if (room=2)&(b=8)&(ikey<300):ikey=ikey+60:wait 20
+if (room=2)&(b=32)&(ikex=60)&(ikey=180):mmplay 2:pos 140,100:mes "":wait 60
+if (room=2)&(b=32)&(ikex=60)&(ikey=360):mmplay 1:way=0:return
+if (room=2)&(b=32)&(ikex=540)&(ikey=300):mmplay 1:way=1:return
+if (room=2)&(b=32)&(ikex=540)&(ikey=240):mmplay 1:way=1:return
+
+if (room=3)&(b=1)&(ikex=120)&(ikey=240):ikex=ikex-60:wait 20
+if (room=3)&(b=1)&(ikex>120):ikex=ikex-60:wait 20
+if (room=3)&(b=4)&(ikex<360):ikex=ikex+60:wait 20
+if (room=3)&(b=2)&(ikey>180)&(ikex!60):ikey=ikey-60:wait 20
+if (room=3)&(b=8)&(ikey<300)&(ikex!60):ikey=ikey+60:wait 20
+if (room=3)&(b=32)&(ikex=60)&(ikey=240)&(floor=1):mmplay 1:way=1:return
+if (room=3)&(b=32)&(ikex=60)&(ikey=240)&(floor=0):mmplay 1:way=0:return
+
+if (room=4)&(b=1)&(ikex=120)&(ikey=120):ikex=ikex-60:wait 20
+if (room=4)&(b=1)&(ikex>120)&(ikey!420):ikex=ikex-60:wait 20
+if (room=4)&(b=4)&(ikex=480)&(ikey=120):ikex=ikex+60:wait 20
+if (room=4)&(b=4)&(ikex=480)&(ikey=300):ikex=ikex+60:wait 20
+if (room=4)&(b=4)&(ikex<480)&(ikey!420):ikex=ikex+60:wait 20
+if (room=4)&(b=2)&(ikey>60)&(ikex!540)&(ikex!60):ikey=ikey-60:wait 20
+if (room=4)&(b=8)&(ikex=120)&(ikey=360):ikey=ikey+60:wait 20
+if (room=4)&(b=8)&(ikey<360)&(ikex!540)&(ikex!60):ikey=ikey+60:wait 20
+if (room=4)&(b=32)&(ikex=540)&(ikey=120):mmplay 1:way=0:return
+if (room=4)&(b=32)&(ikex=540)&(ikey=300):mmplay 1:way=1:return
+if (room=4)&(b=32)&(ikex=120)&(ikey=420):mmplay 2:pos 180,380:mes "":wait 60
+if (room=4)&(b=32)&(ikex=60)&(ikey=120)&(gagaga=0):mmplay 2:pos 90,100:mes "":wait 60
+
+if (room=5)&(b=1)&(ikex>40):ikex=ikex-60:wait 20
+if (room=5)&(b=4)&(ikex<580):ikex=ikex+60:wait 20
+if (room=5)&(b=32)&(ikex=40):mmplay 1:way=1:return
+if (room=5)&(b=32)&(ikex=580):mmplay 1:way=0:return
+
+if (room=6)&(b=1)&(ikex=60)&(ikey=300):ikex=ikex-60:wait 20
+if (room=6)&(b=1)&(ikex=60)&(ikey=240):ikex=ikex-60:wait 20
+if (room=6)&(b=1)&(ikex>60)&(ikey!60)&(ikey!360):ikex=ikex-60:wait 20
+if (room=6)&(b=4)&(ikex<480)&(ikey!60)&(ikey!360):ikex=ikex+60:wait 20
+if (room=6)&(b=2)&(ikey=120)&(ikex=300):ikey=ikey-60:wait 20
+if (room=6)&(b=2)&(ikey>120)&(ikex!0):ikey=ikey-60:wait 20
+if (room=6)&(b=8)&(ikey=300)&(ikex=360):ikey=ikey+60:wait 20
+if (room=6)&(b=8)&(ikey<300)&(ikex!0):ikey=ikey+60:wait 20
+if (room=6)&(b=32)&(ikex=0)&(ikey=300):mmplay 1:way=0:return
+if (room=6)&(b=32)&(ikex=0)&(ikey=240):mmplay 1:way=0:return
+if (room=6)&(b=32)&(ikex=360)&(ikey=360):mmplay 1:way=1:return
+if (room=6)&(b=32)&(ikex=300)&(ikey=60):mmplay 1:way=2:return
+if (room=6)&(gamestartcaa=0)&(ikex=420)&(ikey=300):gamestartcaa=1:mmplay 4:abcdefg=1
+
+if (room=7)&(b=1)&(ikex>120)&(ikey!120):ikex=ikex-60:wait 20
+if (room=7)&(b=4)&(ikex<420)&(ikey!120):ikex=ikex+60:wait 20
+if (room=7)&(b=2)&(ikey=180)&(ikex=120):ikey=ikey-60:wait 20
+if (room=7)&(b=2)&(ikey>180):ikey=ikey-60:wait 20
+if (room=7)&(b=8)&(ikey<300)&(ikex!0):ikey=ikey+60:wait 20
+if (room=7)&(b=32)&(ikex=120)&(ikey=120):mmplay 1:way=1:return
+if (room=7)&(gamestartdaa=0)&(ikex=420)&(ikey=240):gamestartdaa=1:mmplay 4:abcdefg=1
+if (room=7)&(gsa=0)&(ikex=120)&(ikey=300)&(itemd!0)&(iteme=0):iteme=2:gsa=1:mmplay 4
+if (room=7)&(gsa=0)&(ikex=120)&(ikey=300)&(itemc!0)&(itemd=0):itemd=2:gsa=1:mmplay 4
+if (room=7)&(gsa=0)&(ikex=120)&(ikey=300)&(itemb!0)&(itemc=0):itemc=2:gsa=1:mmplay 4
+if (room=7)&(gsa=0)&(ikex=120)&(ikey=300)&(itema!0)&(itemb=0):itemb=2:gsa=1:mmplay 4
+if (room=7)&(gsa=0)&(ikex=120)&(ikey=300)&(itema=0):itema=2:gsa=1:mmplay 4
+if (room=7)&(gsb=0)&(ikex=420)&(ikey=180)&(itemd!0)&(iteme=0):iteme=3:gsb=1:mmplay 4
+if (room=7)&(gsb=0)&(ikex=420)&(ikey=180)&(itemc!0)&(itemd=0):itemd=3:gsb=1:mmplay 4
+if (room=7)&(gsb=0)&(ikex=420)&(ikey=180)&(itemb!0)&(itemc=0):itemc=3:gsb=1:mmplay 4
+if (room=7)&(gsb=0)&(ikex=420)&(ikey=180)&(itema!0)&(itemb=0):itemb=3:gsb=1:mmplay 4
+if (room=7)&(gsb=0)&(ikex=420)&(ikey=180)&(itema=0):itema=3:gsb=1:mmplay 4
+
+if (room=8)&(b=1)&(ikex>60)&(ikey!60)&(ikey!420):ikex=ikex-60:wait 20
+if (room=8)&(b=4)&(ikex<540)&(ikey!60)&(ikey!420)&(ikey!120):ikex=ikex+60:wait 20
+if (room=8)&(b=4)&(ikex<300)&(ikey=120):ikex=ikex+60:wait 20
+if (room=8)&(b=2)&(ikex=60)&(ikey=120):ikey=ikey-60:wait 20
+if (room=8)&(b=2)&(ikey>120)&(ikey=180)&(ikex<360):ikey=ikey-60:wait 20
+if (room=8)&(b=2)&(ikey>120)&(ikey!180):ikey=ikey-60:wait 20
+if (room=8)&(b=8)&(ikex=240)&(ikey=360):ikey=ikey+60:wait 20
+if (room=8)&(b=8)&(ikey<360):ikey=ikey+60:wait 20
+if (room=8)&(b=32)&(ikex=240)&(ikey=420):mmplay 1:way=2:return
+if (room=8)&(b=32)&(ikex=60)&(ikey=60):mmplay 1:way=1:return
+if (room=8)&(gsc=0)&(ikex=120)&(ikey=300)&(itemd!0)&(iteme=0):iteme=4:gsc=1:mmplay 4
+if (room=8)&(gsc=0)&(ikex=120)&(ikey=300)&(itemc!0)&(itemd=0):itemd=4:gsc=1:mmplay 4
+if (room=8)&(gsc=0)&(ikex=120)&(ikey=300)&(itemb!0)&(itemc=0):itemc=4:gsc=1:mmplay 4
+if (room=8)&(gsc=0)&(ikex=120)&(ikey=300)&(itema!0)&(itemb=0):itemb=4:gsc=1:mmplay 4
+if (room=8)&(gsc=0)&(ikex=120)&(ikey=300)&(itema=0):itema=4:gsc=1:mmplay 4
+
+if (room=9)&(b=1)&(ikex>60)&(ikey!420):ikex=ikex-60:wait 20
+if (room=9)&(b=4)&(ikex<540)&(ikey!420):ikex=ikex+60:wait 20
+if (room=9)&(b=2)&(ikey>120):ikey=ikey-60:wait 20
+if (room=9)&(b=8)&(ikex=480)&(ikey=360):ikey=ikey+60:wait 20
+if (room=9)&(b=8)&(ikey<360):ikey=ikey+60:wait 20
+if (room=9)&(b=32)&(ikex=480)&(ikey=420):mmplay 1:way=0:return
+if (room=9)&(gsd=0)&(ikex=60)&(ikey=240)&(itemd!0)&(iteme=0):iteme=7:gsd=1:mmplay 4
+if (room=9)&(gsd=0)&(ikex=60)&(ikey=240)&(itemc!0)&(itemd=0):itemd=7:gsd=1:mmplay 4
+if (room=9)&(gsd=0)&(ikex=60)&(ikey=240)&(itemb!0)&(itemc=0):itemc=7:gsd=1:mmplay 4
+if (room=9)&(gsd=0)&(ikex=60)&(ikey=240)&(itema!0)&(itemb=0):itemb=7:gsd=1:mmplay 4
+if (room=9)&(gsd=0)&(ikex=60)&(ikey=240)&(itema=0):itema=7:gsd=1:mmplay 4
+if (room=9)&(gse=0)&(ikex=60)&(ikey=300)&(itemd!0)&(iteme=0):iteme=8:gse=1:mmplay 4
+if (room=9)&(gse=0)&(ikex=60)&(ikey=300)&(itemc!0)&(itemd=0):itemd=8:gse=1:mmplay 4
+if (room=9)&(gse=0)&(ikex=60)&(ikey=300)&(itemb!0)&(itemc=0):itemc=8:gse=1:mmplay 4
+if (room=9)&(gse=0)&(ikex=60)&(ikey=300)&(itema!0)&(itemb=0):itemb=8:gse=1:mmplay 4
+if (room=9)&(gse=0)&(ikex=60)&(ikey=300)&(itema=0):itema=8:gse=1:mmplay 4
+if (room=9)&(gsf=0)&(ikex=240)&(ikey=120)&(itemd!0)&(iteme=0):iteme=6:gsf=1:mmplay 4
+if (room=9)&(gsf=0)&(ikex=240)&(ikey=120)&(itemc!0)&(itemd=0):itemd=6:gsf=1:mmplay 4
+if (room=9)&(gsf=0)&(ikex=240)&(ikey=120)&(itemb!0)&(itemc=0):itemc=6:gsf=1:mmplay 4
+if (room=9)&(gsf=0)&(ikex=240)&(ikey=120)&(itema!0)&(itemb=0):itemb=6:gsf=1:mmplay 4
+if (room=9)&(gsf=0)&(ikex=240)&(ikey=120)&(itema=0):itema=6:gsf=1:mmplay 4
+if (room=9)&(gsg=0)&(ikex=300)&(ikey=120)&(itemd!0)&(iteme=0):iteme=1:gsg=1:mmplay 4
+if (room=9)&(gsg=0)&(ikex=300)&(ikey=120)&(itemc!0)&(itemd=0):itemd=1:gsg=1:mmplay 4
+if (room=9)&(gsg=0)&(ikex=300)&(ikey=120)&(itemb!0)&(itemc=0):itemc=1:gsg=1:mmplay 4
+if (room=9)&(gsg=0)&(ikex=300)&(ikey=120)&(itema!0)&(itemb=0):itemb=1:gsg=1:mmplay 4
+if (room=9)&(gsg=0)&(ikex=300)&(ikey=120)&(itema=0):itema=1:gsg=1:mmplay 4
+
+redraw 0
+pos 0,0:gmode 0:celput 2
+
+if room=6:pos 480,180:color 255,255,255:gmode 4,32,32,256:celput 6
+if (gamestartcaa=0)&(room=6):pos 420,300:color 255,255,255:gmode 4,32,32,256:celput 8
+if (gamestartdaa=0)&(room=7):pos 455,240:color 255,255,255:gmode 4,32,32,256:celput 8
+if (gsa=0)&(room=7):pos 120,300:color 255,255,255:gmode 4,32,32,256:celput 9
+if (gsb=0)&(room=7):pos 455,180:color 255,255,255:gmode 4,32,32,256:celput 10
+if (gsc=0)&(room=8):pos 120,290:color 255,255,255:gmode 4,32,32,256:celput 11
+if (gsd=0)&(room=9):pos 60,240:color 255,255,255:gmode 4,32,32,256:celput 12
+if (gse=0)&(room=9):pos 60,300:color 255,255,255:gmode 4,32,32,256:celput 13
+if (gsf=0)&(room=9):pos 240,120:color 255,255,255:gmode 4,32,32,256:celput 14
+if (gsg=0)&(room=9):pos 300,120:color 255,255,255:gmode 4,32,32,256:celput 14
+
+pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:color
+redraw 1
+
+if (room=8)&(gagaga=0)&(ikey=180):goto *yoshio
+
+wait 1
+goto *actionloop
+
+
+
+*menu
+cls 4:wait 50:redraw 0:picload ".gif"
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 330,300:mes ""+ikegenus+"":pos 330,320:mes ""+ikespecies+""
+pos 20,80:mes "":pos 20,440:mes ""
+pos 35,180:mes "":pos 35,200:mes ""
+pos 20,100:mes ""+ikehp+" / "+ikehpmax+""
+pos 20,120:mes ""+ikesp+" / "+ikespmax+""
+pos 20,140:mes ""+ikeat+""+ikedf+""
+pos 20,180:mes "":cy=180:color:redraw 1:wait 30:pos 20,180:mes "":color 255,255,255
+*menuloop	
+stick b,63
+if b=16:mmplay 6:return
+if (b=32)&(cy=180):cls 4:goto *menuitem
+if (b=32)&(cy=200):cls 4:goto *menumaterial
+if b=2:cy=cy-20:wait 30
+if cy=160:cy=200
+if b=8:cy=cy+20:wait 30
+if cy=220:cy=180
+color 255,255,255
+pos 20,cy:mes ""
+wait 5
+color 0,0,0
+pos 20,cy:mes ""
+goto *menuloop	
+
+
+
+*menuitem
+wait 50:redraw 0:picload ".gif"
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+color 255,255,255:pos 330,300:mes ""+ikegenus+"":pos 330,320:mes ""+ikespecies+""
+pos 20,80:mes ""
+if (itema!0)or(itemb!0)or(itemc!0)or(itemd!0)or(iteme!0):pos 20,400:mes ""
+if (itema!0)or(itemb!0)or(itemc!0)or(itemd!0)or(iteme!0):pos 20,420:mes ""
+pos 20,440:mes ""
+if (itema=0)&(itemb=0)&(itemc=0)&(itemd=0)&(iteme=0):pos 35,200:mes ""
+if itema=1:pos 35,160:mes ""
+if itemb=1:pos 35,180:mes ""
+if itemc=1:pos 35,200:mes ""
+if itemd=1:pos 35,220:mes ""
+if iteme=1:pos 35,240:mes ""
+if itema=2:pos 35,160:mes ""
+if itemb=2:pos 35,180:mes ""
+if itemc=2:pos 35,200:mes ""
+if itemd=2:pos 35,220:mes ""
+if iteme=2:pos 35,240:mes ""
+if itema=3:pos 35,160:mes ""
+if itemb=3:pos 35,180:mes ""
+if itemc=3:pos 35,200:mes ""
+if itemd=3:pos 35,220:mes ""
+if iteme=3:pos 35,240:mes ""
+if itema=4:pos 35,160:mes ""
+if itemb=4:pos 35,180:mes ""
+if itemc=4:pos 35,200:mes ""
+if itemd=4:pos 35,220:mes ""
+if iteme=4:pos 35,240:mes ""
+if itema=5:pos 35,160:mes ""
+if itemb=5:pos 35,180:mes ""
+if itemc=5:pos 35,200:mes ""
+if itemd=5:pos 35,220:mes ""
+if iteme=5:pos 35,240:mes ""
+if itema=6:pos 35,160:mes ""
+if itemb=6:pos 35,180:mes ""
+if itemc=6:pos 35,200:mes ""
+if itemd=6:pos 35,220:mes ""
+if iteme=6:pos 35,240:mes ""
+if itema=7:pos 35,160:mes ""
+if itemb=7:pos 35,180:mes ""
+if itemc=7:pos 35,200:mes ""
+if itemd=7:pos 35,220:mes ""
+if iteme=7:pos 35,240:mes ""
+if itema=8:pos 35,160:mes ""
+if itemb=8:pos 35,180:mes ""
+if itemc=8:pos 35,200:mes ""
+if itemd=8:pos 35,220:mes ""
+if iteme=8:pos 35,240:mes ""
+if (itema!0)or(itemb!0)or(itemc!0)or(itemd!0)or(iteme!0):pos 20,160:mes "":cy=160:color:redraw 1:wait 30:pos 20,160:mes "":color 255,255,255
+*menuitemloop
+stick b,63
+if b=16:goto *menu
+if (itema=0)&(itemb=0)&(itemc=0)&(itemd=0)&(iteme=0):wait 5:goto *menuitemloop
+if (b=128)&(cy=160)&(itema!0):itema=0:mmplay 6:cls 4:wait 60:goto *menuitem
+if (b=128)&(cy=180)&(itemb!0):itemb=0:mmplay 6:cls 4:wait 60:goto *menuitem
+if (b=128)&(cy=200)&(itemc!0):itemc=0:mmplay 6:cls 4:wait 60:goto *menuitem
+if (b=128)&(cy=220)&(itemd!0):itemd=0:mmplay 6:cls 4:wait 60:goto *menuitem
+if (b=128)&(cy=240)&(iteme!0):iteme=0:mmplay 6:cls 4:wait 60:goto *menuitem
+if (b=32)&(cy=160)&(itema!0):mmplay 5:cls 4:wait 120:goto *itemacheck
+if (b=32)&(cy=180)&(itemb!0):mmplay 5:cls 4:wait 120:goto *itembcheck
+if (b=32)&(cy=200)&(itemc!0):mmplay 5:cls 4:wait 120:goto *itemccheck
+if (b=32)&(cy=220)&(itemd!0):mmplay 5:cls 4:wait 120:goto *itemdcheck
+if (b=32)&(cy=240)&(iteme!0):mmplay 5:cls 4:wait 120:goto *itemecheck
+if b=2:cy=cy-20:wait 20
+if cy=140:cy=240
+if b=8:cy=cy+20:wait 20
+if cy=260:cy=160
+color 255,255,255
+pos 20,cy:mes ""
+wait 5
+color 0,0,0
+pos 20,cy:mes ""
+goto *menuitemloop
+
+
+
+*itemacheck
+mmplay 16
+if (itema=1)&(ikespecies!""):m=""
+if (itema=1)&(ikespecies=""):m="":aaaa=aaaa+1
+if (itema=2):m="":ikehp=ikehp+150
+if (itema=3):m="":qwe=1
+if (itema=4)&(ikespecies!""):m="":ikehp=ikehp+70
+if (itema=4)&(ikespecies=""):m="":ikehp=ikehpmax
+if (itema=5)&(ikespecies!""):m=""
+if (itema=5)&(ikespecies=""):m="":aabv=aabv+1
+if (itema=6)&(ikespecies!""):m=""
+if (itema=6)&(ikespecies=""):m="":sas=1
+if (itema=7):m="":ikeat=ikeat+10
+if (itema=8):m="":ikedf=ikedf+5
+itema=0
+goto *itemcheck
+
+*itembcheck
+mmplay 16
+if (itemb=1)&(ikespecies!""):m=""
+if (itemb=1)&(ikespecies=""):m="":aaaa=aaaa+1
+if (itemb=2):m="":ikehp=ikehp+150
+if (itemb=3):m="":qwe=1
+if (itemb=4)&(ikespecies!""):m="":ikehp=ikehp+70
+if (itemb=4)&(ikespecies=""):m="":ikehp=ikehpmax
+if (itemb=5)&(ikespecies!""):m=""
+if (itemb=5)&(ikespecies=""):m="":aabv=aabv+1
+if (itemb=6)&(ikespecies!""):m=""
+if (itemb=6)&(ikespecies=""):m="":sas=1
+if (itemb=7):m="":ikeat=ikeat+10
+if (itemb=8):m="":ikedf=ikedf+5
+itemb=0
+goto *itemcheck
+
+*itemccheck
+mmplay 16
+if (itemc=1)&(ikespecies!""):m=""
+if (itemc=1)&(ikespecies=""):m="":aaaa=aaaa+1
+if (itemc=2):m="":ikehp=ikehp+150
+if (itemc=3):m="":qwe=1
+if (itemc=4)&(ikespecies!""):m="":ikehp=ikehp+70
+if (itemc=4)&(ikespecies=""):m="":ikehp=ikehpmax
+if (itemc=5)&(ikespecies!""):m=""
+if (itemc=5)&(ikespecies=""):m="":aabv=aabv+1
+if (itemc=6)&(ikespecies!""):m=""
+if (itemc=6)&(ikespecies=""):m="":sas=1
+if (itemc=7):m="":ikeat=ikeat+10
+if (itemc=8):m="":ikedf=ikedf+5
+itemc=0
+goto *itemcheck
+
+*itemdcheck
+mmplay 16
+if (itemd=1)&(ikespecies!""):m=""
+if (itemd=1)&(ikespecies=""):m="":aaaa=aaaa+1
+if (itemd=2):m="":ikehp=ikehp+150
+if (itemd=3):m="":qwe=1
+if (itemd=4)&(ikespecies!""):m="":ikehp=ikehp+70
+if (itemd=4)&(ikespecies=""):m="":ikehp=ikehpmax
+if (itemd=5)&(ikespecies!""):m=""
+if (itemd=5)&(ikespecies=""):m="":aabv=aabv+1
+if (itemd=6)&(ikespecies!""):m=""
+if (itemd=6)&(ikespecies=""):m="":sas=1
+if (itemd=7):m="":ikeat=ikeat+10
+if (itemd=8):m="":ikedf=ikedf+5
+itemd=0
+goto *itemcheck
+
+*itemecheck
+mmplay 16
+if (iteme=1)&(ikespecies!""):m=""
+if (iteme=1)&(ikespecies=""):m="":aaaa=aaaa+1
+if (iteme=2):m="":ikehp=ikehp+150
+if (iteme=3):m="":qwe=1
+if (iteme=4)&(ikespecies!""):m="":ikehp=ikehp+70
+if (iteme=4)&(ikespecies=""):m="":ikehp=ikehpmax
+if (iteme=5)&(ikespecies!""):m=""
+if (iteme=5)&(ikespecies=""):m="":aabv=aabv+1
+if (iteme=6)&(ikespecies!""):m=""
+if (iteme=6)&(ikespecies=""):m="":sas=1
+if (iteme=7):m="":ikeat=ikeat+10
+if (iteme=8):m="":ikedf=ikedf+5
+iteme=0
+goto *itemcheck
+
+*itemcheck
+if aaaa>=2:celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+if aaaa>=2:ikehp=450:ikehpmax=450:ikespat=0:ikesp=0:ikespmax=0:ikeat=75:ikedf=5:ikese=0:aaaa=0
+if qwe=1:celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+if qwe=1:ikehp=300:ikehpmax=300:ikespat=0:ikesp=0:ikespmax=0:ikeat=60:ikedf=2:ikese=0:qwe=0
+if sas=1:celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+if sas=1:ikehp=300:ikehpmax=300:ikespname="":ikespat=100:ikesp=1:ikespmax=1:ikeat=80:ikedf=12:ikese=0:sas=0
+;if (aaav>=1)&(aabv>=1):celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+;if (aaav>=1)&(aabv>=1):ikehp=280:ikehpmax=280:ikespat=0:ikesp=0:ikespmax=0:ikeat=90:ikedf=10:ikese=1:aaav=0:aabv=0
+if ikehp>=ikehpmax:ikehp=ikehpmax
+if ikesp>=ikespmax:ikesp=ikespmax
+color 255,255,255:pos 240,220:mes m:wait 60
+*itemcheckloop
+wait 1:stick b,32
+if b!32:goto *itemcheckloop
+mmplay 5:cls 4:wait 60:goto *menuitem
+
+
+
+*menumaterial
+wait 50:redraw 0:picload ".gif"
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikespecies="":pos 330,10:color 255,255,255:gmode 4,32,32,256:celput 3
+color 255,255,255:pos 330,300:mes ""+ikegenus+"":pos 330,320:mes ""+ikespecies+""
+pos 20,80:mes ""
+pos 20,440:mes ""
+if abcdefg=0:pos 35,200:mes ""
+if abcdefg=1:pos 20,420:mes ""
+if gamestartcaa=1:pos 35,160:mes ""
+if gamestartdaa=1:pos 35,180:mes ""
+if gamestarteaa=1:pos 35,200:mes ""
+if gamestartfaa=1:pos 35,220:mes ""
+if gamestartgaa=1:pos 35,240:mes ""
+if gamestarthaa=1:pos 35,260:mes ""
+if gamestartiaa=1:pos 35,280:mes ""
+if gamestartjaa=1:pos 35,300:mes ""
+if gamestartkaa=1:pos 35,320:mes ""
+if gamestartlaa=1:pos 35,340:mes ""
+if (gamestartcaa=0)&(abcdefg=1):pos 35,160:mes ""
+if (gamestartdaa=0)&(abcdefg=1):pos 35,180:mes ""
+if (gamestarteaa=0)&(abcdefg=1):pos 35,200:mes ""
+if (gamestartfaa=0)&(abcdefg=1):pos 35,220:mes ""
+if (gamestartgaa=0)&(abcdefg=1):pos 35,240:mes ""
+if (gamestarthaa=0)&(abcdefg=1):pos 35,260:mes ""
+if (gamestartiaa=0)&(abcdefg=1):pos 35,280:mes ""
+if (gamestartjaa=0)&(abcdefg=1):pos 35,300:mes ""
+if (gamestartkaa=0)&(abcdefg=1):pos 35,320:mes ""
+if (gamestartlaa=0)&(abcdefg=1):pos 35,340:mes ""
+if abcdefg=1:pos 20,160:mes "":cy=160:color:redraw 1:wait 30:pos 20,160:mes "":color 255,255,255
+if abcdefg=0:redraw 1:wait 30
+*menumaterialloop
+stick b,63
+if b=16:goto *menu
+if abcdefg=0:wait 5:goto *menumaterialloop
+if b=2:cy=cy-20:wait 20
+if cy=140:cy=340
+if b=8:cy=cy+20:wait 20
+if cy=360:cy=160
+if (b=32)&(cy=160)&(gamestartcaa=1):mmplay 5:cls:wait 120:picload ".bmp":wait 60:goto *material
+if (b=32)&(cy=180)&(gamestartdaa=1):mmplay 5:cls:wait 120:picload ".bmp":wait 60:goto *material
+color 255,255,255
+pos 20,cy:mes ""
+wait 5
+color 0,0,0
+pos 20,cy:mes ""
+goto *menumaterialloop
+
+*material
+wait 1:stick b,32
+if b!32:goto *material
+mmplay 5:cls 4:wait 60:goto *menumaterial
+
+
+
+*battle
+cls
+if bgm=0:mmplay 17
+if bgm=1:mmplay 18
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+wait 300:color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies
+pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+pos 280,440:mes ""
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+""
+pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+pos 100,360:mes ""
+pos 100,380:mes ""
+pos 100,400:mes ""
+pos 100,420:mes ""
+pos 80,360:mes "":cy=360:color 255,255,255:wait 100:pos 80,360:mes "":color
+*battleloop
+stick b,63
+if (b=32)&(cy=360):goto *ikeattack
+if (b=32)&(cy=400):ikedefend=1:goto *enemyattack
+if (b=32)&(cy=420):mmplay 4:goto *useitem
+if b=2:cy=cy-20:mmplay 4:wait 50
+if cy=340:cy=420
+if b=8:cy=cy+20:mmplay 4:wait 50
+if cy=440:cy=360
+color
+pos 80,cy:mes ""
+wait 5
+color 255,255,255
+pos 80,cy:mes ""
+goto *battleloop
+
+
+
+*ikeattack
+if ikese=0:mmplay 13
+if ikese=1:mmplay 8
+cls:wait 30
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies
+pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+randomize
+ikeflua=rnd(2):ikeflub=rnd(4)
+if ikeflua=0:enemydamage=ikeat-enedf+ikeflub
+if ikeflua=1:enemydamage=ikeat-enedf-ikeflub
+randomize
+eneavo=rnd(10):enecri=rnd(20):eneavo=rnd(10):enecri=rnd(20)
+if eneavo=0:pos 280,440:mes "":enemydamage=0
+if (eneavo!0)&(enecri!1):pos 280,440:mes ""+enemydamage+""
+if (eneavo!0)&(enecri=1):enemydamage=enemydamage+enemydamage:pos 280,440:mes ""+enemydamage+""
+enehp=enehp-enemydamage
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+""
+pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+wait 200
+if enehp<=0:goto *win
+goto *enemyattack
+
+
+
+*enemyattack
+cls
+if (gagaga=0)&(enemyspecies="")&(enesp=2):goto *enemyspattack
+randomize
+hahaha=rnd(3)
+if (gagaga=0)&(enemyspecies="")&(enesp=1)&(hahaha=0):goto *enemyspattack
+
+if enese=0:mmplay 13
+if enese=1:mmplay 8
+cls:wait 30
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies
+pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+randomize
+eneflua=rnd(2):eneflub=rnd(4)
+if eneflua=0:ikedamage=eneat-ikedf+eneflub
+if eneflua=1:ikedamage=eneat-ikedf-eneflub
+if ikedefend=0:randomize:ikeavo=rnd(10):ikecri=rnd(20)
+if ikedefend=1:randomize:ikeavo=rnd(3):ikecri=0:ikedamage=ikedamage-ikedf
+if ikeavo=0:pos 280,440:mes "":ikedamage=0
+if (ikeavo!0)&(ikecri!1):pos 280,440:mes ""+ikedamage+" "
+if (ikeavo!0)&(ikecri=1):ikedamage=ikedamage+ikedamage:pos 280,440:mes ""+ikedamage+""
+ikehp=ikehp-ikedamage
+if ikehp<=0:ikehp=0
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+""
+pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+if ikehp=0:wait 200:goto *gameover
+wait 200:cls:ikedefend=0
+goto *ikepoisondamage
+
+
+
+*enemyspattack
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+color:pos 80,20:mes ikegenus:pos 80,40:mes ikespecies:pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+"":pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+pos 280,440:mes "":wait 200:cls:enesp=enesp-1
+if enespname="":ikehp=ikehp-70:enepoison=1:mmplay 13:goto *pat
+*pat
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5:color
+pos 280,440:mes "":wait 50:mmplay 12:wait 50
+celload ".gif",15:pos 0,50:color 255,255,255:gmode 4,32,32,256:celput 15:wait 150:mmplay 14:cls
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5:color:pos 280,440:mes ""
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies:pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+"":pos 100,320:mes ""+ikesp+" / "+ikespmax+"":wait 300
+if ikehp<=0:ikehp=0
+if ikehp=0:wait 200:goto *gameover
+cls:goto *ikepoisondamage
+
+
+
+*useitem
+cls
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies
+pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+if ikehp>=ikehpmax:ikehp=ikehpmax
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+""
+pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+pos 320,340:mes ""
+if itema=2:pos 100,360:mes ""
+if itemb=2:pos 100,380:mes ""
+if itemc=2:pos 100,400:mes ""
+if itemd=2:pos 100,420:mes ""
+if iteme=2:pos 100,440:mes ""
+pos 80,360:mes "":wait 100:color 255,255,255:pos 80,360:mes "":color:cy=360
+*useitemloop
+stick b,63
+if b=16:mmplay 6:cls:cy=420:goto *arrangement
+if (b=32)&(cy=360)&(itema=2):itema=0:ikehp=ikehp+150:cls:mmplay 16:wait 100:goto *useitem
+if (b=32)&(cy=380)&(itemb=2):itemb=0:ikehp=ikehp+150:cls:mmplay 16:wait 100:goto *useitem
+if (b=32)&(cy=400)&(itemc=2):itemc=0:ikehp=ikehp+150:cls:mmplay 16:wait 100:goto *useitem
+if (b=32)&(cy=420)&(itemd=2):itemd=0:ikehp=ikehp+150:cls:mmplay 16:wait 100:goto *useitem
+if (b=32)&(cy=440)&(iteme=2):iteme=0:ikehp=ikehp+150:cls:mmplay 16:wait 100:goto *useitem
+if b=2:cy=cy-20:mmplay 4:wait 50
+if cy=340:cy=440
+if b=8:cy=cy+20:mmplay 4:wait 50
+if cy=460:cy=360
+color
+pos 80,cy:mes ""
+wait 5
+color 255,255,255
+pos 80,cy:mes ""
+goto *useitemloop
+
+
+
+*ikepoisondamage
+cls
+randomize
+poisondamage=rnd(21)+10
+if enepoison=1:ikehp=ikehp-poisondamage:pos 280,440:mes "":mmplay 14
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikehp<=0:ikehp=0
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5:color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies:pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+"":pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+if ikehp=0:wait 200:goto *gameover
+if enepoison=1:wait 200:cls
+goto *arrangement
+
+
+
+*arrangement
+if ikegenus!"":pos 0,80:color 255,255,255:gmode 4,32,32,256:celput 3
+if ikegenus="":pos 0,40:color 255,255,255:gmode 4,32,32,256:celput 3
+pos 360,50:color 255,255,255:gmode 4,32,32,256:celput 5
+color
+pos 80,20:mes ikegenus:pos 80,40:mes ikespecies
+pos 420,20:mes enemygenus:pos 420,40:mes enemyspecies
+pos 100,300:mes ""+ikehp+" / "+ikehpmax+""
+pos 100,320:mes ""+ikesp+" / "+ikespmax+""
+pos 100,360:mes ""
+pos 100,380:mes ""
+pos 100,400:mes ""
+pos 100,420:mes ""
+pos 280,440:mes ""
+pos 80,cy:mes "":wait 100:color 255,255,255:pos 80,cy:mes "":color
+goto *battleloop
+
+
+
+*win
+mmstop:mmplay 6:cls:wait 50:color:enepoison=0
+pos 440,440:mes ""
+pos 230,100:mes ""
+if (itema!0)&(itemb!0)&(itemc!0)&(itemd!0)&(iteme!0):pos 195,220:mes ""
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc!0)&(itemd!0)&(iteme=0):pos 250,260:mes "":iteme=1
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc!0)&(itemd=0):pos 250,240:mes "":itemd=1
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc=0):pos 250,220:mes "":itemc=1
+if (enemygenus="")&(itema!0)&(itemb=0):pos 250,200:mes "":itemb=1
+if (enemygenus="")&(itema=0):pos 250,180:mes "":itema=1
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc!0)&(itemd!0)&(iteme=0):pos 250,260:mes "":iteme=5
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc!0)&(itemd=0):pos 250,240:mes "":itemd=5
+if (enemygenus="")&(itema!0)&(itemb!0)&(itemc=0):pos 250,220:mes "":itemc=5
+if (enemygenus="")&(itema!0)&(itemb=0):pos 250,200:mes "":itemb=5
+if (enemygenus="")&(itema=0):pos 250,180:mes "":itema=5
+wait 100
+*winloop
+wait 1:stick b,42
+if b!32:goto *winloop
+mmplay 5:wait 50:cls:wait 50:return
+
+
+
+*baa
+celload ".gif",2
+cls:room=2:wait 20:pos 0,0:celput 2
+if way=0:pos 60,300:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=60:ikey=300
+if way=1:pos 540,240:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=540:ikey=240
+*menubaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menubaa
+wait 30
+if way=0:goto *aaa
+if way=1:frombaa=1:goto *caa
+
+
+
+*caa
+celload ".gif",2
+cls:room=3:wait 20:pos 0,0:celput 2
+pos 240,240:color 255,255,255:gmode 4,32,32,256:celput 1
+ikex=240:ikey=240
+color:pos 60,60:mes "":wait 100
+if frombaa=1:goto *elevatorA
+if fromdaa=1:goto *elevatorAa
+
+*elevatorA
+stick b,63
+wait 1
+if b=1:floor=0:color 255,255,255:pos 60,60:mes "":color:mmplay 3
+if b=4:floor=1:color 255,255,255:pos 60,60:mes "":color
+if (b!1)&(b!4):goto *elevatorA
+frombaa=0:fromdaa=0
+wait 100
+if floor=0:wait 10:mmplay 7:wait 100
+goto *menucaa
+
+*elevatorAa
+stick b,63
+wait 1
+if b=1:floor=1:color 255,255,255:pos 60,60:mes "":color:mmplay 3
+if b=4:floor=0:color 255,255,255:pos 60,60:mes "":color
+if (b!1)&(b!4):goto *elevatorAa
+frombaa=0:fromdaa=0
+wait 100
+if floor=1:wait 10:mmplay 7:wait 100
+
+*menucaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menucaa
+wait 30
+if way=0:goto *daa
+if way=1:goto *baa
+
+
+
+*spgamestart
+cls 4:wait 250:cls
+celload ".gif",1:celload ".gif",3:ikegenus="":ikespecies=""
+ikehp=260:ikehpmax=260:ikespat=0:ikesp=0:ikespmax=0:ikeat=70:ikedf=10:ikese=0
+gamestartaaa=1:gamestartbaa=1:gamestartmaa=1
+itema=1
+
+*daa
+celload ".gif",2
+celload ".gif",4:celload ".gif",5:enemygenus="":enemyspecies=""
+enehp=300:enehpmax=300:enespat=0:enesp=0:enespmax=0:eneat=60:enedf=2:enese=0
+cls:room=4:wait 20:pos 0,0:celput 2
+if way=0:pos 480,120:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=480:ikey=120
+if way=1:pos 480,300:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=480:ikey=300
+if gamestartbaa=0:pos 240,240:gmode 4,32,32,256:celput 4:color:wait 100:pos 480,100:mes "I":wait 50:pos 220,220:mes "":wait 100
+if gamestartbaa=0:bgm=0:gosub *battle
+if gamestartbaa=0:pos 0,0:celput 2:pos 480,120:color 255,255,255:gmode 4,32,32,256:celput 1:color:wait 100:pos 360,100:mes "":wait 300
+if gamestartbaa=0:pos 0,0:celput 2:pos 480,120:color 255,255,255:gmode 4,32,32,256:celput 1:color:wait 50:gamestartbaa=1
+*menudaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menudaa
+wait 30
+if way=0:fromdaa=1:goto *caa
+if way=1:goto *eaa
+
+
+
+*eaa
+celload ".gif",2
+cls:room=5:wait 20:pos 0,0:celput 2
+if way=1:pos 100,270:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=100:ikey=270
+if way=0:pos 520,270:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=520:ikey=270
+*menueaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menueaa
+wait 30
+if way=1:goto *daa
+if way=0:goto *faa
+
+
+
+*faa
+celload ".gif",2:celload ".gif",6:celload ".gif",7:celload ".gif",8
+cls:room=6:wait 20:pos 0,0:celput 2
+if way=0:pos 120,300:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=120:ikey=300
+if way=1:pos 360,300:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=360:ikey=300
+if way=2:pos 300,120:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=300:ikey=120
+pos 480,180:color 255,255,255:gmode 4,32,32,256:celput 6
+if gamestartcaa=0:pos 420,300:color 255,255,255:gmode 4,32,32,256:celput 8
+if gamestartmaa=0:wait 100:color:pos 100,280:mes "":wait 300:gamestartmaa=1
+*menufaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:pos 480,180:color 255,255,255:gmode 4,32,32,256:celput 6:wait 50:inmenu=0:goto *menufaa
+wait 30
+if way=0:goto *eaa
+if way=1:goto *gaa
+if way=2:goto *haa
+
+
+
+*gaa
+celload ".gif",2:celload ".gif",8:celload ".gif",9:celload ".gif",10
+cls:room=7:wait 20:pos 0,0:celput 2
+pos 120,180:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=120:ikey=180
+if gamestartdaa=0:pos 455,240:color 255,255,255:gmode 4,32,32,256:celput 8
+if gsa=0:pos 120,300:color 255,255,255:gmode 4,32,32,256:celput 9
+if gsb=0:pos 455,180:color 255,255,255:gmode 4,32,32,256:celput 10
+*menugaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menugaa
+wait 30
+goto *faa
+
+
+
+*haa
+celload ".gif",2:celload ".gif",11
+cls:room=8:wait 20:pos 0,0:celput 2
+if way=2:pos 240,360:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=240:ikey=360
+if way=0:pos 60,120:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=60:ikey=120
+if gsc=0:pos 120,290:color 255,255,255:gmode 4,32,32,256:celput 11
+*menuhaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menuhaa
+wait 30
+if way=2:goto *faa
+if way=1:goto *iaa
+
+
+
+*yoshio
+celload ".gif",4:celload ".gif",5:enemygenus="":enemyspecies=""
+enehp=270:enehpmax=270:enespname="":enespat=70:enesp=2:enespmax=2:eneat=83:enedf=11:enese=1
+celload ".bmp",14
+wait 100:mmplay 1:wait 60
+pos 60,120:color 255,255,255:gmode 4,32,32,256:celput 4:color:wait 300
+cls:wait 200
+pos 70,20:celput 4
+pos -150,100:celput 14
+pos 430,250:celput 1
+wait 100
+color:pos 320,400:mes "":wait 50
+*yloop1
+wait 1:stick b,42
+if b!32:goto *yloop1
+cls:pos 70,20:celput 4:pos -150,100:celput 14:pos 430,250:celput 1
+pos 300,400:mes ""
+pos 360,420:mes ""
+wait 50
+*yloop2
+wait 1:stick b,42
+if b!32:goto *yloop2
+cls:pos 70,20:celput 4:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 370,420:mes ""
+wait 50
+*yloop3
+wait 1:stick b,42
+if b!32:goto *yloop3
+cls:pos 70,20:celput 4:pos -150,100:celput 14:pos 430,250:celput 1
+pos 290,400:mes ""
+wait 50
+*yloop4
+wait 1:stick b,42
+if b!32:goto *yloop4
+cls:wait 60
+bgm=1:gosub *battle
+cls:wait 60
+pos -150,100:celput 14:pos 430,250:celput 1
+pos 300,400:mes ""
+wait 50
+*yloop5
+wait 1:stick b,42
+if b!32:goto *yloop5
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+wait 50
+*yloop6
+wait 1:stick b,42
+if b!32:goto *yloop6
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 370,420:mes ""
+wait 50
+*yloop7
+wait 1:stick b,42
+if b!32:goto *yloop7
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 340,420:mes ""
+wait 50
+*yloop8
+wait 1:stick b,42
+if b!32:goto *yloop8
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 340,420:mes ""
+wait 50
+*yloop9
+wait 1:stick b,42
+if b!32:goto *yloop9
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 340,420:mes ""
+wait 50
+*yloop10
+wait 1:stick b,42
+if b!32:goto *yloop10
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 340,420:mes ""
+wait 50
+*yloop11
+wait 1:stick b,42
+if b!32:goto *yloop11
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+pos 340,420:mes ""
+wait 50
+*yloop12
+wait 1:stick b,42
+if b!32:goto *yloop12
+cls:pos -150,100:celput 14:pos 430,250:celput 1
+pos 280,400:mes ""
+wait 50
+*yloop13
+wait 1:stick b,42
+if b!32:goto *yloop13
+cls:wait 100:room=8:pos 0,0:celput 2:gagaga=1
+if gsc=0:pos 120,290:color 255,255,255:gmode 4,32,32,256:celput 11
+pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:goto *menuhaa
+
+
+
+*iaa
+celload ".gif",2:celload ".gif",12:celload ".gif",13:celload ".gif",14
+cls:room=9:wait 20:pos 0,0:celput 2
+pos 480,360:color 255,255,255:gmode 4,32,32,256:celput 1:ikex=480:ikey=360
+if gsd=0:pos 60,240:color 255,255,255:gmode 4,32,32,256:celput 12
+if gse=0:pos 60,300:color 255,255,255:gmode 4,32,32,256:celput 13
+if gsf=0:pos 240,120:color 255,255,255:gmode 4,32,32,256:celput 14
+if gsg=0:pos 300,120:color 255,255,255:gmode 4,32,32,256:celput 14
+*menuiaa
+gosub *actionloop
+if inmenu=1:gosub *menu
+if inmenu=1:cls:wait 50:pos 0,0:celput 2:pos ikex,ikey:color 255,255,255:gmode 4,32,32,256:celput 1:wait 50:inmenu=0:goto *menuiaa
+wait 30
+goto *haa
+
+
+
+*gameover
+mmstop:cls 4:wait 200:color 255,255,255
+pos 195,200:mes ""
+pos 260,250:mes ""
+stop

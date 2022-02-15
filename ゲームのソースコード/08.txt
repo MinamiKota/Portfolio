@@ -1,0 +1,246 @@
+cls 4:color 255,255,255
+#include "hspda.as"
+title ""
+mmload "se0.wav",0,0
+mmload "se1.wav",1,0
+mmload "se2.wav",2,0
+mmload "se3.wav",3,0
+celload "enemy.bmp",1
+celload "player.bmp",2
+celload "m0.bmp",3
+celload "m1.bmp",4
+celload "m2.bmp",5
+celload "m3.bmp",6
+celload "m4.bmp",7
+celload "enemyd.bmp",8
+celload "enemyd2.bmp",9
+celload "m5.bmp",10
+celload "m6.bmp",11
+celload "m7.bmp",12
+celload "m8.bmp",13
+celload "m9.bmp",14
+celload "m10.bmp",15
+celload "m11.bmp",16
+
+*datacheck
+pos 50,50:mes ""
+pos 50,70:mes ""
+pos 50,95:button "",*dataload;オブジェクトID 0
+pos 50,125:button "",*playername;オブジェクトID 1
+pos 380,440:mes ""
+stop
+
+*cancel
+cls 4:wait 60:color 255,255,255
+pos 50,50:mes ""
+pos 50,70:mes ""
+pos 50,95:button "",*playername;オブジェクトID 0
+stop
+
+*playername
+cls 4:wait 60:color 255,255,255
+pos 45,50:mes ""
+pname=""
+pos 50,70:input pname,100,20,6;オブジェクトID 0
+pos 70,93:button "",*gamestart;オブジェクトID 1
+stop
+*gamestart
+cls 4:wait 60:color 255,255,255
+if pname="":pname=""
+pos 50,50:mes ""+pname+""
+pos 50,70:mes ""
+pos 50,95:button "",*yes;オブジェクトID 0
+pos 50,125:button "",*no;オブジェクトID 1
+stop
+*no
+end
+*yes
+cls 4:wait 60:level=1:phpmax=20:pap=5:px=250:py=200:enpd=0
+*runaway
+php=phpmax:sbattle=0:clrobj 0,1
+
+
+
+
+
+*roop
+gosub *player
+if aesed=1:gosub *enemyb
+if enpd=0:gosub *enemya
+gosub *battlecheck
+redraw 0
+color 0,190,0:boxf:color
+if enpd=1:pos eax,eay:gmode 2:celput 1
+if enpd=1:pos ebx,eby:gmode 2:celput 1
+pos px,py:gmode 2:celput 2
+pos px+5,py-10:font msgothic,10,0:mes pname:font msgothic,16,0
+pos 10,10:mes pname+"　Lv "+level+"　HP "+php+" / "+phpmax+"　攻撃力 "+pap+""
+redraw 1:await 1
+if sbattle=1:goto *battle
+if pmc=1:pmcc=pmcc+1
+if pmcc=10:pmc=0:pmcc=0
+goto *roop
+
+*player
+getkey h,65
+getkey u,87
+getkey m,68
+getkey s,83
+getkey x,88
+getkey coa,90
+getkey cob,32
+getkey coc,13
+if (h=1)&(px!100)&(pmc=0):px=px-50:pmc=1
+if (m=1)&(px!450)&(pmc=0):px=px+50:pmc=1
+if (u=1)&(py!100)&(pmc=0):py=py-50:pmc=1
+if (s=1)&(py!300)&(pmc=0):py=py+50:pmc=1
+if (coa=1)&(cob=1)&(coc=1):sbattle=1:omakeomake=1
+if x=1:goto *datasave
+return
+
+*battlecheck
+if (px=eax)&(py=eay):sbattle=1
+if (px=ebx)&(py=eby):sbattle=1
+return
+
+*enemya
+randomize
+enemyp=rnd(3)
+if enemyp=0:eax=150:eay=100:ebx=400:eby=250
+if enemyp=1:eax=100:eay=300:ebx=200:eby=200
+if enemyp=2:eax=200:eay=250:ebx=300:eby=150
+enpd=1
+return
+
+*enemyb
+aesed=0
+if enemyp=0:eax=100:eay=300:ebx=200:eby=200:enemyp=1:return
+if enemyp=1:eax=200:eay=250:ebx=300:eby=150:enemyp=2:return
+if enemyp=2:eax=150:eay=100:ebx=400:eby=250:enemyp=0:return
+
+*battle
+color 0,190,0:boxf 0,0,800,40:color
+pos 10,10:mes pname+"　Lv "+level+"　HP "+php+" / "+phpmax+"　攻撃力 "+pap
+if level>1:randomize
+if level>1:enemykind=rnd(13)
+if omakeomake=1:enemykind=9999
+if enemykind!6:mmplay 1:wait 30:aesed=1
+if enemykind=6:mmplay 2:wait 60:aesed=1
+if (level=1)&(omakeomake=0):pos 170,50:gmode:celput 3:ehp=13:eap=4:exp=3:enki=3
+if (level>1)&(enemykind=0):pos 170,50:gmode:celput 3:ehp=15:eap=6:exp=3:enki=3;
+if (level>1)&(enemykind=1):pos 170,50:gmode:celput 3:ehp=20:eap=7:exp=3:enki=3;
+if (level>1)&(enemykind=2):pos 170,50:gmode:celput 4:ehp=50:eap=10:exp=7:enki=4;
+if (level>1)&(enemykind=3):pos 170,50:gmode:celput 4:ehp=70:eap=9:exp=7:enki=4;
+if (level>1)&(enemykind=4):pos 170,50:gmode:celput 5:ehp=190:eap=16:exp=15:enki=5;
+if (level>1)&(enemykind=5):pos 170,50:gmode:celput 6:ehp=500:eap=54:exp=30:enki=6;
+if (level>1)&(enemykind=6):pos 170,50:gmode:celput 7:ehp=1000:eap=40:exp=100:enki=7;
+if (level>1)&(enemykind=7):pos 170,50:gmode:celput 10:ehp=400:eap=12:exp=13:enki=10;
+if (level>1)&(enemykind=8):pos 170,50:gmode:celput 11:ehp=100:eap=13:exp=10:enki=11;
+if (level>1)&(enemykind=9):pos 170,50:gmode:celput 12:ehp=180:eap=22:exp=15:enki=12;
+if (level>1)&(enemykind=10):pos 170,50:gmode:celput 13:ehp=200:eap=20:exp=10:enki=13;
+if (level>1)&(enemykind=11):pos 170,50:gmode:celput 14:ehp=160:eap=69:exp=20:enki=14;
+if (level>1)&(enemykind=12):pos 170,50:gmode:celput 15:ehp=650:eap=45:exp=30:enki=15;
+if enemykind=9999:pos 170,50:gmode:celput 16:ehp=1600:eap=100:exp=9999:enki=16;
+
+*battletime
+clrobj 0,1:color 0,190,0:boxf 168,358,600,400:color
+if (enki!7)&(enemykind!9999):pos 170,360:mes ""+pname+""
+if enki=7:pos 170,360:mes ""+pname+""
+if enemykind=9999:pos 170,360:mes ""+pname+""
+wait 30
+pos 170,390:button "",*pattack;オブジェクトID 0
+if omakeomake=0:pos 250,390:button "",*runaway;オブジェクトID 1
+if omakeomake=1:pos 250,390:button "",*pattack;オブジェクトID 1
+stop 
+
+*pattack
+clrobj 0,1:color 0,190,0:boxf 168,358,600,400:color
+if enki!7:pos 170,50:gmode:celput 8
+if enki=7:pos 170,50:gmode:celput 9
+randomize
+pattackpn=rnd(6)
+if pattackpn=0:edamage=pap
+if pattackpn=1:edamage=pap+1
+if pattackpn=2:edamage=pap+2
+if pattackpn=3:edamage=pap-1
+if pattackpn=4:edamage=pap-2
+if pattackpn=5:edamage=pap+5
+pos 170,360:mes pname+""+edamage+"":mmplay 0
+ehp=ehp-edamage
+wait 15
+pos 170,50:gmode:celput enki
+wait 15
+pos 170,390:button "",*eattack;オブジェクトID 0
+stop
+
+*eattack
+clrobj 0,1:color 0,190,0:boxf 168,358,600,400:color
+if enki!7:pos 170,50:gmode:celput 8
+if enki=7:pos 170,50:gmode:celput 9
+if ehp<=0:goto *killenemy
+randomize
+eattackpn=rnd(3)
+if eattackpn=0:pdamage=eap
+if (eattackpn=1)&(enki!7):pdamage=eap+1
+if (eattackpn=2)&(enki!7):pdamage=eap-1
+if (eattackpn=1)&(enki=7):pdamage=eap+10
+if (eattackpn=2)&(enki=7):pdamage=eap-10
+if (eattackpn=1)&(enemykind=9999):pdamage=eap-20
+if (eattackpn=2)&(enemykind=9999):pdamage=eap-80
+if (enki!7)&(enemykind!9999):pos 170,360:mes ""+pdamage+"":mmplay 0
+if enki=7:pos 170,360:mes ""+pdamage+"":mmplay 0
+if enemykind=9999:pos 170,360:mes ""+pdamage+"":mmplay 0
+php=php-pdamage
+if php<0:php=0
+color 0,190,0:boxf 0,0,800,40:color
+pos 10,10:mes pname+"　Lv "+level+"　HP "+php+" / "+phpmax+"　攻撃力 "+pap
+wait 15
+pos 170,50:gmode:celput enki
+wait 15
+if php>0:pos 170,390:button "",*battletime;オブジェクトID 0
+if php=0:pos 170,390:button "",*gameover;オブジェクトID 0
+stop
+
+*killenemy
+mmplay 3
+if (enki!7)&(enemykind!9999):pos 170,360:mes pname+""+exp+""
+if enki=7:pos 170,360:mes pname+""+exp+""
+if enemykind=9999:pos 170,360:mes pname+""+exp+"":px=250:py=200:omakeomake=0
+pexp=pexp+exp
+if pexp>=level*4:pexp=0:level=level+1:phpmax=phpmax+5:pap=pap+3
+color 0,190,0:boxf 0,0,800,40:color
+pos 10,10:mes pname+"　Lv "+level+"　HP "+php+" / "+phpmax+"　攻撃力 "+pap
+wait 30
+if enki!7:pos 170,390:button "",*runaway;オブジェクトID 0
+if enki=7:pos 170,390:button "",*gameclear;オブジェクトID 0
+stop
+
+*gameover
+clrobj 0,1:color 0,190,0:boxf 168,358,600,400:color
+pos 170,360:mes pname+""
+stop
+
+*datasave
+cls 4:wait 60:color 255,255,255
+dialog "kdd",17,""
+if stat=0:goto *runaway
+fname=getpath(refstr,1)+".kdd"
+vsave fname
+dialog fname+"に保存しました"
+goto *runaway
+
+*dataload
+cls 4:wait 60:color 255,255,255
+dialog "kdd",16,""
+if stat=0:goto *cancel
+vload refstr
+goto *runaway
+
+*gameclear
+cls 4:wait 60:color 255,255,255
+pos 50,50:mes ""+pname+""
+pos 50,70:mes ""
+pos 50,90:mes ""
+pos 50,130:mes ""
+pos 50,150:mes ""
+stop

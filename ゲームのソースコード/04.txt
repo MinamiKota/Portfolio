@@ -1,0 +1,397 @@
+title ""
+screen 0,1000,500,,180,100:color 0,0,0:boxf:pictureid=25:carduraid=26:nothing=27:kindsofcards=18
+celload "picture.bmp",pictureid:celdiv pictureid,50,50:celload "cardura.bmp",carduraid:celload "nothing.bmp",nothing
+celload "card1.bmp",1:celload "card2.bmp",2:celload "card3.bmp",3:celload "card4.bmp",4:celload "card5.bmp",5:celload "card6.bmp",6
+celload "card7.bmp",7:celload "card8.bmp",8:celload "card9.bmp",9:celload "card10.bmp",10:celload "card11.bmp",11:celload "card12.bmp",12
+celload "card13.bmp",13:celload "card14.bmp",14:celload "card15.bmp",15:celload "card16.bmp",16:celload "card17.bmp",17:celload "card18.bmp",18
+//celload "card19.bmp",19:celload "card20.bmp",20:celload "card21.bmp",21:celload "card22.bmp",22:celload "card23.bmp",23:celload "card24.bmp",24
+
+dim deck,10:deck=2,2,3,8,8,12,12,13,10,5
+dim edeck,10:edeck=1,1,2,4,4,7,7,8,12,12
+//randomize:foreach edeck:edeck(cnt)=rnd(kindsofcards)+1:loop
+
+*restart
+start=0:mojix=-200:turn=0:x=25:xx=60:yy=255:xmc=0:randomize:cointoss=rnd(100):addcrystal=0:cursorx=475:progress=0
+csloop=0:tcloop=0:fcloop=0:umloop=0:maloop=0:smloop=0:candidate=3:grayc=0:redc=0:bluec=0:greenc=0:answerx=455
+graycost=0:redcost=0:bluecost=0:greencost=0:b=0
+dim life,10:foreach life:life(cnt)=0:loop:repeat 3:life(cnt)=1:loop
+dim lifex,10:foreach life:lifex(cnt)=-1000:loop
+dim elife,10:foreach elife:elife(cnt)=0:loop:repeat 3:elife(cnt)=1:loop
+dim elifex,10:foreach elife:elifex(cnt)=-1000:loop
+dim crystal,10:foreach crystal:crystal(cnt)=0:loop:repeat 3:crystal(cnt)=1:loop
+dim crystalx,10:foreach crystal:crystalx(cnt)=-1000:loop
+dim ecrystal,10:foreach ecrystal:ecrystal(cnt)=0:loop:repeat 3:ecrystal(cnt)=1:loop
+dim ecrystalx,10:foreach ecrystal:ecrystalx(cnt)=-1000:loop
+dim yamahuda,10:foreach yamahuda:yamahuda(cnt)=deck(cnt):loop
+repeat 300:shuffle1=rnd(10):shuffle2=rnd(10):shuffle3=yamahuda(shuffle1):yamahuda(shuffle1)=yamahuda(shuffle2):yamahuda(shuffle2)=shuffle3:loop
+dim eyamahuda,10:foreach eyamahuda:eyamahuda(cnt)=edeck(cnt):loop
+repeat 300:shuffle1=rnd(10):shuffle2=rnd(10):shuffle3=eyamahuda(shuffle1):eyamahuda(shuffle1)=eyamahuda(shuffle2):eyamahuda(shuffle2)=shuffle3:loop
+dim tehuda,3:foreach tehuda:tehuda(cnt)=yamahuda(cnt):loop:repeat 7:yamahuda(cnt)=yamahuda(cnt+3):loop:repeat 3:yamahuda(cnt+7)=0:loop
+dim etehuda,3:foreach etehuda:etehuda(cnt)=eyamahuda(cnt):loop:repeat 7:eyamahuda(cnt)=eyamahuda(cnt+3):loop:repeat 3:eyamahuda(cnt+7)=0:loop
+dim tehudax,3:foreach tehuda:tehudax(cnt)=-1000:loop
+dim tehuday,3:foreach tehuda:tehuday(cnt)=360:loop
+dim etehudax,3:foreach etehuda:etehudax(cnt)=-1000:loop
+dim etehuday,3:foreach etehuda:etehuday(cnt)=140:loop
+dim monster,3:foreach monster:monster(cnt)=0:loop
+dim monsterx,3:foreach monster:monsterx(cnt)=65+100*cnt:loop
+dim monstery,3:foreach monster:monstery(cnt)=260:loop
+dim monsterpower,3:foreach monster:monsterpower(cnt)=0:loop
+dim emonster,3:foreach emonster:emonster(cnt)=0:loop
+dim emonsterx,3:foreach emonster:emonsterx(cnt)=65+100*cnt+72:loop
+dim emonstery,3:foreach emonster:emonstery(cnt)=150+90:loop
+dim emonsterpower,3:foreach emonster:emonsterpower(cnt)=0:loop
+
+*main
+redraw 2:gosub *draw1
+if tcloop>=1:gosub *tehudacheck
+if fcloop>=1:gosub *fieldcheck
+if csloop>=1:gosub *crystalselect
+if umloop>=1:gosub *usemagic
+if maloop>=1:gosub *monsterattack
+if smloop>=1:gosub *summonsmonster
+gosub *draw2
+if start<300:gosub *gamestart:else:gosub *game
+redraw 1:wait 1:stick b,127
+gosub *key
+goto *main
+
+*game
+font msgothic,15,1:pos 470,15
+if turn=0:color 255,100,100:mes "":else:color 100,100,255:mes ""
+if turn=0{if progress=0:tcloop=1:progress++
+          if progress=10:fcloop=1:progress++
+          if progress=20:csloop=1
+          if (progress=20)&(addcrystal!0){if crystal(9)!0{repeat 9:crystal(cnt)=crystal(cnt+1):loop
+                                                          crystal(9)=addcrystal:addcrystal=0:csloop=0
+                                                          }
+                                          foreach crystal:if crystal(cnt)=0:crystal(cnt)=addcrystal:addcrystal=0:csloop=0:break
+                                          loop
+                                          }
+          if (progress=40)&(umloop<2):umloop=1
+          if (progress=60)&(maloop<2):maloop=1
+          if (progress=80)&(smloop<2):smloop=1:if (monster(0)!0)&(monster(1)!0)&(monster(2)!0):smloop=0
+          if (turn=0)&(progress=100):progress=-1:turn=1
+          }else{if progress=20{if ecrystal(9)!0{repeat 9:ecrystal(cnt)=ecrystal(cnt+1):loop
+                                                ecrystal(9)=0
+                                                }
+                               foreach ecrystal:if ecrystal(cnt)=0:ecrystal(cnt)=rnd(2)+2:break
+                               loop
+                               }
+                if progress=100:progress=-1:turn=0
+                }
+if (progress<100)&(csloop=0)&(tcloop=0)&(umloop=0)&(maloop=0)&(smloop=0)&(fcloop=0):progress++
+return
+
+*draw1
+color 0,150,0:boxf:color 0,0,0:boxf 0,0,400,35:boxf 0,465,400,500:color 50,50,50:boxf 400,0,1000,500:color 255,255,255:font msgothic,15,0
+boxf 680,0,1000,500:pos 36,10:mes "":pos 36,474:mes "":color 0,0,1:gmode 4,,,256:pos -6,-6:celput pictureid,3:pos -6,458:celput pictureid,7
+font msgothic,50,1:pos 710,45:mes "":pos 720,140:celput carduraid
+pos 300,360:celput carduraid,,0.3,0.3
+pos 100,140:celput carduraid,,0.3,0.3,3.14
+foreach crystal:if crystal(cnt)!0{if crystal(cnt)=1:pos crystalx(cnt),457:celput pictureid,4
+                                  if crystal(cnt)=2:pos crystalx(cnt),457:celput pictureid,0
+                                  if crystal(cnt)=3:pos crystalx(cnt),457:celput pictureid,1
+                                  if crystal(cnt)=4:pos crystalx(cnt),457:celput pictureid,2
+                                  }
+loop
+foreach ecrystal:if ecrystal(cnt)!0{if ecrystal(cnt)=1:pos ecrystalx(cnt),-7:celput pictureid,4
+                                    if ecrystal(cnt)=2:pos ecrystalx(cnt),-7:celput pictureid,0
+                                    if ecrystal(cnt)=3:pos ecrystalx(cnt),-7:celput pictureid,1
+                                    if ecrystal(cnt)=4:pos ecrystalx(cnt),-7:celput pictureid,2
+                                    }
+loop
+foreach life:if life(cnt)=1:pos lifex(cnt),459:celput pictureid,5
+loop
+foreach elife:if elife(cnt)=1:pos elifex(cnt),-5:celput pictureid,5
+loop:font msgothic,20,1
+foreach monster:if monster(cnt)!0:color 0,0,1:pos monsterx(cnt),monstery(cnt):celput monster(cnt),,0.3,0.3:color 255,100,50:boxf monsterx(cnt)+10,monstery(cnt)+40,monsterx(cnt)+60,monstery(cnt)+65:color 255,255,255:pos monsterx(cnt)+20,monstery(cnt)+45:mes monsterpower(cnt)
+loop
+foreach emonster:if emonster(cnt)!0:color 0,0,1:pos emonsterx(cnt),emonstery(cnt):celput emonster(cnt),,0.3,0.3,3.14:color 50,100,255:boxf emonsterx(cnt)+10-72,emonstery(cnt)+30-90,emonsterx(cnt)+60-72,emonstery(cnt)+55-90:color 255,255,255:pos emonsterx(cnt)+20-72,emonstery(cnt)+35-90:mes emonsterpower(cnt)
+loop:color 0,0,1
+return
+
+*draw2
+if start<90{foreach tehuda:pos tehudax(cnt),tehuday(cnt):celput carduraid,,0.3,0.3:loop
+            foreach etehuda:pos etehudax(cnt),etehuday(cnt):celput carduraid,,0.3,0.3,3.14:loop
+            }else{foreach tehuda:pos tehudax(cnt),tehuday(cnt):celput tehuda(cnt),,0.3,0.3:loop
+                  //foreach etehuda:pos etehudax(cnt),etehuday(cnt):celput carduraid,,0.3,0.3,3.14:loop
+                  foreach etehuda:pos etehudax(cnt),etehuday(cnt):celput etehuda(cnt),,0.3,0.3,3.14:loop
+                  }
+return
+
+*tehudacheck
+color 255,0,0:boxf x,355,x+82,455:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+pos 444,58:mes "":pos 495,170:mes "":color 0,0,1
+foreach tehuda:if x=205-cnt*90:pos 720,140:celput tehuda(cnt)
+loop
+return
+
+*fieldcheck
+color 255,0,0:boxf xx,yy,xx+82,yy+100:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+pos 444,58:mes "":pos 495,170:mes "":font msgothic,20,1
+foreach monster:if monster(cnt)!0:color 0,0,1:pos monsterx(cnt),monstery(cnt):celput monster(cnt),,0.3,0.3:color 255,100,50:boxf monsterx(cnt)+10,monstery(cnt)+40,monsterx(cnt)+60,monstery(cnt)+65:color 255,255,255:pos monsterx(cnt)+20,monstery(cnt)+45:mes monsterpower(cnt)
+loop
+foreach emonster:if emonster(cnt)!0:color 0,0,1:pos emonsterx(cnt),emonstery(cnt):celput emonster(cnt),,0.3,0.3,3.14:color 50,100,255:boxf emonsterx(cnt)+10-72,emonstery(cnt)+30-90,emonsterx(cnt)+60-72,emonstery(cnt)+55-90:color 255,255,255:pos emonsterx(cnt)+20-72,emonstery(cnt)+35-90:mes emonsterpower(cnt)
+loop:color 0,0,1
+if (xx=60)&(yy=255)&(monster(0)!0):pos 720,140:celput monster(0)
+if (xx=160)&(yy=255)&(monster(1)!0):pos 720,140:celput monster(1)
+if (xx=260)&(yy=255)&(monster(2)!0):pos 720,140:celput monster(2)
+if (xx=60)&(yy=145)&(emonster(0)!0):pos 720,140:celput emonster(0)
+if (xx=160)&(yy=145)&(emonster(1)!0):pos 720,140:celput emonster(1)
+if (xx=260)&(yy=145)&(emonster(2)!0):pos 720,140:celput emonster(2)
+return
+
+*crystalselect
+if start=200:font msgothic,15,1:pos 440,15:color 255,255,255:mes ""
+color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0:pos 444,58:mes ""
+pos cursorx,115:mes "":pos 495,170:mes ""
+color 0,0,1:pos 466,80:celput pictureid,4:pos 466+32,80:celput pictureid,0:pos 466+32*2,80:celput pictureid,1:pos 466+32*3,80:celput pictureid,2
+return
+
+*usemagic
+if umloop=1{color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0:pos 444,58:mes ""
+            pos answerx,120:mes "":pos 475,120:mes "":pos 545,120:mes "":pos 495,170:mes "":color 0,0,1
+            }
+if umloop=2{color 255,0,0:boxf x,355,x+82,455:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+            pos 444,58:mes "":pos 495,150:mes "":pos 500,170:mes "":color 0,0,1
+            foreach tehuda:if x=205-cnt*90:pos 720,140:celput tehuda(cnt)
+            loop
+            grayc=0:redc=0:bluec=0:greenc=0
+            foreach crystal:switch crystal(cnt)
+                            case 1:grayc++:swbreak
+                            case 2:redc++:swbreak
+                            case 3:bluec++:swbreak
+                            case 4:greenc++:swbreak
+                            swend
+            loop:graycost=0:redcost=0:bluecost=0:greencost=0
+            if candidate<=2{if (tehuda(candidate)=2)&(redc>=2):umloop=tehuda(candidate)+100:tehuda(candidate)=nothing:redcost=2:if (monster(0)=0)&(monster(1)=0)&(monster(2)=0)&(emonster(0)=0)&(emonster(1)=0)&(emonster(2)=0):umloop=0:progress--
+                            if (tehuda(candidate)=3)&(greenc>=3):umloop=tehuda(candidate)+100:tehuda(candidate)=nothing:greencost=3:if (monster(0)=0)&(monster(1)=0)&(monster(2)=0)&(emonster(0)=0)&(emonster(1)=0)&(emonster(2)=0):umloop=0:progress--
+                            if (tehuda(candidate)=5)&(redc>=4):umloop=tehuda(candidate)+100:tehuda(candidate)=nothing:redcost=4:if (monster(0)=0)&(monster(1)=0)&(monster(2)=0)&(emonster(0)=0)&(emonster(1)=0)&(emonster(2)=0):umloop=0:progress--
+                            if (tehuda(candidate)=18)&(redc>=1)&(bluec>=1)&(greenc>=1):umloop=tehuda(candidate)+100:tehuda(candidate)=nothing:redcost=1:bluecost=1:greencost=1:if (monster(0)=0)&(monster(1)=0)&(monster(2)=0)&(emonster(0)=0)&(emonster(1)=0)&(emonster(2)=0):umloop=0:progress--
+                            foreach crystal:if (crystal(cnt)=1)&(graycost!0):crystal(cnt)=0:graycost--
+                                            if (crystal(cnt)=2)&(redcost!0):crystal(cnt)=0:redcost--
+                                            if (crystal(cnt)=3)&(bluecost!0):crystal(cnt)=0:bluecost--
+                                            if (crystal(cnt)=4)&(greencost!0):crystal(cnt)=0:greencost--
+                            loop
+                            candidate=3
+                            }
+            }
+if umloop=102{color 255,0,0:boxf xx,yy,xx+82,yy+100:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+              pos 444,58:mes "":pos 495,170:mes "":font msgothic,20,1
+              foreach monster:if monster(cnt)!0:color 0,0,1:pos monsterx(cnt),monstery(cnt):celput monster(cnt),,0.3,0.3:color 255,100,50:boxf monsterx(cnt)+10,monstery(cnt)+40,monsterx(cnt)+60,monstery(cnt)+65:color 255,255,255:pos monsterx(cnt)+20,monstery(cnt)+45:mes monsterpower(cnt)
+              loop
+              foreach emonster:if emonster(cnt)!0:color 0,0,1:pos emonsterx(cnt),emonstery(cnt):celput emonster(cnt),,0.3,0.3,3.14:color 50,100,255:boxf emonsterx(cnt)+10-72,emonstery(cnt)+30-90,emonsterx(cnt)+60-72,emonstery(cnt)+55-90:color 255,255,255:pos emonsterx(cnt)+20-72,emonstery(cnt)+35-90:mes emonsterpower(cnt)
+              loop:color 0,0,1
+              }
+if umloop=103{color 255,0,0:boxf xx,yy,xx+82,yy+100:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+              pos 444,58:mes "":pos 495,170:mes "":font msgothic,20,1
+              foreach monster:if monster(cnt)!0:color 0,0,1:pos monsterx(cnt),monstery(cnt):celput monster(cnt),,0.3,0.3:color 255,100,50:boxf monsterx(cnt)+10,monstery(cnt)+40,monsterx(cnt)+60,monstery(cnt)+65:color 255,255,255:pos monsterx(cnt)+20,monstery(cnt)+45:mes monsterpower(cnt)
+              loop
+              foreach emonster:if emonster(cnt)!0:color 0,0,1:pos emonsterx(cnt),emonstery(cnt):celput emonster(cnt),,0.3,0.3,3.14:color 50,100,255:boxf emonsterx(cnt)+10-72,emonstery(cnt)+30-90,emonsterx(cnt)+60-72,emonstery(cnt)+55-90:color 255,255,255:pos emonsterx(cnt)+20-72,emonstery(cnt)+35-90:mes emonsterpower(cnt)
+              loop:color 0,0,1
+              }
+if umloop=105{color 255,0,0:boxf xx,yy,xx+82,yy+100:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+              pos 444,58:mes "":pos 495,170:mes "":font msgothic,20,1
+              foreach monster:if monster(cnt)!0:color 0,0,1:pos monsterx(cnt),monstery(cnt):celput monster(cnt),,0.3,0.3:color 255,100,50:boxf monsterx(cnt)+10,monstery(cnt)+40,monsterx(cnt)+60,monstery(cnt)+65:color 255,255,255:pos monsterx(cnt)+20,monstery(cnt)+45:mes monsterpower(cnt)
+              loop
+              foreach emonster:if emonster(cnt)!0:color 0,0,1:pos emonsterx(cnt),emonstery(cnt):celput emonster(cnt),,0.3,0.3,3.14:color 50,100,255:boxf emonsterx(cnt)+10-72,emonstery(cnt)+30-90,emonsterx(cnt)+60-72,emonstery(cnt)+55-90:color 255,255,255:pos emonsterx(cnt)+20-72,emonstery(cnt)+35-90:mes emonsterpower(cnt)
+              loop:color 0,0,1
+              }
+if umloop=118{foreach monster:if (monsterpower(cnt)<=150)&(monster(cnt)!0)&(monster(cnt)!1):monster(cnt)=0
+              loop
+              foreach emonster:if (emonsterpower(cnt)<=150)&(emonster(cnt)!0)&(emonster(cnt)!1):emonster(cnt)=0
+              loop:umloop=0:progress--
+              }
+return
+
+*monsterattack
+if maloop=1{color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0:pos 444,58:mes ""
+            pos answerx,120:mes "":pos 475,120:mes "":pos 545,120:mes "":pos 495,170:mes "":color 0,0,1
+            }
+return
+
+*summonsmonster
+if smloop=1{color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0:pos 444,58:mes ""
+            pos answerx,120:mes "":pos 475,120:mes "":pos 545,120:mes "":pos 495,170:mes "":color 0,0,1
+            }
+if smloop=2{color 255,0,0:boxf x,355,x+82,455:color 0,0,0:boxf 430,45,650,200:color 255,255,255:font msgothic,15,0
+            pos 444,58:mes "":pos 495,150:mes "":pos 500,170:mes "":color 0,0,1
+            foreach tehuda:if x=205-cnt*90:pos 720,140:celput tehuda(cnt)
+            loop
+            grayc=0:redc=0:bluec=0:greenc=0
+            foreach crystal:switch crystal(cnt)
+                            case 1:grayc++:swbreak
+                            case 2:redc++:swbreak
+                            case 3:bluec++:swbreak
+                            case 4:greenc++:swbreak
+                            swend
+            loop:graycost=0:redcost=0:bluecost=0:greencost=0
+            if candidate<=2{if (tehuda(candidate)=1)&(bluec>=2){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=1:monstery(cnt)=260:monsterpower(cnt)=150:bluecost=2:break
+                                                                                          loop
+                                                                }
+                            if (tehuda(candidate)=4)&(redc>=1)&(bluec>=1){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=4:monstery(cnt)=260:monsterpower(cnt)=200:redcost=1:bluecost=1:break
+                                                                                                    loop
+                                                                          }
+                            if (tehuda(candidate)=6)&(bluec>=1)&(greenc>=1){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=6:monstery(cnt)=260:monsterpower(cnt)=200:bluecost=1:greencost=1:break
+                                                                                                      loop
+                                                                            }
+                            if (tehuda(candidate)=7)&(bluec>=1){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=7:monstery(cnt)=260:monsterpower(cnt)=100:bluecost=1:break
+                                                                                          loop
+                                                                }
+                            if (tehuda(candidate)=8)&(redc>=1){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=8:monstery(cnt)=260:monsterpower(cnt)=100:redcost=1:break
+                                                                                         loop
+                                                               }
+                            if (tehuda(candidate)=9)&(greenc>=2){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=9:monstery(cnt)=260:monsterpower(cnt)=150:greencost=2:break
+                                                                                           loop
+                                                                 }
+                            if (tehuda(candidate)=10)&(redc>=1)&(greenc>=1){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=10:monstery(cnt)=260:monsterpower(cnt)=200:redcost=1:greencost=1:break
+                                                                                                      loop
+                                                                            }
+                            if tehuda(candidate)=11{tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=11:monstery(cnt)=260:monsterpower(cnt)=0:break
+                                                                              loop
+                                                    }
+                            if (tehuda(candidate)=12)&(redc>=3){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=12:monstery(cnt)=260:monsterpower(cnt)=250:redcost=3:break
+                                                                                          loop
+                                                                }
+                            if (tehuda(candidate)=13)&(greenc>=3){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=13:monstery(cnt)=260:monsterpower(cnt)=250:greencost=3:break
+                                                                                            loop
+                                                                  }
+                            if (tehuda(candidate)=14)&(grayc>=2)&(greenc>=2){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=14:monstery(cnt)=260:monsterpower(cnt)=250:graycost=2:greencost=2:break
+                                                                                                       loop
+                                                                             }
+                            if (tehuda(candidate)=15)&(bluec>=3){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=15:monstery(cnt)=260:monsterpower(cnt)=200:bluecost=3:break
+                                                                                           loop
+                                                                 }
+                            if (tehuda(candidate)=16)&(redc>=4){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=16:monstery(cnt)=260:monsterpower(cnt)=300:redcost=4:break
+                                                                                          loop
+                                                                }
+                            if (tehuda(candidate)=17)&(grayc>=5){tehuda(candidate)=nothing:foreach monster:if monster(cnt)=0:monster(cnt)=17:monstery(cnt)=260:monsterpower(cnt)=300:graycost=5:break
+                                                                                           loop
+                                                                 }
+                            foreach crystal:if (crystal(cnt)=1)&(graycost!0):crystal(cnt)=0:graycost--
+                                            if (crystal(cnt)=2)&(redcost!0):crystal(cnt)=0:redcost--
+                                            if (crystal(cnt)=3)&(bluecost!0):crystal(cnt)=0:bluecost--
+                                            if (crystal(cnt)=4)&(greencost!0):crystal(cnt)=0:greencost--
+                            loop
+                            candidate=3
+                            }
+            }
+return
+
+*key
+if b&16:if start>=100:goto *restart
+if xmc>=15{if tcloop=1{if b=32:tcloop=0:xmc=0
+                       if b=1:x-=90:xmc=0
+                       if b=4:x+=90:xmc=0
+                       }
+           if fcloop=1{if b=32:fcloop=0:xmc=0
+                       if b=1:xx-=100:xmc=0
+                       if b=2:yy-=110:xmc=0
+                       if b=4:xx+=100:xmc=0
+                       if b=8:yy+=110:xmc=0
+                       }
+           if csloop=1{if b=32{if cursorx=475:addcrystal=1:xmc=0
+                               if cursorx=475+32:addcrystal=2:xmc=0
+                               if cursorx=475+32*2:addcrystal=3:xmc=0
+                               if cursorx=475+32*3:addcrystal=4:xmc=0
+                               }
+                       if b=1:cursorx-=32:xmc=0
+                       if b=4:cursorx+=32:xmc=0
+                       }
+           if maloop=1{if b=32{if answerx=455:xmc=0
+                               if answerx=525:maloop=0:progress++:answerx=455:xmc=0
+                               }
+                       if b=1:answerx-=70:xmc=0
+                       if b=4:answerx+=70:xmc=0
+                       }
+           if umloop>100{if b=1:xx-=100:xmc=0
+                         if b=2:yy-=110:xmc=0
+                         if b=4:xx+=100:xmc=0
+                         if b=8:yy+=110:xmc=0
+                         }
+           if umloop=105{if b=32{if (xx=60)&(yy=255)&(monster(0)!0):if monster(0)!1:monster(0)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 if (xx=160)&(yy=255)&(monster(1)!0):if monster(1)!1:monster(1)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 if (xx=260)&(yy=255)&(monster(2)!0):if monster(2)!1:monster(2)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 if (xx=60)&(yy=145)&(emonster(0)!0):if emonster(0)!1:emonster(0)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 if (xx=160)&(yy=145)&(emonster(1)!0):if emonster(1)!1:emonster(1)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 if (xx=260)&(yy=145)&(emonster(2)!0):if emonster(2)!1:emonster(2)=0:umloop=0:progress--:else:umloop=0:progress--
+                                 xmc=0
+                                 }
+                         }
+           if umloop=103{if b=32{if (xx=60)&(yy=255)&(monster(0)!0):monsterpower(0)+=100:umloop=0:progress--
+                                 if (xx=160)&(yy=255)&(monster(1)!0):monsterpower(1)+=100:umloop=0:progress--
+                                 if (xx=260)&(yy=255)&(monster(2)!0):monsterpower(2)+=100:umloop=0:progress--
+                                 if (xx=60)&(yy=145)&(emonster(0)!0):emonsterpower(0)+=100:umloop=0:progress--
+                                 if (xx=160)&(yy=145)&(emonster(1)!0):emonsterpower(1)+=100:umloop=0:progress--
+                                 if (xx=260)&(yy=145)&(emonster(2)!0):emonsterpower(2)+=100:umloop=0:progress--
+                                 xmc=0
+                                 }
+                         }
+           if umloop=102{if b=32{if (xx=60)&(yy=255)&(monster(0)!0):monsterpower(0)+=50:umloop=0:progress--
+                                 if (xx=160)&(yy=255)&(monster(1)!0):monsterpower(1)+=50:umloop=0:progress--
+                                 if (xx=260)&(yy=255)&(monster(2)!0):monsterpower(2)+=50:umloop=0:progress--
+                                 if (xx=60)&(yy=145)&(emonster(0)!0):emonsterpower(0)+=50:umloop=0:progress--
+                                 if (xx=160)&(yy=145)&(emonster(1)!0):emonsterpower(1)+=50:umloop=0:progress--
+                                 if (xx=260)&(yy=145)&(emonster(2)!0):emonsterpower(2)+=50:umloop=0:progress--
+                                 xmc=0
+                                 }
+                         }
+           if umloop=2{if b=32{foreach tehuda:if x=205-cnt*90:candidate=cnt:break
+                               loop:xmc=0
+                               }
+                       if b=64:umloop--:xmc=0
+                       if b=1:x-=90:xmc=0
+                       if b=4:x+=90:xmc=0
+                       }
+           if umloop=1{if b=32{if answerx=455:umloop++:xmc=0:candidate=3
+                               if answerx=525:umloop=0:progress++:answerx=455:xmc=0
+                               }
+                       if b=1:answerx-=70:xmc=0
+                       if b=4:answerx+=70:xmc=0
+                       }
+           if smloop=2{if b=32{foreach tehuda:if x=205-cnt*90:candidate=cnt:break
+                               loop:xmc=0
+                               }
+                       if b=64:smloop--:xmc=0
+                       if b=1:x-=90:xmc=0
+                       if b=4:x+=90:xmc=0
+                       }
+           if smloop=1{if b=32{if answerx=455:smloop++:xmc=0:candidate=3
+                               if answerx=525:smloop=0:progress++:answerx=455:xmc=0
+                               }
+                       if b=1:answerx-=70:xmc=0
+                       if b=4:answerx+=70:xmc=0
+                       }
+           }
+if x<25:x=205
+if x>205:x=25
+if xx<60:xx=260
+if xx>260:xx=60
+if yy<145:yy=255
+if yy>255:yy=145
+if cursorx<475:cursorx=475+32*3
+if cursorx>475+32*3:cursorx=475
+if answerx<455:answerx=525
+if answerx>525:answerx=455
+if xmc<15:xmc++
+return
+
+*gamestart
+if (start>20)&(start<=100):mojix+=4
+font msgothic,20,1:color 255,255,255
+if cointoss<=49:pos mojix,235:mes "":turn=0:else:pos mojix,235:mes "":turn=1
+if start=40:foreach tehuda:tehudax(cnt)=300:loop:foreach etehuda:etehudax(cnt)=100:loop
+if (start>40)&(start<=67):tehudax(2)-=10:etehudax(2)+=10
+if (start>45)&(start<=63):tehudax(1)-=10:etehudax(1)+=10
+if (start>50)&(start<=59):tehudax(0)-=10:etehudax(0)+=10
+if start=130{foreach life:lifex(cnt)=170+cnt*20:loop
+             foreach elife:elifex(cnt)=170+cnt*20:loop
+             }
+if start=140{foreach crystal:crystalx(cnt)=54+cnt*10:loop
+             foreach ecrystal:ecrystalx(cnt)=54+cnt*10:loop
+             }
+if start=149:tcloop=1:start++
+if start=200:csloop=1
+if (start=200)&(addcrystal!0):crystal(3)=addcrystal:addcrystal=0:ecrystal(3)=rnd(2)+2:csloop=0
+if (csloop=0)&(tcloop=0):start++
+return

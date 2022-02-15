@@ -1,0 +1,557 @@
+title ""
+mmload "se0.wav",0,0
+mmload "se1.wav",1,0
+mmload "se2.wav",2,0
+mmload "se3.wav",3,0
+mmload "se4.wav",4,0
+celload "picture.bmp",1
+celload "explosion.bmp",2
+celload "picture2.bmp",3
+celload "shield.bmp",4
+celload "explosion2.bmp",5
+celdiv 1,32,32
+celdiv 3,32,32
+cls 4:color 255,255,255:font msgothic,80,1
+pos 70,50:mes "":font msgothic,16,0
+pos 70,160:mes "":pos 380,440:mes ""
+pos 80,220:mes "":pos 80,300:mes ""
+pos 95,250:gmode 2:celput 1,0:pos 95,330:gmode 2:celput 1,10:font msgothic,14,1
+pos 170,250:mes "":pos 170,270:mes ""
+pos 170,330:mes "":pos 170,350:mes "":font msgothic,16,0:wait 50
+randomize:exmo=rnd(2)
+randomize:eexmo=rnd(2)
+
+*menu
+getkey fightera,65
+getkey fighterb,66
+if fightera=1:fa=1:cls 4:test=1:ammo=30:ammomax=30:goto *start
+if fighterb=1:fb=1:cls 4:test=1:ammo=20:ammomax=20:goto *start
+wait 1
+goto *menu
+
+*start
+wait 50	
+if test=1:color 255,255,255:pos 140,160:mes ""
+if test=1:pos 240,280:mes "":pos 138,320:mes "":wait 50
+if mission>=1:color 255,255,255:pos 50,50:mes ""+mission
+if mission>=1:color 255,255,255:pos 50,110:mes ""+diffi
+if mission>=1:color 255,255,255:pos 50,150:mes ""
+if mission>=1:pos 50,290:mes ""
+if mission=1:color 255,255,255:pos 50,70:mes ""
+if mission=1:color 255,255,255:pos 50,170:mes ""
+if mission=1:color 255,255,255:pos 50,190:mes ""
+if mission=1:color 255,255,255:pos 50,210:mes ""
+if mission=2:color 255,255,255:pos 50,70:mes ""
+if mission=2:color 255,255,255:pos 50,170:mes ""
+if mission=2:color 255,255,255:pos 50,190:mes ""
+if mission=2:color 255,255,255:pos 50,210:mes ""
+if mission=2:color 255,255,255:pos 50,230:mes ""
+if mission=2:color 255,255,255:pos 50,250:mes ""
+if mission=3:color 255,255,255:pos 50,70:mes ""
+if mission=3:color 255,255,255:pos 50,170:mes ""
+if mission=3:color 255,255,255:pos 50,190:mes ""
+if mission=3:color 255,255,255:pos 50,210:mes ""
+if mission=3:color 255,255,255:pos 50,230:mes ""
+*waiting
+getkey z,90
+wait 1
+if z!1:goto *waiting
+
+cls 4:wait 150
+px=220:py=400:pb=0:pby=0:cc=0
+if test=1:gosub *dqas
+if mission=1:en=6:fn=0
+if mission=2:en=4:fn=0:bgvh=1:eaxmo=1:ebxmo=1:ecxmo=1:slock=1
+if mission=3:en=10:fn=2:friax=100:fribx=340
+
+*roop
+redraw 0
+
+if pb=1:gosub *playerbullet
+gosub *player
+if test=1:gosub *enemya
+if test=1:gosub *informationa
+if mission=1:gosub *enemyb
+if mission=1:gosub *informationb
+if mission=1:gosub *enemybulleta
+if mission=2:gosub *informationc
+if mission=2:gosub *enemyc
+if mission=2:gosub *enemybulletb
+if mission=3:gosub *informationd
+if mission=3:gosub *enemyd
+if mission=3:gosub *enemybulletc
+if mission=3:gosub *frienda
+if mission=3:gosub *friendbulleta
+
+if (pbx=eax)&(pby=100)&(eadd=0):eadd=1:en=en-1:mmplay 1
+if (pbx=ebx)&(pby=100)&(ebdd=0):ebdd=1:en=en-1:mmplay 1
+if (pbx=ecx)&(pby=100)&(ecdd=0):ecdd=1:en=en-1:mmplay 1
+if (pbx=edx)&(pby=100)&(eddd=0):eddd=1:en=en-1:mmplay 1
+if (pbx=eex)&(pby=100)&(eedd=0):eedd=1:en=en-1:mmplay 1
+
+color:boxf:color 255,255,255
+
+if endend=1:pos px-18,py-18:gmode 2:celput 2
+
+if test=1:gosub *dwsaa
+
+if mission=1:gosub *mkosa
+
+if mission=2:gosub *mdeo
+
+if mission=3:gosub *cmask
+
+if (fa=1)&(bgvh=0)&(endend=0):pos px,py:gmode 2:celput 1,0
+if (fb=1)&(bgvh=0)&(endend=0):pos px,py:gmode 2:celput 1,10
+if (pb=1)&(fa=1):pos pbx,pby:gmode 2:celput 1,2
+if (pb=1)&(fb=1):pos pbx,pby:gmode 2:celput 1,11
+
+if eadd=1:pos eax,100:gmode 2:celput 1,4
+if eadd=2:pos eax,100:gmode 2:celput 1,3
+if ebdd=1:pos ebx,100:gmode 2:celput 1,4
+if ebdd=2:pos ebx,100:gmode 2:celput 1,3
+if ecdd=1:pos ecx,100:gmode 2:celput 1,4
+if ecdd=2:pos ecx,100:gmode 2:celput 1,3
+if eddd=1:pos edx,100:gmode 2:celput 1,4
+if eddd=2:pos edx,100:gmode 2:celput 1,3
+if eedd=1:pos eex,100:gmode 2:celput 1,4
+if eedd=2:pos eex,100:gmode 2:celput 1,3
+
+if fa=1:color 100,100,100
+if fb=1:color 100,100,200
+boxf 480,0
+color 255,255,255:font msgothic,16,0:pos 500,20:mes ""
+pos 500,40:mes "“G:"+en+" –¡•û:"+fn:pos 500,80:mes ""
+if ammo<6:color 255,55,55
+pos 500,100:mes "Žc’e”:"+ammo:color 255,255,255
+
+redraw 1
+await 50
+if (endend=1)&(mission=2):wait 60:pos 500,140:mes "":pos 500,160:input qwerted,100,20
+if (endend=1)&(mission=3):wait 60:pos 500,140:mes "":pos 500,160:input soikasd,100,20
+if endend=1:stop
+cc=cc+1
+if cc=11:cc=0
+if enc>=1:enc=enc+1
+if enc=3:enc=0
+if test=1:gosub *vabu
+if mission=1:gosub *fesf
+if mission=2:gosub *nbvy
+if mission=3:gosub *fgtre
+
+if eadd>0:eaddc=eaddc+1
+if eaddc=11:eaddc=0
+if ebdd>0:ebddc=ebddc+1
+if ebddc=11:ebddc=0
+if ecdd>0:ecddc=ecddc+1
+if ecddc=11:ecddc=0
+if eddd>0:edddc=edddc+1
+if edddc=11:edddc=0
+if eedd>0:eeddc=eeddc+1
+if eeddc=11:eeddc=0
+
+goto *roop
+
+*player
+getkey a,37
+getkey b,39
+getkey c,90
+if (a=1)&(fa=1)&(enc=0)&(px!40):px=px-20:enc=1
+if (b=1)&(fa=1)&(enc=0)&(px!400):px=px+20:enc=1
+if (a=1)&(fb=1)&(px!40):px=px-20
+if (b=1)&(fb=1)&(px!400):px=px+20
+if (c=1)&(pb=0)&(ammo!0)&(fa=1)&(slock=0):pbx=px:pby=380:pb=1:mmplay 0:ammo=ammo-1
+if (c=1)&(pb=0)&(ammo!0)&(fb=1)&(slock=0):pbx=px:pby=350:pb=1:mmplay 2:ammo=ammo-1
+if (px=eabax)&(py=eabay)&(endend=0):endend=1:mmplay 1
+if (px=eabbx)&(py=eabby)&(endend=0):endend=1:mmplay 1
+if (px=ebbax)&(py=ebbay)&(endend=0):endend=1:mmplay 1
+if (px=ebbbx)&(py=ebbby)&(endend=0):endend=1:mmplay 1
+if (px=ecbax)&(py=ecbay)&(endend=0):endend=1:mmplay 1
+if (px=ecbbx)&(py=ecbby)&(endend=0):endend=1:mmplay 1
+if (px=edbax)&(py=edbay)&(endend=0):endend=1:mmplay 1
+if (px=edbbx)&(py=edbby)&(endend=0):endend=1:mmplay 1
+if (px=eebax)&(py=eebay)&(endend=0):endend=1:mmplay 1
+if (px=eebbx)&(py=eebby)&(endend=0):endend=1:mmplay 1
+if (px=eleaderbax)&(py=eleaderbay)&(endend=0):endend=1:mmplay 1
+if (px=eleaderbbx)&(py=eleaderbby)&(endend=0):endend=1:mmplay 1
+if (px>=ecommanabax-20)&(px<=ecommanabax+20)&(py=ecommanabay)&(endend=0):endend=1:mmplay 1
+if (px>=ecommanabbx-20)&(px<=ecommanabbx+20)&(py=ecommanabby)&(endend=0):endend=1:mmplay 1
+if (px>=ecommanabcx-20)&(px<=ecommanabcx+20)&(py=ecommanabcy)&(endend=0):endend=1:mmplay 1
+if (px>=ecommanarockx-80)&(px<=ecommanarockx+80)&(py=400)&(endend=0)&(ecarockex=1):endend=1:mmplay 1
+return
+
+*playerbullet
+if pby<=0:pb=0
+if (pby>0)&(fa=1):pby=pby-20
+if (pby>0)&(fb=1):pby=pby-50
+return
+
+*enemya
+if (ed=1)&(eex=10):ed=2
+if (ed=2)&(eex=5):ed=3
+if (el=1)&(exmc=15)&(exmo=0)&(enwa=10):exmc=0:ex=ex-20
+if (el=1)&(exmc=15)&(exmo=1)&(enwa=10):exmc=0:ex=ex+20
+if (el=1)&(ex=40):exmo=1
+if (el=1)&(ex=400):exmo=0
+if (el=1)&(pbx=ex)&(pby=ey):el=0:en=en-1:mmplay 1:ed=1
+if (el=1)&(type=0)&(cc=10):type=1:return
+if (el=1)&(type=1)&(cc=10):type=0:return
+return
+
+*enemyb
+if (eadd=1)&(eaddc=10):eadd=2
+if (eadd=2)&(eaddc=5):eadd=3
+if (ebdd=1)&(ebddc=10):ebdd=2
+if (ebdd=2)&(ebddc=5):ebdd=3
+if (ecdd=1)&(ecddc=10):ecdd=2
+if (ecdd=2)&(ecddc=5):ecdd=3
+if (eddd=1)&(edddc=10):eddd=2
+if (eddd=2)&(edddc=5):eddd=3
+if (eedd=1)&(eeddc=10):eedd=2
+if (eedd=2)&(eeddc=5):eedd=3
+if (eleaderdd=1)&(eleaderddc=10):eleaderdd=2
+if (eleaderdd=2)&(eleaderddc=5):eleaderdd=3
+if (eedd=0)&(eexmc=10)&(eexmo=0):eexmc=0:eex=eex-20
+if (eedd=0)&(eexmc=10)&(eexmo=1):eexmc=0:eex=eex+20
+if (eedd=0)&(eex=40):eexmo=1
+if (eedd=0)&(eex=400):eexmo=0
+if (eleaderdd=0)&(eleaderxmc=7):randomize:eleaderxmo=rnd(10)
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=0):eleaderxmc=0:eleaderx=eleaderx-20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=1):eleaderxmc=0:eleaderx=eleaderx-20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=2):eleaderxmc=0:eleaderx=eleaderx-20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=3):eleaderxmc=0:eleaderx=eleaderx+20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=4):eleaderxmc=0:eleaderx=eleaderx+20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=5):eleaderxmc=0:eleaderx=eleaderx+20
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=8)&(eleaderwww=1)&(elwwp<=3):eleaderxmc=0:eleaderx=100:eleaderwww=0:elwwp=elwwp+1:mmplay 2
+if (eleaderdd=0)&(eleaderxmc=7)&(eleaderxmo=9)&(eleaderwww=0)&(elwwp<=3):eleaderxmc=0:eleaderx=300:eleaderwww=1:elwwp=elwwp+1:mmplay 2
+if (eleaderdd=0)&(eleaderx=40):eleaderx=220:mmplay 2
+if (eleaderdd=0)&(eleaderx=400):eleaderx=220:mmplay 2
+if (alale=60)&(qpqpqp=0):qpqpqp=1:eax=100:ebx=360
+if (iuok=30)&(qpqpqp=1):qpqpqp=0:ecx=200
+if iuoka=40:edx=300
+if (iuoka=60)&(qpqpqpq=0):qpqpqpq=1:eex=140
+if mofed=160:eleaderx=220:eleadery=260:leadercombat=1:mmplay 2
+if mofed=280:eleadery=100:mmplay 2
+if (eeef=20)&(eab=0)&(eadd=0):eabx=eax:eaby=100:eab=1:mmplay 0
+if (eeef=10)&(ebb=0)&(ebdd=0):ebbx=ebx:ebby=100:ebb=1:mmplay 0
+if (eeef=10)&(ecba=0)&(ecdd=0)&(iuok=30):ecbax=ecx:ecbay=100:ecba=1:mmplay 0
+if (eeef=20)&(ecbb=0)&(ecdd=0)&(iuok=30):ecbbx=ecx:ecbby=100:ecbb=1:mmplay 0
+if (eeef=14)&(edb=0)&(eddd=0)&(iuoka>=40):edbx=edx:edby=100:edb=1:mmplay 0
+if (eeef=18)&(eeb=0)&(eedd=0)&(iuoka=60):eebx=eex:eeby=100:eeb=1:mmplay 0
+if (eeef=15)&(eleaderba=0)&(eleaderdd=0)&(mofed=300):eleaderbax=eleaderx:eleaderbay=100:eleaderba=1:mmplay 0
+if (eeef=20)&(eleaderbb=0)&(eleaderdd=0)&(mofed=300):eleaderbbx=eleaderx:eleaderbby=100:eleaderbb=1:mmplay 0
+if (pbx=eleaderx)&(pby=100)&(eleaderdd=0):eleaderdd=1:leadercombat=0:en=en-1:mmplay 1
+if (type=0)&(cc=10):type=1:return
+if (type=1)&(cc=10):type=0:return
+return
+
+*enemybulleta
+if eaby=420:eab=0
+if (eaby<420):eaby=eaby+20
+if ebby=420:ebb=0
+if (ebby<420):ebby=ebby+20
+if ecbay=420:ecba=0
+if (ecbay<420):ecbay=ecbay+20
+if ecbby=420:ecbb=0
+if (ecbby<420):ecbby=ecbby+20
+if edby>=420:edb=0
+if (edby<420):edby=edby+50
+if eeby=420:eeb=0
+if (eeby<420):eeby=eeby+20
+if eleaderbay>=420:eleaderba=0
+if (eleaderbay<420):eleaderbay=eleaderbay+50
+if eleaderbby>=420:eleaderbb=0
+if (eleaderbby<420):eleaderbby=eleaderbby+50
+return
+
+*informationa
+if (ammo=0)&(en=1):infca=infca+1
+if ed=3:infc=infc+1
+if infca=20:infob=1
+if infc=20:infoa=1
+if (infc=80)or(infca=80):infoa=0:infob=0
+if (infc=100)or(infca=100):test=0:nextm=1:goto *mainmenu
+return
+
+*informationb
+if alale!60:alale=alale+1
+if (en=1)&(mofed!300):mofed=mofed+1:slock=1
+if (mofed=300)&(slock=1):slock=0
+if (en=0)&(gew!200):gew=gew+1
+if gew=200:nextm=2:goto *mainmenu
+return
+
+*vabu
+if test=1:exmc=exmc+1
+if (test=1)&(ed>0):eex=eex+1
+if (test=1)&(eex=11):eex=0
+if (test=1)&(enwa!10):enwa=enwa+1
+return
+
+*dwsaa
+if (infoa=1)&(test=1):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (infob=1)&(test=1):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (el=1)&(type=0)&(test=1):pos ex,ey:gmode 2:celput 1,1
+if (el=1)&(type=1)&(test=1):pos ex,ey:gmode 2:celput 1,7
+if (ed=1)&(test=1):pos ex,ey:gmode 2:celput 1,4
+if (ed=2)&(test=1):pos ex,ey:gmode 2:celput 1,3
+return
+
+*fesf
+if alale=60:eeef=eeef+1
+if eeef=21:eeef=0
+if (en=4)&(iuok!30):iuok=iuok+1
+if (en<=3)&(iuoka!60):iuoka=iuoka+1
+if (iuoka=60)&(eedd=0):eexmc=eexmc+1
+if (mofed>280)&(eleaderdd=0)&(eleaderxmc!7):eleaderxmc=eleaderxmc+1
+if eleaderdd>0:eleaderddc=eleaderddc+1
+if eleaderddc=11:eleaderddc=0
+return
+
+*mkosa
+if (alale!60)&(mission=1):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (mofed>=100)&(mission=1)&(mofed<180):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (mofed>=180)&(mission=1)&(mofed<=260):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (en=0)&(mission=1)&(leadercombat=0)&(gew<60):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (en=0)&(mission=1)&(leadercombat=0)&(gew>=100)&(gew<=180):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (eleaderdd=1)&(mission=1):pos eleaderx,100:gmode 2:celput 1,4
+if (eleaderdd=1)&(mission=1)&(eleaderddc>=1)&(eleaderddc<=4):pos eleaderx-18,82:gmode 2:celput 2
+if (eleaderdd=2)&(mission=1):pos eleaderx,100:gmode 2:celput 1,3
+if (type=0)&(mission=1)&(qpqpqp=1)&(eadd=0):pos eax,100:gmode 2:celput 1,1
+if (type=1)&(mission=1)&(qpqpqp=1)&(eadd=0):pos eax,100:gmode 2:celput 1,7
+if (type=0)&(mission=1)&(qpqpqp=1)&(ebdd=0):pos ebx,100:gmode 2:celput 1,1
+if (type=1)&(mission=1)&(qpqpqp=1)&(ebdd=0):pos ebx,100:gmode 2:celput 1,7
+if (type=0)&(mission=1)&(iuok=30)&(ecdd=0):pos ecx,100:gmode 2:celput 1,1
+if (type=1)&(mission=1)&(iuok=30)&(ecdd=0):pos ecx,100:gmode 2:celput 1,7
+if (type=0)&(mission=1)&(iuoka>=40)&(eddd=0):pos edx,100:gmode 2:celput 1,1
+if (type=1)&(mission=1)&(iuoka>=40)&(eddd=0):pos edx,100:gmode 2:celput 1,7
+if (type=0)&(mission=1)&(iuoka=60)&(eedd=0):pos eex,100:gmode 2:celput 1,1
+if (type=1)&(mission=1)&(iuoka=60)&(eedd=0):pos eex,100:gmode 2:celput 1,7
+if (type=0)&(mission=1)&(leadercombat=1)&(eleaderdd=0):pos eleaderx,eleadery:gmode 2:celput 1,8
+if (type=1)&(mission=1)&(leadercombat=1)&(eleaderdd=0):pos eleaderx,eleadery:gmode 2:celput 3,8
+if (eleaderba=1):pos eleaderbax,eleaderbay:gmode 2:celput 1,6
+if (eleaderbb=1):pos eleaderbbx,eleaderbby:gmode 2:celput 1,6
+if (eab=1):pos eabx,eaby:gmode 2:celput 1,9
+if (ebb=1):pos ebbx,ebby:gmode 2:celput 1,9
+if (ecba=1):pos ecbax,ecbay:gmode 2:celput 1,9
+if (ecbb=1):pos ecbbx,ecbby:gmode 2:celput 1,9
+if (edb=1):pos edbx,edby:gmode 2:celput 1,9
+if (eeb=1):pos eebx,eeby:gmode 2:celput 1,9
+return
+
+*dqas
+if test=1:en=1:fn=0
+if test=1:randomize
+if test=1:hohoho=rnd(12):hihihi=hohoho*20
+if test=1:ex=hihihi+160:ey=100
+if test=1:el=1
+return
+
+*mdeo
+if caji<=80:font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (caji>=90)&(caji<=160):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (caji>=210)&(caji<300):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (grha>=60)&(grha<=140):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (grha>=150)&(grha<=230):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (grha>=240)&(grha<=320):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (grha>=330)&(grha<=410):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (adsfad<=20)&(ecommanadd>=1):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (adsfad>=40)&(adsfad<=120):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (adsfad>=130)&(adsfad<=200):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (type=0)&(tyhd=1)&(eadd=0):pos eax,100:gmode 2:celput 1,1
+if (type=1)&(tyhd=1)&(eadd=0):pos eax,100:gmode 2:celput 1,7
+if (type=0)&(tyhd=1)&(ebdd=0):pos ebx,100:gmode 2:celput 1,1
+if (type=1)&(tyhd=1)&(ebdd=0):pos ebx,100:gmode 2:celput 1,7
+if (type=0)&(tyhd=1)&(ecdd=0):pos ecx,100:gmode 2:celput 1,1
+if (type=1)&(tyhd=1)&(ecdd=0):pos ecx,100:gmode 2:celput 1,7
+if (ecommanashi=1)&(ecommanadd=0):pos ecommanax-18,82:gmode 2:celput 4
+if (type=0)&(grha>=100)&(ecommanadd=0):pos ecommanax,100:gmode 2:celput 1,5
+if (type=1)&(grha>=100)&(ecommanadd=0):pos ecommanax,100:gmode 2:celput 3,3
+if (type=0)&(caji<=90):pos px,py:gmode 2:celput 1,1
+if (type=1)&(caji<=90):pos px,py:gmode 2:celput 1,7
+if (eaba=1):pos eabax,eabay:gmode 2:celput 1,9
+if (eabb=1):pos eabbx,eabby:gmode 2:celput 1,9
+if (ebba=1):pos ebbax,ebbay:gmode 2:celput 1,9
+if (ebbb=1):pos ebbbx,ebbby:gmode 2:celput 1,9
+if (ecba=1):pos ecbax,ecbay:gmode 2:celput 1,9
+if (ecbb=1):pos ecbbx,ecbby:gmode 2:celput 1,9
+if (ecommanaba=1):pos ecommanabax,ecommanabay:gmode 2:celput 3,1:pos ecommanabax-20,ecommanabay:gmode 2:celput 3,1:pos ecommanabax+20,ecommanabay:gmode 2:celput 3,1
+if (ecommanabb=1):pos ecommanabbx,ecommanabby:gmode 2:celput 3,1:pos ecommanabbx-20,ecommanabby:gmode 2:celput 3,1:pos ecommanabbx+20,ecommanabby:gmode 2:celput 3,1
+if (ecommanabc=1):pos ecommanabcx,ecommanabcy:gmode 2:celput 3,1:pos ecommanabcx-20,ecommanabcy:gmode 2:celput 3,1:pos ecommanabcx+20,ecommanabcy:gmode 2:celput 3,1
+if (ecommanarock=1):pos ecommanarockx,ecommanarocky:gmode 2:celput 3,2
+if (ecarockex=1):pos ecommanarockx-85,370:gmode 2:celput 5
+if ecommanadd=1:pos ecommanax-18,82:gmode 2:celput 2
+if ecommanadd=2:pos ecommanax-38,62:gmode 2:celput 2
+if ecommanadd=3:pos ecommanax+18,118:gmode 2:celput 2
+if ecommanadd=4:pos ecommanax-18,82:gmode 2:celput 2
+return
+
+*informationc
+slock=0
+if caji!300:caji=caji+1
+if caji=100:bgvh=0
+if caji<=120:slock=1
+if (en=1)&(grha!450):grha=grha+1:slock=1
+if grha=370:ecommanashi=1:mmplay 0
+if (adsfad=200)&(fb=1):nextm=3:goto *mainmenu
+if (adsfad=200)&(fa=1):nextm=4:goto *mainmenu
+return
+
+*enemyc
+if (eadd=1)&(eaddc=10):eadd=2
+if (eadd=2)&(eaddc=5):eadd=3
+if (ebdd=1)&(ebddc=10):ebdd=2
+if (ebdd=2)&(ebddc=5):ebdd=3
+if (ecdd=1)&(ecddc=10):ecdd=2
+if (ecdd=2)&(ecddc=5):ecdd=3
+if (ecommanadd=4)&(ecommanaddc=10):ecommanadd=5
+if (ecommanadd=3)&(ecommanaddc=10):ecommanadd=4:mmplay 1
+if (ecommanadd=2)&(ecommanaddc=10):ecommanadd=3:mmplay 1
+if (ecommanadd=1)&(ecommanaddc=10):ecommanadd=2:mmplay 1
+if (eadd=0)&(eaxmc=15)&(eaxmo=0):eaxmc=0:eax=eax-20
+if (eadd=0)&(eaxmc=15)&(eaxmo=1):eaxmc=0:eax=eax+20
+if (eadd=0)&(eax=40):eaxmo=1
+if (eadd=0)&(eax=400):eaxmo=0
+if (ebdd=0)&(ebxmc=15)&(ebxmo=0):ebxmc=0:ebx=ebx-20
+if (ebdd=0)&(ebxmc=15)&(ebxmo=1):ebxmc=0:ebx=ebx+20
+if (ebdd=0)&(ebx=40):ebxmo=1
+if (ebdd=0)&(ebx=400):ebxmo=0
+if (ecdd=0)&(ecxmc=15)&(ecxmo=0):ecxmc=0:ecx=ecx-20
+if (ecdd=0)&(ecxmc=15)&(ecxmo=1):ecxmc=0:ecx=ecx+20
+if (ecdd=0)&(ecx=40):ecxmo=1
+if (ecdd=0)&(ecx=400):ecxmo=0
+if (ecommanadd=0)&(ecommanaxmc=5):randomize:ecommanaxmo=rnd(5)
+if (ecommanadd=0)&(ecommanaxmc=5)&(ecommanaxmo=0):ecommanaxmc=0:ecommanax=ecommanax-20
+if (ecommanadd=0)&(ecommanaxmc=5)&(ecommanaxmo=1):ecommanaxmc=0:ecommanax=ecommanax+20
+if (ecommanadd=0)&(ecommanaxmc=5)&(ecommanaxmo=2):ecommanaxmc=0:ecommanax=ecommanax+20
+if (ecommanadd=0)&(ecommanax=40):ecommanax=200
+if (ecommanadd=0)&(ecommanax=400):ecommanax=240
+if (caji=200)&(tyhd=0):tyhd=1:eax=100:ebx=140:ecx=180
+if grha=50:ecommanax=220
+if (pbx=ecommanax)&(pby=100)&(ecommanadd=0)&(ecommanashi=0):mmplay 1:ecommanadd=1:en=en-1
+if (pbx=ecommanax)&(pby=100)&(ecommanadd=0)&(ecommanashi=1):ecommanashi=0:mmplay 2
+if (acde=5)&(eaba=0)&(eadd=0):eabax=eax:eabay=100:eaba=1:mmplay 0
+if (acde=10)&(eabb=0)&(eadd=0):eabbx=eax:eabby=100:eabb=1:mmplay 0
+if (acde=15)&(ebba=0)&(ebdd=0):ebbax=ebx:ebbay=100:ebba=1:mmplay 0
+if (acde=20)&(ebbb=0)&(ebdd=0):ebbbx=ebx:ebbby=100:ebbb=1:mmplay 0
+if (acde=25)&(ecba=0)&(ecdd=0):ecbax=ecx:ecbay=100:ecba=1:mmplay 0
+if (acde=30)&(ecbb=0)&(ecdd=0):ecbbx=ecx:ecbby=100:ecbb=1:mmplay 0
+if (acde=6)&(ecommanaba=0)&(ecommanadd=0)&(grha>=440):ecommanabax=ecommanax:ecommanabay=100:ecommanaba=1:mmplay 4
+if (acde=12)&(ecommanabb=0)&(ecommanadd=0)&(grha>=440):ecommanabbx=ecommanax:ecommanabby=100:ecommanabb=1:mmplay 4
+if (acde=18)&(ecommanabc=0)&(ecommanadd=0)&(grha>=440):ecommanabcx=ecommanax:ecommanabcy=100:ecommanabc=1:mmplay 4
+if (acde=24)&(ecommanarock=0)&(ecommanadd=0)&(grha>=440)&(ecommanashi=0)&(ecarock=0):ecommanarockx=ecommanax:ecommanarocky=100:ecommanarock=1:ecarock=1:mmplay 2
+if (type=0)&(cc=10):type=1:return
+if (type=1)&(cc=10):type=0:return
+return
+
+*enemybulletb
+if eabay>=420:eaba=0
+if (eabay<420):eabay=eabay+20
+if eabby>=420:eabb=0
+if (eabby<420):eabby=eabby+20
+if ebbay>=420:ebba=0
+if (ebbay<420):ebbay=ebbay+20
+if ebbby>=420:ebbb=0
+if (ebbby<420):ebbby=ebbby+20
+if ecbay>=420:ecba=0
+if (ecbay<420):ecbay=ecbay+20
+if ecbby>=420:ecbb=0
+if (ecbby<420):ecbby=ecbby+20
+if ecommanabay>=420:ecommanaba=0
+if (ecommanabay<420):ecommanabay=ecommanabay+20
+if ecommanabby>=420:ecommanabb=0
+if (ecommanabby<420):ecommanabby=ecommanabby+20
+if ecommanabcy>=420:ecommanabc=0
+if (ecommanabcy<420):ecommanabcy=ecommanabcy+20
+if (ecommanarocky>=380)&(ecommanarock=1):ecommanarock=0:ecarockex=1:ascasfaev=0
+if (ecommanarocky<420):ecommanarocky=ecommanarocky+10
+return
+
+*nbvy
+if (tyhd=1)&(eadd=0):eaxmc=eaxmc+1
+if (tyhd=1)&(ebdd=0):ebxmc=ebxmc+1
+if (tyhd=1)&(ecdd=0):ecxmc=ecxmc+1
+if tyhd=1:acde=acde+1
+if acde=31:acde=1
+if (ecommanashi=0)&(shieldabc!80)&(ecommanadd=0)&(grha=450):shieldabc=shieldabc+1
+if (ecommanashi=0)&(shieldabc=80)&(ecommanadd=0)&(grha=450):shieldabc=0:ecommanashi=1:ecarock=0:mmplay 0
+if (grha>=430)&(ecommanadd=0)&(ecommanaxmc!5):ecommanaxmc=ecommanaxmc+1
+if (ecarockex=1)&(ascasfaev=0):ascasfaev=1:mmplay 1
+if (ecarockex=1)&(ecarockexc!20):ecarockexc=ecarockexc+1
+if ecarockexc=20:ecarockex=0:ecarockexc=0
+if ecommanadd>0:ecommanaddc=ecommanaddc+1
+if ecommanaddc=11:ecommanaddc=0
+if (ecommanadd=5)&(adsfad!200):adsfad=adsfad+1
+return
+
+*informationd
+return
+
+*enemyd
+return
+
+*enemybulletc
+return
+
+*frienda
+return
+
+*friendbulleta
+return
+
+*cmask
+if veaia<=40:font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if (veaia>=70)&(veaia<=150):font msgothic,12,0:pos 20,445:mes "":font msgothic,16,0
+if friadd=0:pos friax,400:gmode 2:celput 3,0
+if fribdd=0:pos fribx,400:gmode 2:celput 3,0
+return
+
+*fgtre
+if veaia!200:veaia=veaia+1
+return
+
+*mainmenu
+eadd=0:ebdd=0:ecdd=0:eddd=0:eedd=0:eax=0:ebx=0:ecx=0:edx=0:eex=0
+cls 4:wait 150:color 255,255,255
+pos 50,50:mes "":pos 50,90:mes "Žc’e”F"+ammo+" ^ "+ammomax
+if fa=1:pos 50,70:mes ""
+if fb=1:pos 50,70:mes ""
+pos 65,130:mes "":pos 65,150:mes "":pos 65,170:mes "":cy=130:pos 50,cy:mes ""
+pos 50,230:mes "":pos 50,360:mes ""
+randomize:newest=rnd(3)
+if newest=0:pos 50,400:mes ""
+if (newest=1)&(nextm<=2):pos 50,400:mes ""
+if (newest=1)&(nextm>2):pos 50,400:mes ""
+if newest=2:pos 50,400:mes ""
+
+*mainmenuroop
+redraw 0
+color 0,0,0:pos 50,cy:mes "":pos 50,90:mes ""+ammo
+getkey zz,90
+getkey uee,38
+getkey shitaa,40
+if uee=1:cy=cy-20
+if cy=110:cy=170
+if shitaa=1:cy=cy+20
+if cy=190:cy=130
+if (zz=1)&(cy=170):cls 4:pwpw="":goto *password
+if (zz=1)&(cy=150):ammo=ammomax
+if (zz=1)&(cy=130)&(nextm=1):cls 4:mission=1:diffi="":wait 50:goto *start
+if (zz=1)&(cy=130)&(nextm=2):cls 4:mission=2:diffi="":wait 50:goto *start
+if (zz=1)&(cy=130)&(nextm=3):cls 4:mission=3:diffi="":wait 50:goto *start
+if (zz=1)&(cy=130)&(nextm=4):cls 4:mission=4:diffi="":wait 50:goto *start
+color 255,255,255:pos 50,cy:mes "":pos 50,90:mes ""+ammo
+redraw 1:wait 5
+if (zz=1)&(cy=150):mmplay 3:wait 50
+if uee=1:wait 20
+if shitaa=1:wait 20
+goto *mainmenuroop
+
+*password
+pos 50,50:input pwpw,100,20
+pos 70,71:button "",*passwordaa
+stop
+*passwordaa
+if (pwpw=qwerted)&(nextm=1):nextm=2:cls 4:mmplay 3:wait 50:goto *mainmenu
+if (pwpw=soikasd)&(nextm<=2):nextm=3:cls 4:mmplay 3:wait 50:goto *mainmenu
+cls 4:color 255,255,255:pos 240,240:mes "":wait 150:goto *mainmenu

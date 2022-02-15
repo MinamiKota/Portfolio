@@ -1,0 +1,32 @@
+title"":screen 0,1011,569,,175,65:onexit gosub *exit
+for i,1,2,1:celload ""+i+".bmp",i:next
+celdiv 1,50,50
+dim hikari,10:foreach hikari:hikari(cnt)=-1:loop
+dim hikarix,10:foreach hikari:hikarix(cnt)=-100:loop
+dim hikariy,10:foreach hikari:hikariy(cnt)=-100:loop
+goto *start
+*exit
+dialog "",3
+if stat=6:end
+if stat=7:return
+end:return
+*start
+if ginfo(2)<0:await 1:goto *start
+redraw 2:if (kougeki):color 50,50,50:else:color 100,100,100
+boxf:color 255,255,255:boxf 100,100,150,150
+getkey mouseleft,1
+if (oldmouseleft=0)&(mouseleft)&(mousex>100)&(mousex<150)&(mousey>100)&(mousey<150)&(kougeki=0):kougeki=1
+if mouseleft{foreach hikari:if hikari(cnt)=-1:hikari(cnt)=0:hikarix(cnt)=mousex-25:hikariy(cnt)=mousey-25:break
+             loop
+             }
+if mouseleft=0:kougeki=0:cirint=0
+if kougeki{if cirint:cirang=atan(mousey-ciry,mousex-cirx):cirmox=cos(cirang)*25.0:cirmoy=sin(cirang)*25.0:cirint++:else:cirx=125.0:ciry=125.0:cirint++
+           if cirend=0:cirx+=cirmox:ciry+=cirmoy:circle cirx-10,ciry-10,cirx+10,ciry+10
+           if (cirx>=mousex-10)&(cirx<=mousex+10)&(ciry>=mousey-10)&(ciry<=mousey+10):cirx=-1000:ciry=-1000:cirend=1
+           if cirint>50:cirint=0:cirend=0
+           }
+color:gmode 4,0,0,50:foreach hikari:if hikari(cnt)>-1:pos hikarix(cnt),hikariy(cnt):celput 1,hikari(cnt):hikari(cnt)++:if hikari(cnt)>11:hikari(cnt)=-1
+                      loop
+redraw 1:await 1
+oldmouseleft=mouseleft
+goto *start

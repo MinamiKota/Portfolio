@@ -1,0 +1,374 @@
+title ""
+screen 0,1350,690,,5,5
+mmload "se.wav",0,0
+mmload "se1.wav",1,0
+mmload "se2.wav",2,0
+mmload "se3.wav",3,0
+mmload "se4.wav",4,0
+celload "corpus.bmp",1
+celload "explosion.bmp",2
+celdiv 2,100,100
+celload "player.bmp",3
+celload "shot.bmp",4
+celload "shot2.bmp",5
+celload "item.bmp",6
+celload "energy.bmp",7
+celdiv 7,30,30
+celload "superbeam.bmp",8
+celload "superbeam2.bmp",9
+celload "screen.bmp",10
+celload "playership.bmp",11
+celload "shotshot.bmp",12
+celload "background.bmp",13
+celload "corpusdamaged.bmp",14
+celload "explosion2.bmp",15
+celdiv 15,100,100
+celload "picture.bmp",16
+celdiv 16,20,20
+
+*sloop
+redraw 0:color:boxf
+stick b,63
+if b&32:title "":px=444:py=520:dim shotf,10:dim shotx,10:dim shoty,10:score=0:y=-1220:goto *maingame
+if b&16:title "":px=1260:py=590:p2x=20:p2y=15:pkill=0:p2kill=0:bx=-1000:by=-1000:b2x=-1000:b2y=-1000:shot=0:shot2=0:itemc=1:sbeamy=-10000:sbeam2y=-10000:color:boxf:redraw 1:wait 60:goto *playersbattle
+color 255,255,255:pos 10,10:mes "":mes ""
+pos 10,100:mes "":pos 10,140:mes "":mes ""
+pos 10,240:mes "":pos 10,280:mes ""
+mes "":mes ""
+mes "":mes ""
+mes ""
+redraw 1:await 1
+goto *sloop
+
+
+
+
+
+*playersbattle
+redraw 0:color:boxf:gosub *move2
+getkey keyz,90:if keyz=1:energy=0:superbeam=0:superbeam2=0:item=0:itemx=0:itemy=0:itemr=0:itemc=1:px=1260:py=590:p2x=20:p2y=15:pkill=0:p2kill=0:bx=-1000:by=-1000:b2x=-1000:b2y=-1000:shot=0:shot2=0:sbeamy=-10000:sbeam2y=-10000:color:boxf:redraw 1:wait 60:goto *playersbattle
+color 255,255,255:gmode 4,,,256
+if energy=11:itemx=px+80:itemy=py+70
+if energy=12:itemx=p2x+90:itemy=p2y+100
+if (energy>=1)&(eneani>=1)&(eneani<=10):pos itemx,itemy:celput 7,0
+if (energy>=1)&(eneani>=11)&(eneani<=20):pos itemx,itemy:celput 7,1
+if item>=1:pos itemx,itemy:celput 6
+if shot>=1:pos bx,by:celput 4
+if shot2>=1:pos b2x,b2y:celput 5
+if superbeam>=1:pos sbeamx,sbeamy:celput 8
+if superbeam2>=1:pos sbeam2x,sbeam2y:celput 9
+if pkill=0:pos px,py:celput 3
+if p2kill=0:pos p2x,p2y:celput 1
+if (p2kill>=1)&(p2kill<=30):pos p2x,p2y:celput 2,1
+if (p2kill>=31)&(p2kill<=50):pos p2x,p2y:celput 2,0
+if (pkill>=1)&(pkill<=30):pos px,py:celput 2,1
+if (pkill>=31)&(pkill<=50):pos px,py:celput 2,0
+if shot>=100:shot=0:bx=-1000:by=-1000
+if shot>=1:shot=shot+1
+if shot>=1:bx=bx-20
+if superbeam>=550:shot=0:sbeamx=-1000:sbeamy=-1000:superbeam=-1000
+if superbeam>=1:superbeam=superbeam+1:shot=-1000
+if superbeam>=15:sbeamx=sbeamx-35
+if shot2>=100:shot2=0:b2x=-1000:b2y=-1000
+if shot2>=1:shot2=shot2+1
+if shot2>=1:b2x=b2x+20
+if superbeam2>=550:shot2=0:sbeam2x=-1000:sbeam2y=-1000:superbeam2=-1000
+if superbeam2>=1:superbeam2=superbeam2+1:shot2=-1000
+if superbeam2>=15:sbeam2x=sbeam2x+35
+if (bx+80>=p2x)&(bx<=p2x+80)&(by+25>=p2y)&(by<=p2y+100)&(p2kill=0):p2kill=1:mmplay 0
+if (b2x+110>=px)&(b2x<=px+70)&(b2y+40>=py)&(b2y<=py+70)&(pkill=0):pkill=1:mmplay 0
+if (sbeamx+200>=p2x)&(sbeamx<=p2x+80)&(sbeamy+50>=p2y)&(sbeamy<=p2y+100)&(p2kill=0):p2kill=1:mmplay 0
+if (sbeam2x+200>=px)&(sbeam2x<=px+70)&(sbeam2y+50>=py)&(sbeam2y<=py+70)&(pkill=0):pkill=1:mmplay 0
+if (pkill>=1)&(pkill<100):pkill=pkill+1
+if (p2kill>=1)&(p2kill<100):p2kill=p2kill+1
+if energy=0{if itemc<200:itemc=itemc+1:else:itemc=1:randomize:itemr=rnd(100)
+            if itemr>=85:item=1:itemx=645:itemy=310:else:item=0
+            }
+if (bx+80>=itemx)&(bx<=itemx+30)&(by+25>=itemy)&(by<=itemy+30)&(pkill=0)&(item=1):mmplay 3:item=0:energy=1
+if (b2x+110>=itemx)&(b2x<=itemx+70)&(b2y+40>=itemy)&(b2y<=itemy+70)&(p2kill=0)&(item=1):mmplay 3:item=0:energy=2
+if (itemx+15>=px)&(itemx<=px+70)&(itemy+15>=py)&(itemy<=py+70)&(pkill=0):mmplay 4:energy=11
+if (itemx+15>=p2x)&(itemx<=p2x+80)&(itemy+15>=p2y)&(itemy<=p2y+100)&(p2kill=0):mmplay 4:energy=12
+if (bx+80>=sbeam2x)&(bx<=sbeam2x+200)&(by+25>=sbeam2y)&(by<=sbeam2y+50):bx=10000:by=10000
+if (b2x+110>=sbeamx)&(b2x<=sbeamx+200)&(b2y+40>=sbeamy)&(b2y<=sbeamy+50):b2x=10000:b2y=10000
+if eneani<20:eneani=eneani+1:else:eneani=1
+if energy=1:itemx=itemx+5
+if energy=2:itemx=itemx-5
+;pos 10,10:mes "px:"+px:mes "py:"+py:mes "shot:"+shot:mes "p2x:"+p2x:mes "p2y:"+p2y:mes "shot2:"+shot2:mes "itemr:"+itemr
+redraw 1:await 1
+goto *playersbattle
+
+*move2
+if pkill=0{
+stick b,63:opx=px:opy=py
+if b&1:px=px-5
+if b&4:px=px+5
+if b&2:py=py-5
+if b&8:py=py+5
+if b&32{if (shot=0)&(energy!11):shot=1:bx=px-35:by=py+20:mmplay 2
+        if (superbeam=0)&(shot=0)&(energy=11):superbeam=1:sbeamx=px-200:sbeamy=py+15:mmplay 0:energy=-1000:itemx=-1000:itemy=-1000
+        }
+if px<710:px=opx
+if px>1260:px=opx
+if py<15:py=opy
+if py>590:py=opy
+}
+if p2kill=0{
+getkey keyw,87:getkey keya,65:getkey keys,83:getkey keyd,68:op2x=p2x:op2y=p2y:stick b,63
+if b&16{if (shot2=0)&(energy!12):shot2=1:b2x=p2x+80:b2y=p2y+30:mmplay 1
+        if (superbeam2=0)&(shot2=0)&(energy=12):superbeam2=1:sbeam2x=p2x+80:sbeam2y=p2y+30:mmplay 0:energy=-1000:itemx=-1000:itemy=-1000
+        }
+if keyw=1{p2y=p2y-5
+          if keya=1:p2x=p2x-5
+          if keyd=1:p2x=p2x+5
+          goto *moved
+          }
+if keys=1{p2y=p2y+5
+          if keya=1:p2x=p2x-5
+          if keyd=1:p2x=p2x+5
+          goto *moved
+          }
+if keya=1{p2x=p2x-5
+          if keyw=1:p2y=p2y-5
+          if keys=1:p2y=p2y+5
+          goto *moved
+          }
+if keyd=1{p2x=p2x+5
+          if keyw=1:p2y=p2y-5
+          if keys=1:p2y=p2y+5
+          goto *moved
+          }
+}
+*moved
+if p2x<20:p2x=op2x
+if p2x>530:p2x=op2x
+if p2y<15:p2y=op2y
+if p2y>555:p2y=op2y
+return
+
+
+
+
+
+*maingame
+dim ehp,50:dim ex,50:dim ey,50:dim escore,50:score=0:dim ed,50:count=0
+dim b,500:ddim bx,500:ddim by,500:ddim bmox,500:ddim bmoy,500:dim bspd,500:ddim bang,500:dim tamban,5
+repeat 7:ehp(cnt)=4:escore(cnt)=150:loop
+repeat 4:ehp(cnt+7)=5:escore(cnt+7)=200:loop
+repeat 3:ehp(cnt+11)=7:escore(cnt+11)=500:loop
+repeat 3:ehp(cnt+14)=2:escore(cnt+14)=350:loop
+ehp(17)=40:escore(17)=1000
+repeat 2:ehp(cnt+18)=2:escore(cnt+18)=250:loop
+repeat 3:ehp(cnt+20)=5:escore(cnt+20)=400:loop
+foreach ehp:ed(cnt)=0:loop
+foreach ehp:ex(cnt)=10000:loop
+foreach ehp:ey(cnt)=10000:loop
+foreach ehp:eexplo(cnt)=0:loop
+foreach b:b(cnt)=0:loop
+foreach b:bx(cnt)=10000.0:loop
+foreach b:by(cnt)=10000.0:loop
+repeat 7:bspd(cnt)=7:loop
+repeat 33:bspd(cnt+7)=8:loop
+repeat 30:bspd(cnt+34)=9:loop
+repeat 37:bspd(cnt+64)=7:loop
+repeat 37:bspd(cnt+101)=6:loop
+repeat 37:bspd(cnt+138)=7:loop
+repeat 37:bspd(cnt+175)=8:loop
+repeat 73:bspd(cnt+212)=10:loop
+repeat 37:bspd(cnt+285)=5:loop
+repeat 14:bspd(cnt+322)=4:loop
+repeat 2:bspd(cnt+336)=6:loop
+repeat 10:bspd(cnt+338)=6:loop
+repeat 37:bspd(cnt+347)=7:loop
+repeat 10:bspd(cnt+383)=6:loop
+repeat 37:bspd(cnt+392)=7:loop
+repeat 10:bspd(cnt+428)=6:loop
+repeat 37:bspd(cnt+437)=7:loop
+*mainloop
+redraw 2:color:boxf:if (destp>=1)&(destp<=39):goto *a
+gosub *move
+*a
+
+gmode 4,,,256:pos 56,y:celput 13
+
+repeat 10
+getkey keyz,90
+if (shotf(cnt)=0)&(keyz=1)&(shotc=0)&(destp=0):shotx(cnt)=px:shoty(cnt)=py-15:shotf(cnt)=1:keyz=0:shotc=1
+if (shotf(cnt)=0)&(keyz=1)&(shotc=0)&(destp>=40):shotx(cnt)=px:shoty(cnt)=py-15:shotf(cnt)=1:keyz=0:shotc=1
+if shotf(cnt)>=1:shoty(cnt)-=20:shotf(cnt)+=1
+if shotf(cnt)>=40:shotf(cnt)=0
+if shoty(cnt)<=-20:shotx(cnt)=-200000:shoty(cnt)=-200000
+loop
+if shotc>=1:shotc+=1
+if shotc>=5:shotc=0
+color 255,255,255:gmode 4,,,150
+if (destp>=40)&(destp<=55):pos px,py:celput 11
+if (destp>=70)&(destp<=85):pos px,py:celput 11
+if (destp>=100)&(destp<=115):pos px,py:celput 11
+color 255,255,255:gmode 4,,,256
+if destp=0:pos px,py:celput 11
+repeat 10
+if shotf(cnt)>=1{pos shotx(cnt),shoty(cnt):celput 12:cntcnt=cnt
+foreach ehp
+if cnt!17{if (ehp(cnt)=1)&(shotx(cntcnt)+30>=ex(cnt))&(shotx(cntcnt)-30<=ex(cnt))&(shoty(cntcnt)+15>=ey(cnt))&(shoty(cntcnt)<=ey(cnt)+30):score+=escore(cnt):eexplo(cnt)=1:mmplay 0
+          if (ehp(cnt)>0)&(shotx(cntcnt)+30>=ex(cnt))&(shotx(cntcnt)-30<=ex(cnt))&(shoty(cntcnt)+15>=ey(cnt))&(shoty(cntcnt)<=ey(cnt)+30):ed(cnt)=1:ehp(cnt)--:shotx(cntcnt)=-200000:shoty(cntcnt)=-200000:score++
+          }
+if cnt=17{if (ehp(cnt)=1)&(shotx(cntcnt)+30>=ex(cnt))&(shotx(cntcnt)-60<=ex(cnt))&(shoty(cntcnt)+15>=ey(cnt))&(shoty(cntcnt)<=ey(cnt)+100):score+=escore(cnt):eexplo(cnt)=1:mmplay 0
+          if (ehp(cnt)>0)&(shotx(cntcnt)+30>=ex(cnt))&(shotx(cntcnt)-60<=ex(cnt))&(shoty(cntcnt)+15>=ey(cnt))&(shoty(cntcnt)<=ey(cnt)+100):ed(cnt)=1:ehp(cnt)--:shotx(cntcnt)=-200000:shoty(cntcnt)=-200000:score+=2
+          }
+loop
+}
+loop
+
+foreach ehp
+if ehp(cnt)>0{
+if (cnt<=6)&(count=50){ex(cnt)=900:ey(cnt)=0}
+if (cnt=0)&(count>50)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=0)&(count=100){bang(0)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(0)=cos(bang(0))*bspd(0):bmoy(0)=sin(bang(0))*bspd(0):bx(0)=double(ex(cnt)):by(0)=double(ey(cnt)):b(0)=1}
+if (cnt=1)&(count>65)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=1)&(count=120){bang(1)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(1)=cos(bang(1))*bspd(1):bmoy(1)=sin(bang(1))*bspd(1):bx(1)=double(ex(cnt)):by(1)=double(ey(cnt)):b(1)=1}
+if (cnt=2)&(count>80)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=2)&(count=140){bang(2)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(2)=cos(bang(2))*bspd(2):bmoy(2)=sin(bang(2))*bspd(2):bx(2)=double(ex(cnt)):by(2)=double(ey(cnt)):b(2)=1}
+if (cnt=3)&(count>95)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=3)&(count=160){bang(3)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(3)=cos(bang(3))*bspd(3):bmoy(3)=sin(bang(3))*bspd(3):bx(3)=double(ex(cnt)):by(3)=double(ey(cnt)):b(3)=1}
+if (cnt=4)&(count>110)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=4)&(count=180){bang(4)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(4)=cos(bang(4))*bspd(4):bmoy(4)=sin(bang(4))*bspd(4):bx(4)=double(ex(cnt)):by(4)=double(ey(cnt)):b(4)=1}
+if (cnt=5)&(count>125)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=5)&(count=200){bang(5)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(5)=cos(bang(5))*bspd(5):bmoy(5)=sin(bang(5))*bspd(5):bx(5)=double(ex(cnt)):by(5)=double(ey(cnt)):b(5)=1}
+if (cnt=6)&(count>140)&(ey(cnt)<=200){ex(cnt)=ex(cnt)-4:ey(cnt)=ey(cnt)+3}
+if (cnt=6)&(count=220){bang(6)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(6)=cos(bang(6))*bspd(6):bmoy(6)=sin(bang(6))*bspd(6):bx(6)=double(ex(cnt)):by(6)=double(ey(cnt)):b(6)=1}
+if (cnt=0)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=1)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=2)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=3)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=4)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=5)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt=6)&(count<=350)&(ey(cnt)=201){ex(cnt)=ex(cnt)-5}
+if (cnt>=7)&(cnt<=10)&(count=190){ex(cnt)=200:ey(cnt)=-20}
+if (cnt=7)&(count>=190)&(ex(cnt)=200){ey(cnt)=ey(cnt)+4}
+if (cnt=8)&(count>=205)&(ex(cnt)=200){ey(cnt)=ey(cnt)+4}
+if (cnt=9)&(count>=220)&(ex(cnt)=200){ey(cnt)=ey(cnt)+4}
+if (cnt=10)&(count>=235)&(ex(cnt)=200){ey(cnt)=ey(cnt)+4}
+if (cnt=11)&(count=400){ex(cnt)=200:ey(cnt)=-20}
+if (cnt=12)&(count=400){ex(cnt)=400:ey(cnt)=-20}
+if (cnt=13)&(count=400){ex(cnt)=600:ey(cnt)=-20}
+if (cnt=11)&(count>=400)&(count<470)&(ey(cnt)<=100){ey(cnt)=ey(cnt)+8}
+waydan=-0.1:if (cnt=11)&(count=415){for i,7,10,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=11)&(count=430){for i,10,13,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=11)&(count=445){for i,13,16,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+if (cnt=11)&(count>=470)&(ey(cnt)>=-100){ey(cnt)-=4}
+if (cnt=12)&(count>=450)&(count<520)&(ey(cnt)<=100){ey(cnt)=ey(cnt)+8}
+waydan=-0.1:if (cnt=12)&(count=465){for i,16,19,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=12)&(count=480){for i,19,22,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=12)&(count=495){for i,22,25,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+if (cnt=12)&(count>=520)&(ey(cnt)>=-100){ey(cnt)-=4}
+if (cnt=13)&(count>=500)&(count<570)&(ey(cnt)<=100){ey(cnt)=ey(cnt)+8}
+waydan=-0.1:if (cnt=13)&(count=515){for i,25,28,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=13)&(count=530){for i,28,31,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+waydan=-0.1:if (cnt=13)&(count=545){for i,31,34,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.1:next}
+if (cnt=13)&(count>=570)&(ey(cnt)>=-100){ey(cnt)-=4}
+if (cnt>=14)&(cnt<=16)&(count=520){ex(cnt)=-50:ey(cnt)=300}
+if (cnt=14)&(count>=520)&(ex(cnt)<=1000){ex(cnt)+=6}
+waydan=-0.3:if (cnt=14)&(count=540){for i,34,39,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+waydan=-0.3:if (cnt=14)&(count=560){for i,39,44,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+if (cnt=15)&(count>=550)&(ex(cnt)<=1000){ex(cnt)+=6}
+waydan=-0.3:if (cnt=15)&(count=570){for i,44,49,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+waydan=-0.3:if (cnt=15)&(count=590){for i,49,54,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+if (cnt=16)&(count>=580)&(ex(cnt)<=1000){ex(cnt)+=6}
+waydan=-0.3:if (cnt=16)&(count=600){for i,54,59,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+waydan=-0.3:if (cnt=16)&(count=620){for i,59,64,1:bang(i)=atan(py+23-ey(cnt),px+18-ex(cnt))+waydan:bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt)):by(i)=double(ey(cnt)):b(i)=1:waydan+=0.15:next}
+if (cnt=17)&(count=750){ex(cnt)=300:ey(cnt)=-100}
+if (cnt=17)&(count>=750)&(count<890)&(ey(cnt)<=100){ey(cnt)=ey(cnt)+4}
+danmaku=0:if (cnt=17)&(count=800){for i,64,101,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=10:next}
+danmaku=5:if (cnt=17)&(count=810){for i,101,138,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=10:next}
+danmaku=3:if (cnt=17)&(count=820){for i,138,175,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=10:next}
+danmaku=1:if (cnt=17)&(count=830){for i,175,212,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=10:next}
+danmaku=8:if (cnt=17)&(count=850){for i,212,285,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=5:next}
+danmaku=0:if (cnt=17)&(count=870){for i,285,322,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+40:by(i)=double(ey(cnt))+50:b(i)=1:danmaku+=10:next}
+if (cnt=17)&(count>=890)&(ex(cnt)>=-100){ex(cnt)=ex(cnt)-2}
+if (cnt>=18)&(cnt<=19)&(count=900){ex(cnt)=900:ey(cnt)=100}
+if (cnt=18)&(count>=900)&(ex(cnt)>=-100):ex(cnt)-=3
+if (cnt=19)&(count>=930)&(ex(cnt)>=-100):ex(cnt)-=3
+danmaku=0:if (cnt=18)&(count=950){for i,322,329,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+20:by(i)=double(ey(cnt))+30:b(i)=1:danmaku+=30:next}
+if (cnt=18)&(count=965){bang(336)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(336)=cos(bang(336))*bspd(336):bmoy(336)=sin(bang(336))*bspd(336):bx(336)=double(ex(cnt)):by(336)=double(ey(cnt)):b(336)=1}
+danmaku=0:if (cnt=19)&(count=980){for i,329,336,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+20:by(i)=double(ey(cnt))+30:b(i)=1:danmaku+=30:next}
+if (cnt=19)&(count=995){bang(337)=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(337)=cos(bang(337))*bspd(337):bmoy(337)=sin(bang(337))*bspd(337):bx(337)=double(ex(cnt)):by(337)=double(ey(cnt)):b(337)=1}
+if (cnt=18)&(count>=1020)&(ex(cnt)>=-100):ex(cnt)-=5
+if (cnt=19)&(count>=1050)&(ex(cnt)>=-100):ex(cnt)-=5
+if (cnt>=20)&(cnt<=22)&(count=1100){ex(cnt)=900:ey(cnt)=50}
+if (cnt=20)&(count>=1100)&(ex(cnt)>=-100):ex(cnt)-=4
+if (cnt=21)&(count>=1150)&(ex(cnt)>=-100):ex(cnt)-=4
+if (cnt=22)&(count>=1200)&(ex(cnt)>=-100):ex(cnt)-=4
+tambanban=0:if (cnt=20)&(count=1140){tamban(tambanban)=338}for i,0,91,10:if (cnt=20)&(count=1140+i){bang(tamban(tambanban))=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(tamban(tambanban))=cos(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bmoy(tamban(tambanban))=sin(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bx(tamban(tambanban))=double(ex(cnt)):by(tamban(tambanban))=double(ey(cnt)):b(tamban(tambanban))=1:tamban(tambanban)++}:next
+danmaku=0:if (cnt=20)&(count=1180){for i,347,383,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+20:by(i)=double(ey(cnt))+30:b(i)=1:danmaku+=5:next}
+tambanban=1:if (cnt=21)&(count=1190){tamban(tambanban)=383}for i,0,91,10:if (cnt=21)&(count=1190+i){bang(tamban(tambanban))=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(tamban(tambanban))=cos(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bmoy(tamban(tambanban))=sin(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bx(tamban(tambanban))=double(ex(cnt)):by(tamban(tambanban))=double(ey(cnt)):b(tamban(tambanban))=1:tamban(tambanban)++}:next
+danmaku=0:if (cnt=21)&(count=1230){for i,392,428,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+20:by(i)=double(ey(cnt))+30:b(i)=1:danmaku+=5:next}
+tambanban=2:if (cnt=22)&(count=1240){tamban(tambanban)=428}for i,0,91,10:if (cnt=22)&(count=1240+i){bang(tamban(tambanban))=atan(py+23-ey(cnt),px+18-ex(cnt)):bmox(tamban(tambanban))=cos(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bmoy(tamban(tambanban))=sin(bang(tamban(tambanban)))*bspd(tamban(tambanban)):bx(tamban(tambanban))=double(ex(cnt)):by(tamban(tambanban))=double(ey(cnt)):b(tamban(tambanban))=1:tamban(tambanban)++}:next
+danmaku=0:if (cnt=22)&(count=1280){for i,437,473,1:bang(i)=deg2rad(danmaku):bmox(i)=cos(bang(i))*bspd(i):bmoy(i)=sin(bang(i))*bspd(i):bx(i)=double(ex(cnt))+20:by(i)=double(ey(cnt))+30:b(i)=1:danmaku+=5:next}
+if cnt!17:pos ex(cnt),ey(cnt):celput 1,,0.5,0.5
+if cnt=17:pos ex(cnt),ey(cnt):celput 1
+if (ed(cnt)=1)&(cnt!17):pos ex(cnt),ey(cnt):celput 14,,0.5,0.5
+if (ed(cnt)=1)&(cnt=17):pos ex(cnt),ey(cnt):celput 14
+}
+loop
+foreach ehp
+if cnt!17{if (eexplo(cnt)>0)&(eexplo(cnt)<=4):pos ex(cnt)-70,ey(cnt)-60:celput 15,0,1.8,1.8
+          if (eexplo(cnt)>4)&(eexplo(cnt)<=8):pos ex(cnt)-70,ey(cnt)-60:celput 15,1,1.8,1.8
+          if eexplo(cnt)>8:pos ex(cnt)-70,ey(cnt)-60:celput 15,2,1.8,1.8
+          }
+if cnt=17{if (eexplo(cnt)>0)&(eexplo(cnt)<=4):pos ex(cnt)-150,ey(cnt)-120:celput 15,0,3.5,3.5
+          if (eexplo(cnt)>4)&(eexplo(cnt)<=8):pos ex(cnt)-150,ey(cnt)-120:celput 15,1,3.5,3.5
+          if eexplo(cnt)>8:pos ex(cnt)-150,ey(cnt)-120:celput 15,2,3.5,3.5
+          }
+if eexplo(cnt)!0:eexplo(cnt)++
+if eexplo(cnt)>12:eexplo(cnt)=0:ex(cnt)=10000:ey(cnt)=10000
+loop
+
+foreach b
+if b(cnt)=1{bx(cnt)=bx(cnt)+bmox(cnt):by(cnt)=by(cnt)+bmoy(cnt):pos int(bx(cnt)),int(by(cnt)):celput 16,0
+if by(cnt)>=700:bx(cnt)=10000.0:by(cnt)=10000.0:b(cnt)=0
+if by(cnt)<=-50:bx(cnt)=10000.0:by(cnt)=10000.0:b(cnt)=0
+            }
+loop
+
+foreach ehp
+if (cnt!17)&(destp=0)&(ehp(cnt)>0)&(px+24>=ex(cnt))&(px+24<=ex(cnt)+40)&(py+29>=ey(cnt))&(py+29<=ey(cnt)+50):destp=1:mmplay 0
+if (cnt=17)&(destp=0)&(ehp(cnt)>0)&(px+24>=ex(cnt))&(px+24<=ex(cnt)+80)&(py+29>=ey(cnt))&(py+29<=ey(cnt)+100):destp=1:mmplay 0
+loop
+foreach b
+if (destp=0)&(b(cnt)=1)&(px+20>=bx(cnt))&(px+24<=bx(cnt)+17)&(py+24>=by(cnt))&(py+29<=by(cnt)+17):destp=1:mmplay 0
+loop
+if (destp>0)&(destp<=4):pos px-70,py-60:celput 15,0,1.8,1.8
+if (destp>4)&(destp<=8):pos px-70,py-60:celput 15,1,1.8,1.8
+if (destp>8)&(destp<=12):pos px-70,py-60:celput 15,2,1.8,1.8
+if destp!0:destp++
+if destp>130:destp=0
+
+;pos 200,200:celput 1,,0.5,0.5,rad
+;if rad<=6.28:rad=0.02+rad:else:rad=0.02
+if y>=600:y=-1220:else:y+=10
+
+count=count+1
+if destp=0:color 0,255,255:pset px+24,py+29
+color:gmode 4,,,256:pos 0,0:celput 10
+color 255,255,255:font msgothic,40,1:pos 1035,106:mes ""+score:pos 1035,216:mes "":font msgothic,30,1:pos 1030,183:mes ""
+pos 10,10:font msgothic,12:mes "px:"+px:mes "py:"+py:mes "count:"+count
+redraw 1:await 1
+repeat 30:ed(cnt)=0:loop
+goto *mainloop
+
+*move
+getkey shiftkey,16:stick key,63:opx=px:opy=py
+if shiftkey=1{if key&1:px=px-4
+              if key&4:px=px+4
+              if key&2:py=py-4
+              if key&8:py=py+4
+              }else{if key&1:px=px-8
+                    if key&4:px=px+8
+                    if key&2:py=py-8
+                    if key&8:py=py+8
+                    }
+if px<52:px=opx
+if px>804:px=opx
+if py<32:py=opy
+if py>592:py=opy
+return

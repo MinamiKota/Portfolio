@@ -1,0 +1,1309 @@
+#include "hspda.as"
+#include "hsp3util.as"
+onexit gosub *exit
+title ""
+buffer 25,1000,500
+screen 0,1000,500,,180,100
+gsel 0,1
+
+*start
+celload "picture.bmp",1
+celdiv 1,32,32
+celload "start.bmp",2
+celload "Enter.bmp",3
+celload "title.bmp",4
+celload "pointer.bmp",5
+celdiv 5,30,30
+celload "haikei.bmp",6
+celload "mainscreen.bmp",7
+celload "1.bmp",8
+celload "picture2.bmp",9
+celdiv 9,50,50
+celload "answerwindow.bmp",10
+celload "2.bmp",11
+celload "picture3.bmp",12
+celdiv 12,32,32
+celload "3.bmp",13
+celload "4.bmp",14
+celload "4noue.bmp",15
+celload "5.bmp",16
+celload "battle1.bmp",17
+celload "battlewindow1.bmp",18
+celload "battlewindow2.bmp",19
+celload "picture4.bmp",20
+celload "haikei2.bmp",21
+celload "result.bmp",22
+celload "black.bmp",23
+celload "menuicon.bmp",24
+celdiv 24,150,150
+;ID25‚Í‰¼‘z‰æ–Ê
+celload "menu.bmp",26
+celload "customize.bmp",27
+celload "6.bmp",28
+celload "7.bmp",29
+celload "status.bmp",30
+celload "ugokumaru.bmp",31
+celload "8.bmp",32
+celload "9.bmp",33
+x=-100:a=1:c=0:d=1
+randomize
+sluck=rnd(11)
+
+pname="":a=0:c=0:d=0:ix=130:iy=340:ia=1:px=190:py=190:opx=px:opy=py:aa=1:txrt=130:save=0:elder="":pmessage=""
+proove=1:showpm=1:locka=1:pm=0
+phpmx=10:php=phpmx:pppmx=0:ppp=pppmx:pat=6:pdf=10:pgenus="":pspecies="":plv=1:plaexp=0
+ihpmx=20:ihp=ihpmx:ippmx=5:ipp=ippmx:iat=12:idf=12:igenus="":ispecies="":ilv=3:ikeexp=0
+goto *pukuvillage
+
+*startloop
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 2
+color 255,255,255:gmode 4,,,256
+if (a>=1)&(a<=10)&(sluck<=7):pos x,257:celput 1,0
+if (a>=11)&(a<=20)&(sluck<=7):pos x,257:celput 1,1
+if (a>=21)&(a<=30)&(sluck<=7):pos x,257:celput 1,2
+if (a>=1)&(a<=10)&(sluck>=8)&(sluck<=9):pos x,253:celput 1,3
+if (a>=11)&(a<=20)&(sluck>=8)&(sluck<=9):pos x,253:celput 1,4
+if (a>=21)&(a<=30)&(sluck>=8)&(sluck<=9):pos x,253:celput 1,5
+if (a>=1)&(a<=10)&(sluck=10):pos x,257:celput 12,0
+if (a>=11)&(a<=20)&(sluck=10):pos x,257:celput 12,1
+if (a>=21)&(a<=30)&(sluck=10):pos x,257:celput 12,2
+if (c=100)&(d>=1)&(d<=40):pos 920,100:celput 3
+if (c=100)&(d>=41)&(d<=60):pos 925,105:celput 3
+if c=100:color 0,0,0:font msgothic,60,1:pos 620,100:mes ""
+if (c>=50)&(sluck<=7):color 0,0,0:font msgothic,14,0:pos x-40,235:mes ""
+if (c>=50)&(sluck>=8)&(sluck<=9):color 0,0,0:font msgothic,14,0:pos x-40,235:mes ""
+if (c>=50)&(sluck=10):color 0,0,0:font msgothic,14,0:pos x-40,235:mes ""
+a++
+if c=100:d++
+if (x=110)&(c<100):c++
+if x<110:x++
+if a>30:a=1
+if d>60:d=1
+redraw 1:wait 1
+if c=100:if b&32:a=1:c=0:d=0:x=435:y=243:cls 4:wait 50:goto *startmenu
+goto *startloop
+
+*startmenu
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 4
+color 255,255,255:gmode 4,,,256
+if (a>=1)&(a<=20):pos x-30,y:celput 5,0
+if (a>=21)&(a<=40):pos x-30,y:celput 5,1
+if y=243:color 255,255,255:font msgothic,18,0:pos x,250:mes "":else:color 50,50,50:font msgothic,18,0:pos x,250:mes ""
+if y=273:color 255,255,255:font msgothic,18,0:pos x,280:mes "":else:color 50,50,50:font msgothic,18,0:pos x,280:mes ""
+if y=303:color 255,255,255:font msgothic,18,0:pos x,310:mes "":else:color 50,50,50:font msgothic,18,0:pos x,310:mes ""
+a++
+if a>40:a=1
+redraw 1:wait 1
+if c=0:c=1:wait 69
+if b&2:y=y-30:wait 20
+if b&8:y=y+30:wait 20
+if y<243:y=303
+if y>303:y=243
+if b&32{if y=243:a=1:c=0:d=0:x=310:y=273:cls 4:wait 50:goto *playername
+        if y=273:cls 4:wait 50:goto *dataload
+        if y=303:end
+                                                                        }
+goto *startmenu
+
+*playername
+stick b,63:redraw 0
+gmode 0:pos 80,50:celput 6
+color 255,255,255:gmode 4,,,256
+if (a>=1)&(a<=20):pos x-30,y:celput 5,0
+if (a>=21)&(a<=40):pos x-30,y:celput 5,1
+if y=243:color 255,255,255:font msgothic,18,0:pos x,250:mes "":else:color 20,20,20:font msgothic,18,0:pos x,250:mes ""
+if y=273:color 255,255,255:font msgothic,18,0:pos x,280:mes "":else:color 20,20,20:font msgothic,18,0:pos x,280:mes ""
+color 255,255,255:font msgothic,14,0:pos 225,150:mes ""
+a++
+if a>40:a=1
+redraw 1:wait 1
+if c=0:c=1:wait 69
+if b&2:y=y-30:wait 20
+if b&8:y=y+30:wait 20
+if y<243:y=273
+if y>273:y=243
+if b&32{if y=243:a=1:c=0:d=1:goto *playername2
+        if y=273:a=1:c=0:d=0:x=435:y=243:cls 4:wait 50:goto *startmenu
+                                                                      }
+goto *playername
+*playername2
+gmode 0:pos 0,0:celput 7
+gmode 0:pos 80,50:celput 6
+color 255,255,255:font msgothic,14,0:pos 240,150:mes "":pname=""
+color 100,100,100:font msgothic,11,0:pos 100,370:mes ""
+pos 295,200:input pname,100,20,8
+pos 312,240:button "",*gamestart
+stop
+*gamestart
+cls 4:wait 50
+if pname="":goto *playername2
+if pname="":goto *playername2
+if pname="":goto *playername2
+if pname="":goto *playername2
+if pname="":goto *playername2
+elder="":pm=0:save=0:pmessage="":txrt=0:proove=0:showpm=0:locka=0:hnstkxtt=0:tabako=0
+phpmx=10:php=phpmx:pppmx=0:ppp=pppmx:pat=6:pdf=10:pgenus="":pspecies="":plv=1:plaexp=0
+ihpmx=20:ihp=ihpmx:ippmx=5:ipp=ippmx:iat=12:idf=12:igenus="":ispecies="":ilv=3:ikeexp=0
+*gamestartloop
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 7
+gmode 0:pos 80,50:celput 6
+color 255,255,255:gmode 4,,,256
+font msgothic,14,0:pos 810,82:mes pname
+if (a>=1)&(a<=15):pos 350,200:celput 1,6:pos 743,120:celput 1,6
+if (a>=16)&(a<=30):pos 350,200:celput 1,7:pos 743,120:celput 1,7
+color 255,255,255:font msgothic,10,0:pos 342,194:mes pname
+color 255,255,255:font msgothic,14,0:pos 90,410:mes ""+pname+""
+if (d>=1)&(d<=40):pos 565,410:celput 3
+if (d>=41)&(d<=60):pos 570,415:celput 3
+a++:d++
+if a>30:a=1
+if d>60:d=1
+redraw 1:wait 1
+if c=0:c=1:wait 79
+if b&32:a=0:c=0:d=0:ix=130:iy=340:ia=1:px=105:py=345:opx=px:opy=py:aa=1:save=0:cls 4:wait 50:goto *ikehome
+goto *gamestartloop
+
+*dataload
+dialog "pcs",16,""
+if stat=0:goto *cancel
+vload refstr
+if fikehome=1:fikehome=0:a=0:c=0:d=0:ia=1:aa=1:cls 4:wait 50:goto *ikehome
+*cancel
+a=1:c=0:x=435:y=243:cls 4:wait 50:goto *startmenu
+
+*datasave
+dialog "pcs",17,""
+if stat=0:return
+fname=getpath(refstr,1)+".pcs"
+vsave fname
+dialog fname+""
+return
+
+*ikehome
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 7
+gmode 0:pos 80,50:celput 8
+color 255,255,255:gmode 4,,,256
+pos 95,340:celput 9,0
+pos 180,280:celput 9,1
+pos 165,284:celput 9,2
+pos 180,250:celput 9,15
+pos 180,244:celput 9,4
+pos 90,220:celput 9,5
+pos 110,222:celput 9,6
+pos 240,50:celput 9,8
+font msgothic,14,0:pos 810,82:mes pname:pos 810,102:mes ""+plv:pos 810,122:mes ""+php+" / "+phpmx:pos 810,142:mes ""+ppp+" / "+pppmx
+if txrt>=127:pos 810,173:mes "":pos 810,193:mes ""+ilv:pos 810,213:mes ""+ihp+" / "+ihpmx:pos 810,233:mes ""+ipp+" / "+ippmx
+pos 10,10:mes ""+px:mes ""+py
+if txrt<=128{if (ia>=1)&(ia<=10):pos ix,iy:celput 1,0
+             if (ia>=11)&(ia<=20):pos ix,iy:celput 1,1
+             if (ia>=21)&(ia<=30):pos ix,iy:celput 1,2
+                                                      }
+if txrt>=127{if (ia>=1)&(ia<=10):pos 743,210:celput 1,0
+             if (ia>=11)&(ia<=20):pos 743,210:celput 1,1
+             if (ia>=21)&(ia<=30):pos 743,210:celput 1,2
+                                                        }
+if txrt>=130:gosub *move
+if (px<=377)&(py>=142)&(py<=187):px=opx:py=opy
+if (px>=355)&(px<=377)&(py>=188)&(py<=271):px=opx:py=opy
+if (px>=355)&(px<=377)&(py>=305):px=opx:py=opy
+if (px>=80)&(px<=137)&(py<=235)&(py>=225):px=opx:py=opy
+if (px>=172)&(px<=206)&(py<=257)&(py>=246):px=opx:py=opy
+if (px>=233)&(px<=265)&(py=61):px=opx:py=opy
+if txrt>=129{pos 200,40:celput 9,10
+             font msgothic,14,0:color 255,255,255:pos 80,30:mes ""
+             if save=0{pos 330,230:celput 9,9
+                       if (px>=320)&(px<=350)&(py>=215)&(py<=239):fikehome=1:save=1:gosub *datasave
+                                                                                                   }
+                                                                                                    }
+if (ia>=1)&(ia<=15):pos px,py:celput 1,6:pos 743,120:celput 1,6
+if (ia>=16)&(ia<=30):pos px,py:celput 1,7:pos 743,120:celput 1,7
+if (ia>=1)&(ia<=10)&(actcha!0)&(actcha!4)&(proove=0):pos px,py+20:celput 1,0
+if (ia>=11)&(ia<=20)&(actcha!0)&(actcha!4)&(proove=0):pos px,py+20:celput 1,1
+if (ia>=21)&(ia<=30)&(actcha!0)&(actcha!4)&(proove=0):pos px,py+20:celput 1,2
+if (px>=80)&(px<=137)&(py<=224)&(py>=204){pos 90,220:celput 9,5
+                                          pos 110,222:celput 9,6
+                                                                       }
+if (px>=172)&(px<=206)&(py<=256)&(py>=240){pos 180,250:celput 9,15
+                                           pos 180,244:celput 9,4
+                                                                        }
+if (px>=233)&(px<=265)&(py<=60)&(py>=40):pos 240,50:celput 9,8
+if actcr=0:actcha=0
+if (px>=233)&(px<=265)&(py<=65)&(py>=61)&(actchac=0)&(actcha=0)&(tabako=0)&(proove=0):pos px,py-15:celput 1,11:actcha=1
+if (px>=233)&(px<=265)&(py<=65)&(py>=61)&(actchac=0)&(actcha=0)&(tabako>=1)&(proove=0):pos px,py-15:celput 1,11:actcha=2
+if (px>=233)&(px<=265)&(py<=65)&(py>=61)&(actchac=0)&(actcha=0)&(proove=1):pos px,py-15:celput 1,11:actcha=3
+if (px>=95)&(px<=110)&(py<=355)&(py>=335)&(actchac=0)&(actcha=0)&(proove=1):pos px,py-15:celput 1,11:actcha=4
+if showpm=1:color 255,255,255:font msgothic,12,0:pos 720,440:mes ""+pm
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=200)&(px<=216)&(py>=40)&(py<=56):ia=1:aa=1:px=210:py=340:save=0:cls 4:wait 50:goto *elderspace
+if b&32:if (actcha!0)&(actcr=0):actchac=1:actcr=1
+if (actcha=1)&(actchac=2):gosub *tx1
+if (actcha=2)&(actchac=2):gosub *tx4n1
+if (actcha=3)&(actchac=2):gosub *tx5
+if (actcha=4)&(actchac=2):gosub *tx12
+if actchac>=20:actchac=0:actcr=0
+if actchac>=1:actchac++
+if txrt=120:gosub *protx
+if txrt=121:gosub *protx1
+if txrt=122:gosub *protx2
+if txrt=123:gosub *protx3
+if txrt=124:gosub *protx4
+if txrt=125:gosub *protx5
+if txrt=126:gosub *protx6
+if txrt=128:gosub *protx7
+if txrt<130:txrt++
+ia++:aa++
+if ia>30:ia=1
+if aa>60:aa=1
+goto *ikehome
+
+*elderspace
+stick b,63:redraw 0:areaname="":area=11:battlefield=17
+gosub *move
+if (px<=295)&(py<=127):px=opx:py=opy
+if (px>=295)&(px<=316)&(py>=124)&(py<=208):px=opx:py=opy
+if (px>=392)&(py>=156)&(py<=175):px=opx:py=opy
+if (px>=317)&(px<=391)&(py<=155):px=opx:py=opy
+if (px>=295)&(px<=339)&(py>=176)&(py<=208):px=opx:py=opy
+if (px>=369)&(py>=176)&(py<=208):px=opx:py=opy
+if (px>=393)&(py>=209)&(py<=265):px=opx:py=opy
+gosub *show
+if actcr=0:actcha=0:tx6o=0
+if (px>=175)&(px<=200)&(py>=128)&(py<=130)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=1:ilw=0
+if (px>=347)&(px<=361)&(py>=180)&(py<=190)&(actchac=0)&(actcha=0)&(tabako=0)&(proove=0):pos px,py-15:celput 1,11:actcha=2:ilw=0
+if (px>=347)&(px<=361)&(py>=180)&(py<=190)&(actchac=0)&(actcha=0)&(tabako=1)&(proove=0):pos px,py-15:celput 1,11:actcha=3:ilw=0
+if (px>=347)&(px<=361)&(py>=180)&(py<=190)&(actchac=0)&(actcha=0)&(tabako=2)&(proove=0):pos px,py-15:celput 1,11:actcha=2:ilw=0
+if (px>=347)&(px<=361)&(py>=180)&(py<=190)&(actchac=0)&(actcha=0)&(proove=1):pos px,py-15:celput 1,11:actcha=4:ilw=0
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=197)&(px<=220)&(py>=358)&(py<=374):ia=1:aa=1:px=210:py=70:save=0:cls 4:wait 50:goto *ikehome
+if (px<=88)&(py>=244)&(py<=256)&(locka=1):ia=1:aa=1:px=570:py=250:save=0:cls 4:wait 50:goto *pukuvillage
+if b&32:if (actcha!0)&(actcr=0):actchac=1:actcr=1
+if (actcha=1)&(actchac=2):gosub *tx2
+if proove=0{if (actcha=2)&(actchac=2)&(tabako!2):gosub *tx3n1
+            if (actcha=2)&(actchac=3)&(tabako!2):gosub *tx3n2
+            if (actcha=2)&(actchac=4)&(tabako!2):gosub *tx3n3
+            if (actcha=2)&(actchac=5)&(tabako!2):gosub *tx3n4
+            if (actcha=2)&(actchac=6)&(tabako!2):gosub *tx3n5
+            if (actcha=2)&(actchac=7)&(tabako=0):gosub *tx3n11
+            if (actcha=2)&(actchac=8)&(tabako=0):gosub *tx3n13
+            if (actcha=3)&(actchac=2)&(tabako=1):gosub *tx3n6
+            if (actcha=2)&(actchac=2)&(tabako=2):gosub *tx3n7
+            if (actcha=2)&(actchac=3)&(tabako=2):gosub *tx3n8
+            if (actcha=2)&(actchac=4)&(tabako=2):gosub *tx3n9
+            if (actcha=2)&(actchac=5)&(tabako=2):gosub *tx3n10
+            if (actcha=2)&(actchac=6)&(tabako=2)&(dansd=0):gosub *tx3n12
+            if (actcha=2)&(actchac=6)&(tabako=2)&(dansd=1):gosub *tx3n16
+            if (actcha=2)&(actchac=7)&(tabako=2)&(dansd=0):gosub *tx3n13:actchac=8
+            if (actcha=2)&(actchac=7)&(tabako=2)&(dansd=1):gosub *tx3n11:actchac=6:dansd=0
+            if (actcha=2)&(actchac=9)&(tabako!1):gosub *tx3n14
+            if (actcha=2)&(actchac=10)&(tabako!1):gosub *tx3n15
+            if (actcha=2)&(actchac=11)&(tabako!1):gosub *tx3n17
+            }
+if (proove=1)&(tx6o=0){if (actcha=4)&(actchac=2):gosub *tx6n1
+                       if (actcha=4)&(actchac=3):gosub *tx6n2
+                       if (actcha=4)&(actchac=4):gosub *tx6n3
+                       }
+if (actchac>=20)&(actcha!2):actchac=0:actcr=0
+if (actchac>=30)&(actcha=2):actchac=0:actcr=0
+if actchac>=1:actchac++
+goto *elderspace
+
+*pukuvillage
+stick b,63:redraw 0:areaname="":area=13:battlefield=17
+gosub *move
+if (px>=264)&(px<=508)&(py>=298):px=opx:py=opy
+if (px<=191)&(py>=299):px=opx:py=opy
+if px<=99:px=opx:py=opy
+if (px>=165)&(py<=65):px=opx:py=opy
+if (px>=555)&(py<=127):px=opx:py=opy
+if (px>=477)&(px<=550)&(py>=82)&(py<=88):px=opx:py=opy
+gosub *show
+if (px>=477)&(px<=550)&(py>=72)&(py<=82){pos 485,81:celput 9,3
+                                         pos 505,81:celput 9,3
+                                         pos 525,81:celput 9,15
+                                                                  }
+if actcr=0:actcha=0
+if (px>=508)&(px<=521)&(py>=131)&(py<=137)&(actchac=0)&(actcha=0)&(tabako=1):pos px,py-15:celput 1,11:actcha=1:ilw=0
+if (px>=508)&(px<=521)&(py>=131)&(py<=137)&(actchac=0)&(actcha=0)&(tabako!1):pos px,py-15:celput 1,11:actcha=4:ilw=0
+if (px>=184)&(px<=197)&(py>=106)&(py<=111)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=2:ilw=0
+if (px>=344)&(px<=356)&(py>=266)&(py<=271)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=3:ilw=1
+if (px>=374)&(px<=380)&(py>=284)&(py<=294)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=3:ilw=2
+if (px>=322)&(px<=328)&(py>=284)&(py<=294)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=3:ilw=3
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=584)&(py>=240)&(py<=251):ia=1:aa=1:px=104:py=251:save=0:cls 4:wait 50:goto *elderspace
+if (px>=119)&(px<=146)&(py<=57)&(proove=1):ia=1:aa=1:px=131:py=335:save=0:cls 4:wait 50:goto *pukusougen
+if (px>=214)&(px<=238)&(py>=356):ia=1:aa=1:px=225:py=70:save=0:cls 4:wait 50:goto *pukuvlisp
+if b&32:if (actcha!0)&(actcr=0):actchac=1:actcr=1
+if (actcha=1)&(actchac=2):gosub *tx4n2
+if (actcha=1)&(actchac=3):gosub *tx4n3
+if (actcha=2)&(actchac=2):gosub *tx9
+if (actcha=3)&(actchac=2):gosub *tx10n1
+if (actcha=3)&(actchac=3)&(dansh!0):gosub *tx10n2
+if (actcha=4)&(actchac=2):gosub *tx11
+if actchac>=20:actchac=0:actcr=0
+if actchac>=1:actchac++
+goto *pukuvillage
+
+*pukuvlisp
+stick b,63:redraw 0:areaname="":area=14:battlefield=17
+gosub *move
+if px<=96:px=opx:py=opy
+if py>=351:px=opx:py=opy
+if px>=582:px=opx:py=opy
+if (py<=54)&(px<=188):px=opx:py=opy
+if (py<=54)&(px>=265):px=opx:py=opy
+if (px<=216)&(py>=91)&(py<=128):px=opx:py=opy
+if (px<=98)&(py>=100):px=opx:py=opy
+if (px>=196)&(px<=216)&(py>=91)&(py<=149):px=opx:py=opy
+if (px<=216)&(py>=169)&(py<=219):px=opx:py=opy
+if (px>=196)&(px<=216)&(py>=165)&(py<=240):px=opx:py=opy
+if (px<=216)&(py>=260)&(py<=308):px=opx:py=opy
+if (px>=196)&(px<=216)&(py>=256)&(py<=329):px=opx:py=opy
+if (px<=200)&(py>=349):px=opx:py=opy
+if (px>=196)&(px<=216)&(py>=345):px=opx:py=opy
+if (px>=470)&(py>=349):px=opx:py=opy
+if (px>=580)&(py>=300):px=opx:py=opy
+if (px>=580)&(py<=130):px=opx:py=opy
+if (px>=462)&(px<=497)&(py>=271)&(py<=308):px=opx:py=opy
+if (px>=462)&(px<=482)&(py>=271):px=opx:py=opy
+if (px>=530)&(py>=271)&(py<=308):px=opx:py=opy
+if (px>=302)&(px<=333)&(py>=107)&(py<=143):px=opx:py=opy
+if (px>=302)&(px<=322)&(py<=143):px=opx:py=opy
+if (px>=376)&(px<=440)&(py>=107)&(py<=143):px=opx:py=opy
+if (px>=420)&(px<=440)&(py<=143):px=opx:py=opy
+if (px>=462)&(px<=493)&(py>=107)&(py<=143):px=opx:py=opy
+if (px>=462)&(px<=482)&(py<=143):px=opx:py=opy
+if (px>=536)&(py>=107)&(py<=143):px=opx:py=opy
+if (px>=302)&(px<=440)&(py<=87):px=opx:py=opy
+if (px>=462)&(py<=87):px=opx:py=opy
+gosub *show
+pos 502,296:celput 15
+if actcr=0:actcha=0
+if (px>=161)&(px<=170)&(py>=248)&(py<=253)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=1:ilw=2
+if (px>=350)&(px<=368)&(py>=306)&(py<=311)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=2:ilw=0
+if (px>=350)&(px<=368)&(py>=270)&(py<=274)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=2:ilw=1
+if (px>=381)&(px<=387)&(py>=285)&(py<=295)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=2:ilw=2
+if (px>=332)&(px<=339)&(py>=285)&(py<=295)&(actchac=0)&(actcha=0):pos px,py-15:celput 1,11:actcha=2:ilw=3
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=213)&(px<=239)&(py<=57):ia=1:aa=1:px=226:py=326:save=0:cls 4:wait 50:goto *pukuvillage
+if b&32:if (actcha!0)&(actcr=0):actchac=1:actcr=1
+if (actcha=1)&(actchac=2):gosub *tx7
+if (actcha=2)&(actchac=2):gosub *tx8
+if actchac>=20:actchac=0:actcr=0
+if actchac>=1:actchac++
+goto *pukuvlisp
+
+*pukusougen
+stick b,63:redraw 0:areaname="":area=16:battlefield=17
+gosub *move
+if (py>=342)&(px<=97):px=opx:py=opy
+if (py>=342)&(px>=168):px=opx:py=opy
+if (py<=163)&(py>=89)&(px>=307)&(px<=431):px=opx:py=opy
+if (px>=482)&(px<=538)&(py>=219):px=opx:py=opy
+if (px>=510)&(py>=278):px=opx:py=opy
+if px>=580:px=opx:py=opy
+if (px>=545)&(py<=175):px=opx:py=opy
+if (px>=482)&(py<=52):px=opx:py=opy
+oex=ex:oey=ey
+if (enes=1)&(ia>=11)&(ia<=20){if px<ex:ex=ex-1
+                              if px>ex:ex++
+                              if py<ey:ey=ey-1
+                              if py>ey:ey++
+                              }
+if (ey>=342)&(ex<=97):ex=oex:ey=oey
+if (ey>=342)&(ex>=168):ex=oex:ey=oey
+if (ey<=163)&(ey>=89)&(ex>=307)&(ex<=431):ex=oex:ey=oey
+if (ex>=482)&(ex<=538)&(ey>=219):ex=oex:ey=oey
+if (ex>=510)&(ey>=278):ex=oex:ey=oey
+if ex>=580:ex=oex:ey=oey
+if (ex>=545)&(ey<=175):ex=oex:ey=oey
+if (ex>=482)&(ey<=52):ex=oex:ey=oey
+gosub *show
+if actcr=0:actcha=0
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=119)&(px<=145)&(py>=355):ia=1:aa=1:px=133:py=74:save=0:enesc=0:enes=0:cls 4:wait 50:goto *pukuvillage
+if (px<=93)&(py>=172)&(py<=190):ia=1:aa=1:px=570:py=186:save=0:enesc=0:enes=0:cls 4:wait 50:goto *pukusougen2
+if (enesc>=50)&(enes=0){enes=1
+                        if enernd=0:ex=170:ey=90
+                        if enernd=1:ex=230:ey=175
+                        if enernd=2:ex=280:ey=310
+                        }
+if enesc<50:enesc++:randomize:enernd=rnd(3)
+if (px>=ex-15)&(px<=ex+20)&(py>=ey-20)&(py<=ey+15)&(enes=1):gosub *battlestart:enes=0:enesc=-100
+if gameover=1:gameover=0:goto *gameoversc
+if (actchac>=20)&(actcha=1):actchac=0:actcr=0
+if actchac>=1:actchac++
+goto *pukusougen
+
+*pukusougen2
+stick b,63:redraw 0:areaname="":area=28:battlefield=17
+gosub *move
+if (px>=279)&(px<=357)&(py>=105)&(py<=238):px=opx:py=opy
+if (px>=210)&(px<=357)&(py>=182)&(py<=238):px=opx:py=opy
+if (px>=402)&(py>=342):px=opx:py=opy
+gosub *show
+if actcr=0:actcha=0
+redraw 1:wait 1:if (gotomenu=1)&(actchac=0)&(proove=1):gosub *menu
+if (px>=584)&(py>=174)&(py<=190):ia=1:aa=1:px=105:py=186:save=0:cls 4:wait 50:goto *pukusougen
+if (actchac>=20)&(actcha=1):actchac=0:actcr=0
+if actchac>=1:actchac++
+goto *pukusougen2
+
+*showobj
+switch area
+case 11
+pos 177,109:celput 9,13
+pos 315,140:celput 9,14
+pos 374,140:celput 9,14
+if (ia>=1)&(ia<=10):pos 354,170:celput 12,0
+if (ia>=11)&(ia<=20):pos 354,170:celput 12,1
+if (ia>=21)&(ia<=30):pos 354,170:celput 12,2
+pos 200,360:celput 9,11
+pos 235,40:celput 9,10
+if locka=1:pos 69,245:celput 9,12
+swbreak
+case 13
+pos 485,81:celput 9,3
+pos 505,81:celput 9,3
+pos 525,81:celput 9,15
+if (ia>=1)&(ia<=10):pos 514,116:celput 12,7
+if (ia>=11)&(ia<=20):pos 514,116:celput 12,8
+if (ia>=21)&(ia<=30):pos 514,116:celput 12,9
+if (ia>=1)&(ia<=10):pos 190+12,90-1:celput 12,19
+if (ia>=11)&(ia<=20):pos 190+12,90:celput 12,19
+if (ia>=21)&(ia<=30):pos 190+12,90-1:celput 12,19
+if (ia>=1)&(ia<=10):pos 190+12,90+4:celput 12,17
+if (ia>=11)&(ia<=20):pos 190+12,90+5:celput 12,17
+if (ia>=21)&(ia<=30):pos 190+12,90+4:celput 12,17
+if (ia>=1)&(ia<=10):pos 190,90:celput 12,10
+if (ia>=11)&(ia<=20):pos 190,90:celput 12,11
+if (ia>=21)&(ia<=30):pos 190,90:celput 12,12
+if (ia>=1)&(ia<=10):pos 350,290:celput 12,5
+if (ia>=11)&(ia<=20):pos 350,290:celput 12,6
+if (ia>=21)&(ia<=30):pos 350,290:celput 12,4
+
+/*
+if (ia>=1)&(ia<=10):pos 300+12,150+4:celput 12,24
+if (ia>=11)&(ia<=20):pos 300+12,150+5:celput 12,24
+if (ia>=21)&(ia<=30):pos 300+12,150+4:celput 12,24
+if (ia>=1)&(ia<=10):pos 300,150:celput 12,20
+if (ia>=11)&(ia<=20):pos 300,150:celput 12,21
+if (ia>=21)&(ia<=30):pos 300,150:celput 12,22
+if (ia>=1)&(ia<=10):pos 300+22,150+2:celput 12,27
+if (ia>=11)&(ia<=20):pos 300+22,150+3:celput 12,27
+if (ia>=21)&(ia<=30):pos 300+22,150+2:celput 12,27
+if (ia>=1)&(ia<=10):pos 300,150:celput 12,25
+if (ia>=11)&(ia<=20):pos 300,150:celput 12,25
+if (ia>=21)&(ia<=30):pos 300,150+1:celput 12,26
+
+if (aa>=1)&(aa<=30):pos 370,150:celput 12,28
+if (aa>=31)&(aa<=60):pos 370,150:celput 12,29
+*/
+	
+pos 590,245:celput 9,7
+if proove=1:pos 123,40:celput 9,10
+pos 217,360:celput 9,11
+swbreak
+case 14
+pos 110,240:celput 9,0
+if (ia>=1)&(ia<=10):pos 140,250:celput 12,10
+if (ia>=11)&(ia<=20):pos 140,250:celput 12,11
+if (ia>=21)&(ia<=30):pos 140,250:celput 12,12
+if (ia>=1)&(ia<=10):pos 360,290:celput 12,10
+if (ia>=11)&(ia<=20):pos 360,290:celput 12,11
+if (ia>=21)&(ia<=30):pos 360,290:celput 12,12
+pos 217,40:celput 9,10
+swbreak
+case 16
+if (ia>=1)&(ia<=10)&(enes=1):pos ex,ey:celput 1,3
+if (ia>=11)&(ia<=20)&(enes=1):pos ex,ey:celput 1,4
+if (ia>=21)&(ia<=30)&(enes=1):pos ex,ey:celput 1,5
+pos 123,360:celput 9,11
+pos 70,180:celput 9,12
+swbreak
+case 28
+pos 590,180:celput 9,7
+swbreak
+swend
+return
+
+*menu
+gsel 25:gcopy 0,,,1000,500:gsel 0,1:x=169:a=1:c=0
+for forcounter,1,97,2
+gmode 3,,,forcounter:pos 0,0:celput 26:wait 1
+next
+gmode 0:pos 0,0:celput 26:color 255,255,255:gmode 4,,,256:font msgothic,14,0
+pos 169,130:celput 24,2:wait 10:pos 419,130:celput 24,3:wait 10:pos 669,130:celput 24,4
+*menuloop
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 26
+color 255,255,255:gmode 4,,,256:font msgothic,14,0
+if x=169:pos 10,475:mes ""
+if x=419:pos 10,475:mes ""
+if x=669:pos 10,475:mes ""
+pos 169,130:celput 24,2:pos 419,130:celput 24,3:pos 669,130:celput 24,4
+if a<=8:pos x,130:celput 24,0:else:pos x,130:celput 24,1
+wait 1:redraw 1
+if b&1:if c>=20:x=x-250:c=1
+if b&4:if c>=20:x=x+250:c=1
+if x<169:x=669
+if x>669:x=169
+if c<20:c++
+if a<=16:a++:else:a=1
+if b&32:if x=169:goto *customize
+if b&16:else:goto *menuloop
+for forcounter,1,137,2
+gmode 3,,,forcounter:pos 0,0:gcopy 25,,,1000,500:wait 1
+next
+return
+
+*customize
+gmode 0:pos 0,0:celput 26:x=200:y=130:c=1
+color 255,255,255:gmode 4,,,256:font msgothic,14,0
+pos 10,475:mes "":pos 419,130:celput 24,3:pos 669,130:celput 24,4
+pos 164,125:celput 24,2,1.2,1.2:wait 3:pos 159,120:celput 24,2,1.4,1.4:wait 3:pos 154,115:celput 24,2,1.6,1.6:wait 3:pos 149,110:celput 24,2,1.8,1.8:wait 3:pos 144,105:celput 24,2,2,2:wait 3
+for forcounter,1,97,2
+gmode 3,,,forcounter:pos 0,0:celput 23:wait 1
+next
+for forcounter,1,97,2
+gmode 3,,,forcounter:pos 0,0:celput 27:wait 1
+next
+*customizeloop
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 27:color 255,255,255
+if (x=200)&(y=130):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 200,130:mes ""
+if (x=200)&(y=230):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 200,230:mes ""
+if (x=200)&(y=330):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 200,330:mes ""
+if (x=500)&(y=130):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 500,130:mes ""
+if (x=500)&(y=230):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 500,230:mes ""
+if (x=500)&(y=330):font msgothic,60,1:pos x,y:mes "":else:font msgothic,40,1:pos 500,330:mes ""
+font msgothic,14,0
+if (x=200)&(y=130):pos 10,475:mes ""
+if (x=200)&(y=230):pos 10,475:mes ""
+if (x=200)&(y=330):pos 10,475:mes ""
+if (x=500)&(y=130):pos 10,475:mes ""+pname+""
+if (x=500)&(y=230):pos 10,475:mes ""
+if (x=500)&(y=330):pos 10,475:mes pname+""
+wait 1:redraw 1
+if b&1:if c>=20:x=x-300
+if b&4:if c>=20:x=x+300
+if b&2:if c>=20:y=y-100
+if b&8:if c>=20:y=y+100
+if (b!0)&(c>=20):c=1
+if c<20:c++
+if x<200:x=500
+if x>500:x=200
+if y<130:y=330
+if y>330:y=130
+if b&32:if (x=500)&(y=230):for forcounter,1,97,2:gmode 3,,,forcounter:pos 0,0:celput 23:wait 1:next:ia=1:aa=1:senchar=0:ugokumaru=0:ugokumarux=19:ugokumaruy=61:goto *status
+if b&16{for forcounter,1,97,2
+        gmode 3,,,forcounter:pos 0,0:celput 26:wait 1
+        next
+        gmode 0:pos 0,0:celput 26:color 255,255,255:gmode 4,,,256:font msgothic,14,0:pos 169,130:celput 24,2:wait 10:pos 419,130:celput 24,3:wait 10:pos 669,130:celput 24,4:x=169:a=1:c=0:goto *menuloop
+        }
+goto *customizeloop
+
+*status
+stick b,63:redraw 0
+gmode 0:pos 0,0:celput 30:color 255,255,255:gmode 4,,,256:font msgothic,14,0:pos 10,475:mes ""
+if ugokumaru=0:ugokumaruy+=1
+if ugokumaru=1:ugokumarux+=1
+if ugokumaru=2:ugokumaruy-=1
+if ugokumaru=3:ugokumarux-=1
+if (ugokumarux=19)&(ugokumaruy=120):ugokumaru=1
+if (ugokumarux=155)&(ugokumaruy=120):ugokumaru=2
+if (ugokumarux=155)&(ugokumaruy=61):ugokumaru=3
+if (ugokumarux=19)&(ugokumaruy=61):ugokumaru=0
+pos ugokumarux,ugokumaruy:celput 31
+switch senchar
+case 0
+if plv<=9:plvupexp=plv*3-plaexp
+if plv>=10:plvupexp=""
+pos 15,22:mes ""+pname:pos 185,22:mes "":pos 260,22:mes ""+plv:pos 460,22:mes ""+plvupexp
+pos 415,70:mes ""+pgenus+pspecies
+pos 415,110:mes ""+php+" / "+phpmx
+pos 415,130:mes ""+ppp+" / "+pppmx
+pos 415,150:mes ""+pat
+pos 415,170:mes ""+pdf
+if (ia>=1)&(ia<=15):pos 190,214:celput 1,6
+if (ia>=16)&(ia<=30):pos 190,214:celput 1,7
+swbreak
+case 1
+if ilv<=9:ilvupexp=ilv*5-ikeexp
+if ilv>=10:ilvupexp=""
+pos 15,22:mes "":pos 185,22:mes "":pos 260,22:mes ""+ilv:pos 460,22:mes ""+ilvupexp
+pos 415,70:mes ""+igenus+ispecies
+pos 415,110:mes ""+ihp+" / "+ihpmx
+pos 415,130:mes ""+ipp+" / "+ippmx
+pos 415,150:mes ""+iat
+pos 415,170:mes ""+idf
+if (ia>=1)&(ia<=10):pos 190,213:celput 1,0
+if (ia>=11)&(ia<=20):pos 190,213:celput 1,1
+if (ia>=21)&(ia<=30):pos 190,213:celput 1,2
+swbreak
+swend
+wait 1:redraw 1
+if b&1:if c>=20:senchar-=1:gmode 0:pos 0,0:celput 30:pos 10,475:mes "":pos 15,22:mes "":pos 185,22:mes "":pos 260,22:mes "":pos 460,22:mes "":pos 415,70:mes "":pos 415,110:mes "":pos 415,130:mes "":pos 415,150:mes "":pos 415,170:mes "":gmode 4,,,256:pos ugokumarux,ugokumaruy:celput 31:wait 50:c=1
+if b&4:if c>=20:senchar+=1:gmode 0:pos 0,0:celput 30:pos 10,475:mes "":pos 15,22:mes "":pos 185,22:mes "":pos 260,22:mes "":pos 460,22:mes "":pos 415,70:mes "":pos 415,110:mes "":pos 415,130:mes "":pos 415,150:mes "":pos 415,170:mes "":gmode 4,,,256:pos ugokumarux,ugokumaruy:celput 31:wait 50:c=1
+if senchar<0:senchar=1
+if senchar>1:senchar=0
+if c<20:c++
+if b&16:for forcounter,1,97,2:gmode 3,,,forcounter:pos 0,0:celput 23:wait 1:next:x=500:y=230:c=1:goto *customizeloop
+ia++:aa++
+if ia>30:ia=1
+if aa>60:aa=1
+goto *status
+
+
+*battlestart
+for forcounter,1,207,2
+gmode 3,,,forcounter:pos 80,50:celput 21:pos 80,0:celput 21:wait 1
+next
+cls 4:wait 120
+battleove=0:battlestc=0:a=0:c=0:d=0:x=745:y=140:bpx=170:bpy=120:bpa=1:bix=170:biy=160:bia=1:bex=500:bey=120:tcname=pname:turnove=0:plaac=0:ikeac=0:eneac=0:plawac=0:ikewac=0:enewac=0
+ehpmx=30:ehp=ehpmx:eppmx=0:epp=eppmx:eat=7:edf=3:egenus="":especies="":elv=1:exp=2:getpm=10
+pten=0:bplaani=0:iten=0:bikeani=0:eten=0:beani=0:damhyo=10
+if php<=0:php=1
+if ihp<=0:ihp=1
+randomize
+cointoss=rnd(2):mojiy=-200:mojix=555
+if cointoss=0:moji="":else:moji=""
+*battle
+stick b,63:redraw 0
+if (c>=20)&(turnove=0){if b&2:y=y-35:c=1
+                       if b&8:y=y+35:c=1
+                       if y<140:y=245
+                       if y>245:y=140
+                                        }
+gmode 0:pos 0,0:celput battlefield
+color 255,255,255:gmode 4,,,256:font msgothic,14,0
+if battlestc<300:pos 10,475:mes ""
+if (battlestc=300)&(turnove=0):pos 10,475:mes ""
+if moji=""{
+if (battlestc=300)&(turnove=1)&(ikeac!0):pos 10,475:mes ""
+if (battlestc=300)&(turnove=1)&(ikeac=0)&(plaac!0):pos 10,475:mes pname+""
+if (battlestc=300)&(turnove=1)&(ikeac=0)&(plaac=0)&(eneac!0):pos 10,475:mes ""
+               }else{
+if (battlestc=300)&(turnove=1)&(eneac!0):pos 10,475:mes ""
+if (battlestc=300)&(turnove=1)&(eneac=0)&(ikeac!0):pos 10,475:mes ""
+if (battlestc=300)&(turnove=1)&(eneac=0)&(ikeac=0)&(plaac!0):pos 10,475:mes pname+""
+                     }
+if eten=0{if beani=0{if (bia>=1)&(bia<=10):pos bex,bey:celput 1,3
+                     if (bia>=11)&(bia<=20):pos bex,bey:celput 1,4
+                     if (bia>=21)&(bia<=30):pos bex,bey:celput 1,5
+    }else{if beani=1:pos bex,bey:celput 1,9
+          if beani=2:pos bex,bey:celput 1,5
+          if beani=3:pos bex,bey:celput 12,16
+                                             }
+          }
+if iten=0{if bikeani=0{if (bia>=1)&(bia<=10):pos bix,biy:celput 1,0
+                       if (bia>=11)&(bia<=20):pos bix,biy:celput 1,1
+                       if (bia>=21)&(bia<=30):pos bix,biy:celput 1,2
+                 }else{if bikeani=1:pos bix,biy:celput 1,1
+                       if bikeani=2:pos bix,biy:celput 12,14
+                       if bikeani=3:pos bix,biy:celput 1,8
+                                                            }
+          }
+if pten=0{if bplaani=0{if (bpa>=1)&(bpa<=15):pos bpx,bpy:celput 1,6
+                       if (bpa>=16)&(bpa<=30):pos bpx,bpy:celput 1,7
+                 }else{if bplaani=1:pos bpx,bpy:celput 12,15
+                       if bplaani=2:pos bpx,bpy:celput 1,10
+                                                           }
+          }
+if battlestc<300:font msgothic,120,1:text:else::font msgothic,14,0:text
+if moji="":color 200,200,255:textmode 2:color 0,0,255:else:color 255,200,200:textmode 2:color 255,0,0
+if battlestc<300:pos 730,mojiy:emes moji:c=1:else:pos mojix,273:emes ""+moji+""
+font msgothic,11,0:text:color 255,255,255:textmode 2:color
+if (battlestc>=50)&(battlestc<300):pos bpx+20,bpy:emes pname+"F"+pmessage
+if (battlestc>=100)&(battlestc<300):pos bix+20,biy:emes ""
+if (battlestc>=50)&(battlestc<300):pos bex+20,bey:emes ""
+font msgothic,14,1:text:color:textmode 2:color 255,255,255
+pos 15,310:emes pname:pos 170,310:emes pgenus+pspecies:pos 420,310:emes ""+plv:pos 480,310:emes ""+php+" / "+phpmx:pos 633,310:emes ""+ppp+" / "+pppmx
+pos 15,340:emes "":pos 170,340:emes igenus+ispecies:pos 420,340:emes ""+ilv:pos 480,340:emes ""+ihp+" / "+ihpmx:pos 633,340:emes ""+ipp+" / "+ippmx
+color 255,255,255:gmode 4,,,256:font msgothic,14,0
+if turnove=0{
+if battlestc=300:pos 700,90:celput 18:pos 700,4:celput 19
+if (a>=1)&(a<=20)&(battlestc=300):pos x-30,y:celput 5,0
+if (a>=21)&(a<=40)&(battlestc=300):pos x-30,y:celput 5,1
+font msgothic,14,1:text:color:textmode 2:color 255,255,255
+if battlestc=300{pos x,114:emes tcname+"":pos x,148:emes "":pos x,183:emes "":pos x,218:emes "":pos x,253:emes ""
+                 if y=140:pos 712,17:emes ""
+                 if y=175:pos 712,17:emes ""
+                 if y=210:pos 712,17:emes ""
+                 if y=245:pos 712,17:emes ""
+                 }
+if (php<=0)&(tcname=pname):plaac=4
+if (ihp<=0)&(tcname=""):ikeac=4
+             }
+if (ikewac>=61)&(ikewac<=160):font msgothic,10,1:text:color:textmode 2:color 255,255,255:pos bex,bey-damhyo:emes ""+edam+""
+if (plawac>=31)&(plawac<=160):font msgothic,10,1:text:color:textmode 2:color 255,255,255:pos bex,bey-damhyo:emes ""+edam+""
+if (enewac>=61)&(enewac<=160)&(enemytarget=1):font msgothic,10,1:text:color:textmode 2:color 255,255,255:pos bpx,bpy-damhyo:emes ""+pdam+""
+if (enewac>=61)&(enewac<=160)&(enemytarget=0):font msgothic,10,1:text:color:textmode 2:color 255,255,255:pos bix,biy-damhyo:emes ""+idam+""
+font msgothic,14,1:text:color:textmode 2:color 255,255,255:pos 10,10:emes "y"+y+" bpx"+bpx+" bpy"+bpy+" bix"+bix+" biy"+biy+" bex"+bex+" bey"+bey+" enemytarget"+enemytarget
+redraw 1:await 1
+if (c>=20)&(turnove=0){if b&32{if (tcname=pname)&(php>0){if y=140:plaac=1:c=1
+;                                                        if y=175:plaac=
+;                                                        if y=210:plaac=
+;                                                        if y=245:plaac=
+                                                         }
+                               if (tcname="")&(ihp>0){if y=140:ikeac=1:c=1
+;                                                               if y=175:ikeac=
+;                                                               if y=210:ikeac=
+;                                                               if y=245:ikeac=
+                                                                }
+                               }
+                       if b&16{if (tcname="")&(php>0){tcname=pname:plaac=0:c=1
+	                                                            }
+                               }
+eneac=1:randomize:enemytarget=rnd(2)
+if php<=0:enemytarget=0
+if ihp<=0:enemytarget=1
+                       }
+if turnove=1{
+if moji=""{if ikeac!0:gosub *ikeattack
+               if (plaac!0)&(ikeac=0):gosub *plaattack
+               if (plaac=0)&(ikeac=0)&(eneac!0):gosub *eneattack
+         }else{if eneac!0:gosub *eneattack
+               if (ikeac!0)&(eneac=0):gosub *ikeattack
+               if (eneac=0)&(ikeac=0)&(plaac!0):gosub *plaattack
+               }
+             }
+bia++:bpa++:a++
+if php<0:php=0
+if ihp<0:ihp=0
+if bia>30:bia=1
+if bpa>30:bpa=1
+if a>40:a=1
+if (c>0)&(c<20)&(battlestc=300):c++
+if battlestc<300:battlestc++
+if mojiy<90:mojiy=mojiy+2
+if plaac!0:tcname=""
+if ikeac!0:turnove=1:mojix=855
+if php<=0:bplaani=2
+if ihp<=0:bikeani=3
+if ehp<=0:beani=1
+if (turnove=1)&(plaac=0)&(ikeac=0)&(eneac=0)&(php<=0)&(ihp<=0):gameover=1:return
+if (turnove=1)&(plaac=0)&(ikeac=0)&(eneac=0)&(ehp<=0):battleove=1
+if (turnove=1)&(plaac=0)&(ikeac=0)&(eneac=0){turnove=0:tcname=pname:mojix=555
+                                             if moji="":moji="":else:moji=""
+                                             }
+if damhyo<10:damhyo=10
+if battleove=0:goto *battle
+gmode 3,,,150:pos 0,0:celput 23
+font msgothic,250,1:text:color 50,50,50:textmode 2:color 255,255,255:pos 250,115:emes ""
+wait 120
+repeat
+stick b,63:wait 1
+if b&32:break
+loop
+for forcounter,1,207,1
+gmode 3,,,forcounter:pos 0,0:celput 23:wait 1
+next
+plaexp=plaexp+exp:ikeexp=ikeexp+exp:pm=getpm+pm
+*levelup
+if (plaexp>=plv*3)&(plv<=9):plv+=1:plaexp-=plv*3:phpmx+=2:pat+=1:plvup=1:goto *levelup
+if (ikeexp>=ilv*5)&(ilv<=9):ilv+=1:ikeexp-=ilv*5:ihpmx+=5:iat+=2:ilvup=1:goto *levelup
+gmode 0:pos 0,0:celput 22
+font msgothic,60,1:color 255,255,255:pos 400,176:mes exp
+font msgothic,60,1:color 255,255,255:pos 400,336:mes getpm
+if plvup=1:font msgothic,15,1:text:color 255,50,50:textmode 2:color 255,255,100:pos 645,15:emes pname+""+plv+"":plvup=0
+if ilvup=1:font msgothic,15,1:text:color 255,50,50:textmode 2:color 255,255,100:pos 645,40:emes ""+ilv+"":ilvup=0
+wait 120
+repeat
+stick b,63:wait 1
+if b&32:break
+loop
+if php<=0:php=1
+if ihp<=0:ihp=1
+return
+
+*ikeattack
+if ikewac=0{if ehp<=0:ikeac=0:ikewac=0:return
+            if ihp<=0:ikeac=0:ikewac=0:return
+            if bix!380:bix=bix+2
+            if biy!120:biy=biy-1
+            if (bix=380)&(biy=120):ikewac=1
+                                           }
+if ikewac=60:randomize:edam=rnd(7)-3:edam=edam+iat:ededam=edam*edf/100:edam=edam-ededam:ehp=ehp-edam
+if (ikewac>=1)&(ikewac<=30):bikeani=1:bix=bix+2:biy=biy-1
+if (ikewac>=31)&(ikewac<=60):bikeani=2:bix=bix+2:biy=biy+1:damhyo=20
+if (ikewac>=61)&(ikewac<=80):eten=1:beani=0:bikeani=0:damhyo=damhyo-1
+if (ikewac>=81)&(ikewac<=100):eten=0:beani=1:bix=bix-4
+if (ikewac>=101)&(ikewac<=120):eten=1:beani=0:bix=bix-2
+if (ikewac>=121)&(ikewac<=140):eten=0:beani=1:bix=bix-1
+if (ikewac>=141)&(ikewac<=160):eten=1:beani=0
+if (ikewac>=161)&(ikewac<=180):eten=0:beani=0:bix=bix-1:biy=biy+2
+if (ikewac>=180)&(bix!40):bix=bix-2
+if (ikewac>=180)&(biy!160):biy=biy-1
+if (bix=170)&(biy=160):ikewac=0:ikeac=0
+if ikewac!0:ikewac++
+return
+
+*plaattack
+if plawac=0{if ehp<=0:plaac=0:plawac=0:return
+            if php<=0:plaac=0:plawac=0:return
+            if bpx!370:bpx=bpx+2
+            if (bpx=370)&(bpy=120):plawac=1
+                                           }
+if plawac=30:randomize:edam=rnd(7)-3:edam=edam+pat:ededam=edam*edf/100:edam=edam-ededam:ehp=ehp-edam
+if (plawac>=1)&(plawac<=30):bplaani=1:bpx=bpx+4:damhyo=20
+if (plawac>=31)&(plawac<=60):beani=1:damhyo=damhyo-1
+if (plawac>=61)&(plawac<=80):eten=1:beani=0:bplaani=0
+if (plawac>=81)&(plawac<=100):eten=0:beani=1:bpx=bpx-2
+if (plawac>=101)&(plawac<=120):eten=1:beani=0:bpx=bpx-1
+if (plawac>=121)&(plawac<=140):eten=0:beani=1:bpx=bpx-2
+if (plawac>=141)&(plawac<=160):eten=1:beani=0:bpx=bpx-1
+if (plawac>=161)&(plawac<=180):eten=0:beani=0
+if (plawac>=180)&(bpx!40):bpx=bpx-2
+if (bpx=170)&(bpy=120):plawac=0:plaac=0
+if plawac!0:plawac++
+return
+
+*eneattack
+switch enemytarget
+case 0:
+if enewac=0{if (php<=0)&(ihp<=0):eneac=0:enewac=0:return
+            if ehp<=0:eneac=0:enewac=0:return
+            if bex!210:bex=bex-2
+            if bey!160:bey=0.5+bey
+            if (bex=210)&(bey=160):enewac=1
+                                           }
+if enewac=60:randomize:idam=rnd(7)-3:idam=idam+eat:idedam=idam*idf/100:idam=idam-idedam:ihp=ihp-idam
+if (enewac>=1)&(enewac<=30):beani=2
+if (enewac>=31)&(enewac<=60):beani=3:bex=bex-1:damhyo=20
+if (enewac>=61)&(enewac<=80):iten=1:bikeani=0:damhyo=damhyo-1
+if (enewac>=81)&(enewac<=100):iten=0:bikeani=3:beani=0
+if (enewac>=101)&(enewac<=120):iten=1:bikeani=0
+if (enewac>=121)&(enewac<=140):iten=0:bikeani=3
+if (enewac>=141)&(enewac<=160):iten=1:bikeani=0:bex=bex+1
+if (enewac>=161)&(enewac<=180):iten=0:bikeani=0:bex=bex+1
+if (enewac>=180)&(bex!500):bex=bex+2
+if (enewac>=180)&(bey!120):bey=0.0+bey-0.5
+if (bex=500)&(bey=120):enewac=0:eneac=0
+if enewac!0:enewac++
+swbreak
+case 1:
+if enewac=0{if ehp<=0:eneac=0:enewac=0:return
+            if bex!210:bex=bex-2
+            if (bex=210)&(bey=120):enewac=1
+                                           }
+if enewac=60:randomize:pdam=rnd(7)-3:pdam=pdam+eat:pdedam=pdam*pdf/100:pdam=pdam-pdedam:php=php-pdam
+if (enewac>=1)&(enewac<=30):beani=2
+if (enewac>=31)&(enewac<=60):beani=3:bex=bex-1:damhyo=20
+if (enewac>=61)&(enewac<=80):pten=1:bplaani=0:damhyo=damhyo-1
+if (enewac>=81)&(enewac<=100):pten=0:bplaani=2:beani=0
+if (enewac>=101)&(enewac<=120):pten=1:bplaani=0
+if (enewac>=121)&(enewac<=140):pten=0:bplaani=2
+if (enewac>=141)&(enewac<=160):pten=1:bplaani=0:bex=bex+1
+if (enewac>=161)&(enewac<=180):pten=0:bplaani=0:bex=bex+1
+if (enewac>=180)&(bex!500):bex=bex+2
+if (bex=500)&(bey=120):enewac=0:eneac=0
+if enewac!0:enewac++
+swbreak
+swend
+return
+
+*move
+stick b,63:opx=px:opy=py
+if b&1:px=px-1
+if b&4:px=px+1
+if b&2:py=py-1
+if b&8:py=py+1
+if b&16:gotomenu=1:else:gotomenu=0
+if px<=74:px=opx
+if px>=605:px=opx
+if py<=39:py=opy
+if py>=375:py=opy
+return
+
+*show
+gmode 0:pos 0,0:celput 7:pos 80,50:celput area
+color 255,255,255:gmode 4,,,256:font msgothic,14,0:pos 810,82:mes pname:pos 810,102:mes ""+plv:pos 810,122:mes ""+php+" / "+phpmx:pos 810,142:mes ""+ppp+" / "+pppmx:pos 80,30:mes areaname
+pos 810,173:mes "":pos 810,193:mes ""+ilv:pos 810,213:mes ""+ihp+" / "+ihpmx:pos 810,233:mes ""+ipp+" / "+ippmx
+if (ia>=1)&(ia<=10):pos 743,210:celput 1,0
+if (ia>=11)&(ia<=20):pos 743,210:celput 1,1
+if (ia>=21)&(ia<=30):pos 743,210:celput 1,2
+gosub *showobj
+pos 10,10:mes ""+px:mes ""+py
+if (actcha!0)&(proove=0){if ilw=0:pos px,py+20
+                         if ilw=1:pos px,py-20
+                         if ilw=2:pos px+25,py
+                         if ilw=3:pos px-25,py
+                         if (ia>=1)&(ia<=10):celput 1,0
+                         if (ia>=11)&(ia<=20):celput 1,1
+                         if (ia>=21)&(ia<=30):celput 1,2
+                         }
+if (ia>=1)&(ia<=15):pos px,py:celput 1,6:pos 743,120:celput 1,6
+if (ia>=16)&(ia<=30):pos px,py:celput 1,7:pos 743,120:celput 1,7
+ia++:aa++
+if ia>30:ia=1
+if aa>60:aa=1
+if showpm=1:color 255,255,255:font msgothic,12,0:pos 720,440:mes ""+pm
+return
+
+*gameoversc
+for forcounter,1,207,1
+gmode 3,,,forcounter:pos 0,0:celput 23:wait 1
+next
+font msgothic,250,1:text:color 50,50,50:textmode 2:color 255,255,255:pos 250,80:emes "":wait 80
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""+pname+""
+gosub *enterwait
+a=1:c=0:d=0:x=435:y=243:cls 4:wait 100:goto *startmenu
+
+*exit
+dialog "",3
+if stat=6:end
+if stat=7:return
+end
+return
+
+*enterwait
+wait 20:ent=1:c=1:b=0
+repeat
+stick b,63:redraw 0
+color:boxf 550,400,650,500
+color 255,255,255:gmode 4,,,256
+if (ent>=1)&(ent<=40):pos 565,410:celput 3
+if (ent>=41)&(ent<=60):pos 570,415:celput 3
+ent++
+if ent>60:ent=1
+redraw 1:wait 1
+if c=60:if b&32:break
+if c<60:c++
+loop
+color:boxf 550,400,650,500:ent=0:c=0
+return
+
+*answer2
+gmode 3,,,200:pos 90,265:celput 10
+wait 20:ent=1:c=1:y=283:b=0
+repeat
+stick b,63:redraw 0
+font msgothic,16,0:color 255,255,255:pos 115,y:mes ""
+if y=283:color 255,255,255:pos 140,283:mes ans(0):else:color 100,100,100:pos 140,283:mes ans(0):pos 115,283:mes ""
+if y=318:color 255,255,255:pos 140,318:mes ans(1):else:color 100,100,100:pos 140,318:mes ans(1):pos 115,318:mes ""
+color:boxf 550,400,650,500
+color 255,255,255:gmode 4,,,256
+if (ent>=1)&(ent<=40):pos 565,410:celput 3
+if (ent>=41)&(ent<=60):pos 570,415:celput 3
+ent++
+if ent>60:ent=1
+redraw 1:wait 1
+if c=20{
+        if b&2:y=y-35:wait 20
+        if b&8:y=y+35:wait 20
+        if y<283:y=318
+        if y>318:y=283
+        if b&32{if y=283:dans=0:break
+                if y=318:dans=1:break
+                                     }
+                                      }
+if c<20:c++
+loop
+color:boxf 550,400,650,500:ent=0:c=0
+return
+
+*answer3
+gmode 3,,,200:pos 90,265:celput 10
+wait 20:ent=1:c=1:y=283:b=0
+repeat
+stick b,63:redraw 0
+font msgothic,16,0:color 255,255,255:pos 115,y:mes ""
+if y=283:color 255,255,255:pos 140,283:mes ans(0):else:color 100,100,100:pos 140,283:mes ans(0):pos 115,283:mes ""
+if y=318:color 255,255,255:pos 140,318:mes ans(1):else:color 100,100,100:pos 140,318:mes ans(1):pos 115,318:mes ""
+if y=353:color 255,255,255:pos 140,353:mes ans(2):else:color 100,100,100:pos 140,353:mes ans(2):pos 115,353:mes ""
+color:boxf 550,400,650,500
+color 255,255,255:gmode 4,,,256
+if (ent>=1)&(ent<=40):pos 565,410:celput 3
+if (ent>=41)&(ent<=60):pos 570,415:celput 3
+ent++
+if ent>60:ent=1
+redraw 1:wait 1
+if c=20{
+        if b&2:y=y-35:wait 20
+        if b&8:y=y+35:wait 20
+        if y<283:y=353
+        if y>353:y=283
+        if b&32{if y=283:dans=0:break
+                if y=318:dans=1:break
+                if y=353:dans=2:break
+                                     }
+                                      }
+if c<20:c++
+loop
+color:boxf 550,400,650,500:ent=0:c=0
+return
+
+*protx
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+dim ans,3:ans(0)="":ans(1)="":ans(2)=""
+gosub *answer3:dansa=dans
+return
+*protx1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes pname+"":swbreak
+case 1:pos 90,410:emes pname+"":swbreak
+case 2:pos 90,410:emes pname+"":swbreak
+swend
+gosub *enterwait
+return
+*protx2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes "":swbreak
+case 1:pos 90,410:emes "":swbreak
+case 2:pos 90,410:emes "":swbreak
+swend
+gosub *enterwait
+return
+*protx3
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes pname+"":swbreak
+case 1:pos 90,410:emes "":swbreak
+case 2:pos 90,410:emes pname+""+pname+"":swbreak
+swend
+gosub *enterwait
+return
+*protx4
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes "":swbreak
+case 1:pos 90,410:emes pname+""+pname+"":swbreak
+case 2:pos 90,410:emes "":swbreak
+swend
+gosub *enterwait
+return
+*protx5
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes pname+""+pname+"":swbreak
+case 1:pos 90,410:emes "":swbreak
+case 2:pos 90,410:emes "":swbreak
+swend
+gosub *enterwait
+return
+*protx6
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansa
+case 0:pos 90,410:emes "":swbreak
+default:pos 90,410:emes pname+"":swbreak
+swend
+gosub *enterwait
+return
+*protx7
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx3n1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+dim ans,3:ans(0)="":ans(1)="":ans(2)=""
+gosub *answer3:dansb=dans
+return
+*tx3n2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansb
+case 0:pos 90,410:emes pname+""+pname+"":swbreak
+case 1:pos 90,410:emes pname+""+pname+"":swbreak
+case 2:pos 90,410:emes pname+"":swbreak
+swend
+gosub *enterwait
+return
+*tx3n3
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansb
+case 0:pos 90,410:emes elder+"":swbreak
+case 1:pos 90,410:emes elder+"":gosub *enterwait:dim ans,2:ans(0)="":ans(1)="":gosub *answer2:dansc=dans:return:swbreak
+case 2:pos 90,410:emes elder+"":actchac=1:swbreak
+swend
+gosub *enterwait
+return
+*tx3n4
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansb
+case 0:pos 90,410:emes pname+"":swbreak
+case 1:if dansc=0:pos 90,410:emes pname+"":pm=pm+200:showpm=1
+if dansc=1:pos 90,410:emes pname+"":swbreak
+swend
+gosub *enterwait
+return
+*tx3n5
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansb
+case 0:pos 90,410:emes elder+""+pname+"":swbreak
+case 1:if dansc=0:pos 90,410:emes elder+"":tabako=1:locka=1
+if dansc=1:pos 90,410:emes elder+""+pname+"":swbreak
+swend
+gosub *enterwait
+return
+*tx3n6
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+return
+*tx3n7
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes pname+""
+gosub *enterwait
+return
+*tx3n8
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+return
+*tx3n9
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait:dim ans,2:ans(0)="":ans(1)="":gosub *answer2:dansd=dans
+return
+*tx3n10
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansd
+case 0:pos 90,410:emes elder+"":swbreak
+case 1:pos 90,410:emes elder+"":elder="":swbreak
+swend
+gosub *enterwait
+return
+*tx3n11
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+return
+*tx3n12
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+return
+*tx3n13
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait
+return
+*tx3n14
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""
+gosub *enterwait:dim ans,2:ans(0)="":ans(1)="":gosub *answer2:danse=dans
+return
+*tx3n15
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch danse
+case 0:pos 90,410:emes elder+"":swbreak
+case 1:pos 90,410:emes elder+""+pname+"":swbreak
+swend
+gosub *enterwait
+return
+*tx3n16
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes pname+""
+gosub *enterwait
+return
+*tx3n17
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes "":proove=1:showpm=1:locka=1
+gosub *enterwait
+return
+*tx4n1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx4n2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx4n3
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes "":pm=pm-150:tabako=2
+gosub *enterwait
+return
+*tx5
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""+pname+""
+gosub *enterwait
+return
+*tx6n1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes elder+""+pname+""
+gosub *enterwait:dim ans,3:ans(0)="":ans(1)="":ans(2)="":gosub *answer3:dansf=dans
+return
+*tx6n2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansf
+case 0:pos 90,410:emes elder+"":gosub *enterwait:dim ans,3:ans(0)="":ans(1)="":ans(2)="":gosub *answer3:dansg=dans:swbreak
+case 1:pos 90,410:emes elder+"":gosub *enterwait:swbreak
+case 2:pos 90,410:emes elder+""+pname+"":gosub *enterwait:tx6o=1:swbreak
+swend
+return
+*tx6n3
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansf
+case 0:if dansg=0:pos 90,410:emes elder+"":tx6o=1:swbreak
+       if dansg=1:pos 90,410:emes elder+"":tx6o=1:swbreak
+       if dansg=2:pos 90,410:emes elder+""+pname+"":tx6o=1:swbreak
+case 1:pos 90,410:emes elder+"":tx6o=1:swbreak
+swend
+gosub *enterwait
+return
+*tx7
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx8
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx9
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx10n1
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+if hnstkxtt!2:dim ans,2:ans(0)="":ans(1)="":gosub *answer2:dansh=dans
+if hnstkxtt=2:dim ans,3:ans(0)="":ans(1)="":ans(2)="":gosub *answer3:dansh=dans
+return
+*tx10n2
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+switch dansh
+case 1:pos 90,410:emes "":hnstkxtt=hnstkxtt+1:swbreak
+case 2:pos 90,410:emes "":swbreak
+swend
+if hnstkxtt>2:hnstkxtt=2
+gosub *enterwait
+return
+*tx11
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait
+return
+*tx12
+font msgothic,14,0:text 60:color 50,50,50:textmode 2:color 255,255,255
+pos 90,410:emes ""
+gosub *enterwait:dim ans,2:ans(0)="":ans(1)="":gosub *answer2:dansi=dans
+if dansi=0:cls 4:wait 120:php=phpmx:ihp=ihpmx:px=130:py=340
+return

@@ -1,0 +1,124 @@
+title ""
+screen 0,1000,500,,180,100
+mmload "bgm.MID",0,1:mmload "se1.wav",1,0:mmload "se2.wav",2,0:mmload "se3.wav",3,0
+celload "puspon1.bmp",1:celload "puspon2.bmp",2:celload "locker.bmp",3:celload "door.bmp",4
+celload "soba.bmp",5:celload "soccerball.bmp",6:celload "syaru.bmp",7:celload "vitange.bmp",8
+celload "cor.bmp",9:celload "pus.bmp",10:celload "timing.bmp",11:celload "hukidashi.bmp",12
+celload "explosion.bmp",13:celdiv 13,100,100:celload "worldmap.bmp",14:celload "student.bmp",15
+
+*sloop
+redraw 0:color:boxf:color 255,255,255:font msgothic,16,0:pos 260,230:mes "":font msgothic,14,0
+pos 660,50:mes ""
+font msgothic,16,0:pos 420,295:mes "":pos 662,200
+mes ""
+pos 780,470:mes "":pos 10,420:mes "":pos 15,460:mes ""
+pos 350,450:mes ""
+font msgothic,200,1:pos 30,30:mes ""
+redraw 1:await 1
+stick b,63:if b&32:font msgothic,16,0:color:boxf:wait 60:goto *worldmap:else:goto *sloop
+
+*worldmap
+redraw 0:color:boxf:pos 15,20:celput 14,0,1.2,1.2:color 255,255,255
+pos 640,30:mes ""
+redraw 1:await 1
+stick b,63:if b&32:color:boxf:wait 60:goto *weaponselect:else:goto *worldmap
+
+*weaponselect
+redraw 0:color:boxf:color 255,255,255:pos 50,50:mes ""
+redraw 1:await 1:stick b,0
+if b&1:color:boxf:w=0:goto *gamestart
+if b&2:color:boxf:w=1:goto *gamestart
+if b&4:color:boxf:w=2:goto *gamestart
+goto *weaponselect
+
+*gamestart
+mmplay 0:dim timingx,4:dim ok,4:count=-50:for i,0,4,1:timingx(i)=-200:next:for i,0,4,1:ok(i)=0:next:x=350:studentx=1300:vitangex=1800
+*mainloop
+redraw 0:stick b,0
+color 210,210,210:boxf:color:line 0,400,1000,400
+color 255,255,255:gmode 4,,,256
+pos x,218:celput 3,0
+pos x+350,145:celput 4,0
+if vitangelife>0:pos vitangex,140:celput 8,0
+if killenemy<3:pos studentx,230:celput 15,0,1.2,1.2
+if (attackcount>0)&(attackcount<=15):pos 300,220:celput 13,0
+if (attackcount>15)&(attackcount<=30):pos 300,220:celput 13,0,2,2
+if (attackcount>30)&(attackcount<=50):pos 300,220:celput 13,1,1.5,1.5
+if (attackcount>50)&(attackcount<=70):pos 330,180:celput 13,1,2.5,2.5
+if pusponact=0{pos 55,270:celput 1,0
+switch w
+case 0:pos 175,230:celput 5,0,0.7,0.7:swbreak
+case 1:pos 160,252:celput 6,0,0.5,0.5:swbreak
+case 2:pos 115,128:celput 7,0,0.8,0.8:swbreak
+swend
+               }
+if pusponact=1{pos 55,270:celput 2,0
+switch w
+case 0:pos 175,235:celput 5,0,0.7,0.7:swbreak
+case 1:pos 160,257:celput 6,0,0.5,0.5:swbreak
+case 2:pos 115,133:celput 7,0,0.8,0.8:swbreak
+swend
+               }
+if pusponact=2{pos 75,270:celput 2,0
+switch w
+case 0:pos 275,285:celput 5,0,0.8,0.8:swbreak
+case 1:pos 260,307:celput 6,0,0.6,0.6:swbreak
+case 2:pos 215,183:celput 7,0,0.9,0.9:swbreak
+swend
+               }
+if count=30:for i,0,4,1:timingx(i)=450:next
+for i,0,4,1:pos timingx(i),0:celput 11,0:next
+if (cor>0)&(cor<=10):gmode 4,,,cor*25:pos 100,100:celput 9
+if (cor>10)&(cor<=20):gmode 4,,,256:pos 100,100:celput 9
+if (pus>0)&(pus<=10):gmode 4,,,pus*25:pos 350,100:celput 10
+if (pus>10)&(pus<=20):gmode 4,,,256:pos 350,100:celput 10
+color:boxf 0,430,1000,500:pos 53,110:mes ""
+color 255,255,255:pos 90,455:mes "":boxf 50,0,75,100:pos studentx+30,455:mes "":pos vitangex+115,455:mes ""
+if (cor>0)&(cor<=5):color 255,0,0:boxf 50,0,75,100
+if (pus>0)&(pus<=5):color 0,0,255:boxf 50,0,75,100
+if cccp=1:color 255,255,255:pos 10,70:celput 12:color:pos 80,140:mes ""
+if ppcp=1:color 255,255,255:pos 10,70:celput 12:color::pos 50,140:mes ""
+if comment1=0:color 255,255,255:pos studentx-75,40:celput 12:color:pos studentx-15,110:mes ""
+if comment2=1:color 255,255,255:pos studentx-75,40:celput 12:color:pos studentx-15,110:mes ""
+redraw 1:await 15
+if cor>25:cor=0
+if pus>25:pus=0
+if cor>0:cor++
+if pus>0:pus++
+if (cccp=0)&(ppcp=0){if b&1{if (cor=0)&(pus=0):cor=1:mmplay 1
+                            if pusponact=0:pusponact=1:else:pusponact=0
+                            }
+                     if b&4{if (pus=0)&(cor=0):pus=1:mmplay 2
+                            if pusponact=0:pusponact=1:else:pusponact=0
+                            }
+                     }
+if count>30:timingx(0)-=5
+if count>65:timingx(1)-=5
+if count>100:timingx(2)-=5
+if count>135:timingx(3)-=5
+for i,0,4,1:if (timingx(i)+50>=50)&(timingx(i)+50<=75)&(cor>0)&(cor<=5):timingx(i)=-200:ok(i)=1
+            if (timingx(i)+50>=50)&(timingx(i)+50<=75)&(pus>0)&(pus<=5):timingx(i)=-200:ok(i)=2
+            next
+if (ok(0)=1)&(ok(1)=1)&(ok(2)=1)&(ok(3)=2)&(cccp=0)&(ppcp=0):cccp=1:walkcount=1
+if (ok(0)=2)&(ok(1)=2)&(ok(2)=1)&(ok(3)=2)&(cccp=0)&(ppcp=0):ppcp=1:attackcount=1
+if cccp=1{if walklock=0{x-=2:if killenemy<3:studentx-=2
+                             if killenemy>=3:vitangex-=2
+                        }
+          if (walkcount>0)&(walkcount<=10):pusponact=1
+          if (walkcount>10)&(walkcount<=20):pusponact=0
+          if walkcount>20:walkcount=1:else:walkcount++
+          }
+if ppcp=1{pusponact=2
+          if attackcount=15:mmplay 3
+          attackcount++
+	      }
+if x+650<-50:x=1100
+if studentx<=450:comment1=1
+if (studentx<=300)&(studentlife=0):walklock=1
+if (vitangex<=300)&(vitangelife=1):walklock=1
+if (attackcount>10)&(attackcount<=80)&(studentx<=500)&(studentlife=0):studentlife=1:walklock=0:comment2=1
+if studentlife>0{if studentlife>100:studentlife=0:killenemy++:randomize:studentx=1100+rnd(15)*100:comment2=0:else:studentlife++:studentx+=7
+                 }
+if (killenemy>=3)&(vitangelife=0):vitangelife=1:vitangex=1800
+if count>450:count=30:for i,0,4,1:ok(i)=0:next:cccp=0:ppcp=0:pusponact=0:walkcount=0:attackcount=0:else:count++
+goto *mainloop

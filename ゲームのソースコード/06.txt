@@ -1,0 +1,174 @@
+title "":screen 0,300,300,,533,215:onexit gosub *exit
+celload "picture.bmp",1:celdiv 1,50,50
+mmload "se1.wav",1,0
+mmload "se2.wav",2,0
+for i,1,6,1:celload "stage"+i+".bmp",i+1:next
+
+goto *start
+
+*exit
+dialog "",3
+if stat=6:end
+if stat=7:return
+end:return
+
+*restart
+mmplay 1:color 255,255,255:gmode 4,,,256:pos px+2,py-3:celput 1,8:await 4500
+*start
+
+px=100:py=193
+oldx=x:oldy=y
+delay=0
+walk=0
+jet=0
+fallc=0
+bulx=1000:buly=1000
+bulint=0
+stage=1
+playerdie=0
+cwalk=0
+ex=200:ey=75:e2x=182:e2y=119:e3x=221:e3y=34:e4x=221:e4y=218
+ebulint=0
+ebulang=0
+ebulx=0:ebuly=0
+ebulmox=0:ebulmoy=0
+ehp=8:e2hp=8:e3hp=8:e4hp=15
+CO=0
+
+px=0:py=58:stage=4
+
+*main
+if ginfo(2)<0:await 1:goto *main
+redraw 2:gmode:pos 0,0:celput stage+1:color 255,255,255:gmode 4,,,256
+switch stage
+case 1:color:pos 40,255:mes "":swbreak
+case 2:if ehp>0:if cwalk<500:pos ex,ey:celput 1,6:else:pos ex,ey:celput 1,7
+       if ebulint>0:pos int(ebulx),int(ebuly):celput 1,9
+       swbreak
+case 3:if e2hp>0:if cwalk<500:pos e2x,e2y:celput 1,6:else:pos e2x,e2y:celput 1,7
+       if ebulint>0:pos int(ebulx),int(ebuly):celput 1,9
+       swbreak
+case 4:if e3hp>0:if cwalk<500:pos e3x,e3y:celput 1,6:else:pos e3x,e3y:celput 1,7
+       if ebulint>0:pos int(ebulx),int(ebuly):celput 1,9
+       if e4hp>0{if cwalk<250:pos e4x,e4y:celput 1,10:pos e4x-25,e4y+1:celput 1,12
+                 if (cwalk>=250)&(cwalk<500):pos e4x,e4y:celput 1,11:pos e4x-25,e4y+2:celput 1,12
+                 if (cwalk>=500)&(cwalk<750):pos e4x,e4y:celput 1,10:pos e4x-25,e4y+1:celput 1,12
+                 if cwalk>=750:pos e4x,e4y:celput 1,11:pos e4x-25,e4y+2:celput 1,12
+                 }
+       swbreak
+swend
+color 255,255,255:gmode 4,,,256:if jet!0:if jet<6:pos px-3,py+1:celput 1,4:else:pos px-3,py+1:celput 1,5
+if walk<5:pos px,py:celput 1,0:else:pos px,py:celput 1,1
+pos px+7,py-2:celput 1,2:pos bulx,buly:celput 1,3
+color:pos 0,0:mes ""+px+" "+py+" "+bulx+" "+buly
+redraw 1:await 1:stick key,127:getkey zkey,90:getkey xkey,88:oldx=px:oldy=py
+if (zkey=0)&(fallc<3):fallc++
+if delay<10:delay++
+if delay>=7{if zkey{py--:walk=5:delay=0:jet++
+                    if key&1:px--
+                    if key&4:px++
+                    }
+            }
+if delay>=10{if key&1:px--:direction=0:walk++:delay=0
+             if key&4:px++:direction=1:walk++:delay=0
+             }
+if (zkey=0)&(fallc>=3):py++:jet=0:fallc=0
+if (xkey)&(bulint=0):bulx=px+20:buly=py-3:bulint=1:mmplay 2
+switch stage
+case 1:gosub *stage1:swbreak
+case 2:gosub *stage2:swbreak
+case 3:gosub *stage3:swbreak
+case 4:gosub *stage4:swbreak
+swend
+if playerdie=1:goto *restart
+if (walk>9)|(key=0&zkey=0):walk=0
+cwalk++:if cwalk>999:cwalk=0
+if jet>10:jet=1
+if bulint>810:bulint=0:bulx=1000
+if bulint>0:bulint++:if CO{if rnd(100)>33:bulx++:else{bulx--:if rnd(1500)<5:bulx=1000
+                                                      }
+                           }else{bulx++
+                                 }
+goto *main
+
+*stage1
+if (px<6)|(px>275):px=oldx
+if (py<22)|(py>193):py=oldy
+if (px>221)&(py<161):px=oldx
+if (px>222)&(py<162):py=oldy
+if (px>91)&(py>76)&(py<120):px=oldx
+if (px>92)&(py>75)&(py<121):py=oldy
+if (bulx>221)&(buly<151):bulx=1000
+if (bulx>91)&(buly>80)&(buly<110):bulx=1000
+if px=275:px=-10:py+=51:stage=2:bulx=1000:return
+return
+
+*stage2
+if (px<-25)|(px>275):px=oldx
+if (py<12)|(py>244):py=oldy
+if (px>236)&(py>93):px=oldx
+if (px<200)&(py>171)&(py<212):px=oldx
+if (px<199)&(py>170)&(py<213):py=oldy
+if (px<63)&(py>93)&(py<212):px=oldx
+if (px<62)&(py>92)&(py<213):py=oldy
+if (px>100)&(py>93)&(py<132):px=oldx
+if (px>101)&(py>92)&(py<133):py=oldy
+if (px<0)&(py<212):px=oldx
+if (bulx>100)&(buly>98)&(buly<122):bulx=1000
+if (bulx>235)&(buly>121):bulx=1000
+if (ebulx+30>=px+21)&(ebulx+19<=px+30)&(ebuly+30>=py+12)&(ebuly+19<=py+31):playerdie=1
+if px=-25:px=250:py-=51:stage=1:bulx=1000:ebulx=1000:ebuly=1000:ebulint=0:return
+if px=275:px=-10:py+=125:stage=3:bulx=1000:ebulx=1000:ebuly=1000:ebulint=0:return
+
+if ebulint>0:ebulx+=ebulmox:ebuly+=ebulmoy:ebulint++
+if ebulint>1000:ebulint=0
+if (ebulint=0)&(py<100)&(ehp>0):ebulang=atan(py-ey,px-ex):ebulmox=cos(ebulang)*0.7:ebulmoy=sin(ebulang)*0.7:ebulx=double(ex):ebuly=double(ey):ebulint=1
+if (ebulx<0)|(ebuly<5):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (ebulx<63)&(ebuly>93)&(ebuly<170):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (ebulx>100)&(ebuly>93)&(ebuly<122):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (bulx+28>=ex+13)&(bulx+17<=ex+37)&(buly+25>=ey+22)&(buly+23<=ey+35)&(ehp>0):ehp--:bulx=1000:if ehp=0:mmplay 1
+return
+
+*stage3
+if (px<-25)|(px>275):px=oldx
+if (py<-23)|(py>217):py=oldy
+if (px<72)&(py<136):px=oldx
+if (px<71)&(py<137):py=oldy
+if (px>210)&(py<177):px=oldx
+if (px>211)&(py<178):py=oldy
+if (px<162)&(py<12):px=oldx
+if (px<161)&(py<13):py=oldy
+if (px>165)&(py>137)&(py<177):px=oldx
+if (px>166)&(py>136)&(py<178):py=oldy
+if (bulx>165)&(buly>141)&(buly<168):bulx=1000
+if (bulx>210)&(buly<168):bulx=1000
+if (ebulx+30>=px+21)&(ebulx+19<=px+30)&(ebuly+30>=py+12)&(ebuly+19<=py+31):playerdie=1
+if px=-25:px=260:py-=125:stage=2:bulx=1000:ebulx=1000:ebuly=1000:ebulint=0:return
+if px=275:px=-10:py-=159:stage=4:bulx=1000:ebulx=1000:ebuly=1000:ebulint=0:return
+
+if ebulint>0:ebulx+=ebulmox:ebuly+=ebulmoy:ebulint++
+if ebulint>1000:ebulint=0
+if (ebulint=0)&(e2hp>0):ebulang=atan(py-e2y,px-e2x):ebulmox=cos(ebulang)*0.7:ebulmoy=sin(ebulang)*0.7:ebulx=double(e2x):ebuly=double(e2y):ebulint=1
+if (ebulx>208)|(ebuly>217):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (ebulx>163)&(ebuly>138):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (ebulx<75)&(ebuly<131):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (ebulx<164)&(ebuly<5):ebulx=1000:ebuly=1000:ebulmox=0:ebulmoy=0
+if (bulx+28>=e2x+13)&(bulx+17<=e2x+37)&(buly+25>=e2y+22)&(buly+23<=e2y+35)&(e2hp>0):e2hp--:bulx=1000:if e2hp=0:mmplay 1
+return
+
+*stage4
+if (px<-25)|(px>240):px=oldx
+if (py<19)|(py>235):py=oldy
+if (px<24)&(py>59):px=oldx
+if (px<23)&(py>58):py=oldy
+;if (ebulx+30>=px+21)&(ebulx+19<=px+30)&(ebuly+30>=py+12)&(ebuly+19<=py+31):playerdie=1
+if px=-25:px=260:py+=159:stage=3:bulx=1000:ebulx=1000:ebuly=1000:ebulint=0:CO=0:return
+
+if ebulint>0:ebulx+=ebulmox:ebuly+=ebulmoy:ebulint++
+if ebulint>1000:ebulint=0
+if (ebulint=0)&(e3hp>0):ebulang=atan(py-e3y,px-e3x):ebulmox=cos(ebulang)*0.7:ebulmoy=sin(ebulang)*0.7:ebulx=double(e3x):ebuly=double(e3y):ebulint=1
+if (bulx+28>=e3x+13)&(bulx+17<=e3x+37)&(buly+25>=e3y+22)&(buly+23<=e3y+35)&(e3hp>0):e3hp--:bulx=1000:if e3hp=0:mmplay 1
+
+if e4hp>0:CO=1:else:CO=0
+if (bulx+28>=e4x+13)&(bulx+17<=e4x+37)&(buly+25>=e4y+22)&(buly+23<=e4y+35)&(e4hp>0):e4hp--:bulx=1000:if e4hp=0:mmplay 1
+return
